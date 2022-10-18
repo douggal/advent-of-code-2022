@@ -1,7 +1,7 @@
 # Advent of Code 2022
-My solutions to the Advent of Code December 2022
+My solutions to the Advent of Code December 2022.
 
-Advent of Code Website:  [Advent of Code](https://adventofcode.com)
+Advent of Code website:  [Advent of Code](https://adventofcode.com)
 
 Solutions are in Scala 3 unless otherwise noted.
 
