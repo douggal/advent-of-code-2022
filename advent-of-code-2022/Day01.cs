@@ -14,7 +14,7 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 1: Calorie Counting ---");
 
             // read data file
-            var df = "day01-test.txt";
+            var df = "day01-input.txt";
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
             var input = new Queue<String>();
             String? line;
@@ -80,15 +80,16 @@ namespace advent_of_code_2022
                     // add to total for this elf;
                     t += int.Parse(s.Trim());
                 }
-                // don't forget to include the last line!
-                if (input.Count == 0) iv.Add(t);
+                // don't forget to include the last line if not blank!
+                if (input.Count == 0 && !string.IsNullOrEmpty(s)) iv.Add(t);
             }
 
             var most = iv.Max();
             Console.WriteLine($"Day 1 Part 1 Most Calories carried by any one elf is {most}.");
 
+
             // Part Two
-            iv.Sort((x, y) => y.CompareTo(x));
+            iv.Sort((x, y) => y.CompareTo(x));  // descending
             var hi3 = iv.Take(3).Sum();
 
             Console.WriteLine("Day 1 Part 2 Find the top three Elves carrying the most Calories.");
@@ -99,7 +100,7 @@ namespace advent_of_code_2022
             Console.WriteLine("\nDone.");
             Console.WriteLine("Time elapsed: {0:0.0} ms", stopwatch.ElapsedMilliseconds);
             Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
-            //Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }
