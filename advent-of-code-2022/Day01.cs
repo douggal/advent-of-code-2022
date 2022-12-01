@@ -14,7 +14,7 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 1: Calorie Counting ---");
 
             // read data file
-            var df = "day01-input.txt";
+            var df = "day01-test.txt";
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
             var input = new Queue<String>();
             String? line;
@@ -66,8 +66,9 @@ namespace advent_of_code_2022
             // iv is an input vector of total Calories carried by each elf
             var iv = new List<int>();
             var t = 0;
-            foreach(string s in input)
+            while(input.Count > 0)
             {
+                var s = input.Dequeue();
                 if (string.IsNullOrEmpty(s))
                 {
                     // done adding Calories given elf
@@ -79,14 +80,19 @@ namespace advent_of_code_2022
                     // add to total for this elf;
                     t += int.Parse(s.Trim());
                 }
+                // don't forget to include the last line!
+                if (input.Count == 0) iv.Add(t);
             }
+
             var most = iv.Max();
             Console.WriteLine($"Day 1 Part 1 Most Calories carried by any one elf is {most}.");
 
             // Part Two
-            
+            iv.Sort((x, y) => y.CompareTo(x));
+            var hi3 = iv.Take(3).Sum();
+
             Console.WriteLine("Day 1 Part 2 Find the top three Elves carrying the most Calories.");
-            Console.WriteLine($"How many Calories are those Elves carrying in total?  {}");
+            Console.WriteLine($"How many Calories are those Elves carrying in total?  {hi3}");
 
             // Display run time and exit
             stopwatch.Stop();
