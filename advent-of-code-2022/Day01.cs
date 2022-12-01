@@ -8,13 +8,13 @@ namespace advent_of_code_2022
     {
         public static void RunDay01()
         {
-            // created TODO: add date
+            // created 1 Dec 2022
             // https://adventofcode.com/2022/day/1
 
-            Console.WriteLine("--- Day 1: ... ---");
+            Console.WriteLine("--- Day 1: Calorie Counting ---");
 
             // read data file
-            var df = "day01-test.txt";
+            var df = "day01-input.txt";
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
             var input = new Queue<String>();
             String? line;
@@ -63,19 +63,44 @@ namespace advent_of_code_2022
 
 
             // Part One
-            // TODO
-            Console.WriteLine("Day 1 Part 1 TBD");
+            // build iv, a input vector of int of total Calories carried by each elf
+            var iv = new List<int>();
+            var t = 0;
+            while(input.Count > 0)
+            {
+                var s = input.Dequeue();
+                if (string.IsNullOrEmpty(s))
+                {
+                    // done adding Calories given elf
+                    iv.Add(t);
+                    t = 0;
+                }
+                else
+                {
+                    // add to total for this elf;
+                    t += int.Parse(s.Trim());
+                }
+                // don't forget to include the last line if not blank!
+                if (input.Count == 0 && !string.IsNullOrEmpty(s)) iv.Add(t);
+            }
+
+            var most = iv.Max();
+            Console.WriteLine($"Day 1 Part 1 Most Calories carried by any one elf is {most}.");
+
 
             // Part Two
-            // TODO
-            Console.WriteLine("Day 1 Part 2  [TBD]");
+            iv.Sort((x, y) => y.CompareTo(x));  // descending
+            var hi3 = iv.Take(3).Sum();
+
+            Console.WriteLine("Day 1 Part 2 Find the top three Elves carrying the most Calories.");
+            Console.WriteLine($"How many Calories are those Elves carrying in total?  {hi3}");
 
             // Display run time and exit
             stopwatch.Stop();
             Console.WriteLine("\nDone.");
             Console.WriteLine("Time elapsed: {0:0.0} ms", stopwatch.ElapsedMilliseconds);
             Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
-            //Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }
