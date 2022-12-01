@@ -63,7 +63,7 @@ namespace advent_of_code_2022
 
 
             // Part One
-            // iv is an input vector of total Calories carried by each elf
+            // build iv, a input vector of int of total Calories carried by each elf
             var iv = new List<int>();
             var t = 0;
             while(input.Count > 0)
