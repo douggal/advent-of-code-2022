@@ -11,7 +11,7 @@ Solutions are in C# and cross platform .NET 7 framework unless otherwise noted.
 My goals for this year's AoC are to have fun, and apply
 the functional programming techniques in C# 11.
 
-1. Day   1:
+1. Day   1:  Calorie Counting
 2. Day   2:
 3. Day   3:
 4. Day   4:
@@ -19,3 +19,4 @@ the functional programming techniques in C# 11.
 ## Notes
 
 ### Day 1
+Don't forget the last line of input if not blank!
