@@ -114,12 +114,11 @@ namespace advent_of_code_2022
                     // score for shape selected + outcome score
                     rs = spts[it.Value] + opts['W'];
                 }
-                // is it a draw?
-                else if (it.Value == b[it.Index])
+                else if (it.Value == b[it.Index])  // is it a draw?
                 {
                     rs = spts[it.Value] + opts['D'];
                 }
-                // loss
+                else // loss
                 {
                     rs = spts[it.Value] + opts['L'];
                 }
