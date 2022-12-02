@@ -13,7 +13,7 @@ the functional programming techniques in C# 11.  I'll make
 full use of .NET's built-in collections and for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library.
 
 1. Day   1:  Calorie Counting
-2. Day   2:
+2. Day   2:  Rock Paper Scissors
 3. Day   3:
 4. Day   4:
 
