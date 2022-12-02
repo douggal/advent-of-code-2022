@@ -14,7 +14,7 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 02: Rock Paper Scissors ---");
 
             // data file
-            var df = "Day02-test.txt";
+            var df = "Day02-input.txt";
 
             // read in data file
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
@@ -190,4 +190,5 @@ namespace advent_of_code_2022
     }
 }
 // 12153 is too low
-// 12645
+// 12645 bingo
+// p2 11756 bingo
