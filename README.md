@@ -20,6 +20,10 @@ full use of .NET's built-in collections and for graph traversals the [QuikGraph]
 ## Notes
 
 ### Day 1
+
 Don't forget the last line of input if not blank!
 
 ### Day 2
+
+Took me quite a while to realize a draw is each player throwing the same item but must account for differnt values they have in each column of the data.
+

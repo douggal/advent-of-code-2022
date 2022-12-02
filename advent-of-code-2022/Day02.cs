@@ -14,7 +14,7 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 02: Rock Paper Scissors ---");
 
             // read data file
-            var df = "Day02-test.txt";
+            var df = "Day02-input.txt";
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
             var input = new Queue<String>();
             String? line;
@@ -73,9 +73,11 @@ namespace advent_of_code_2022
             while(input.Count > 0)
             {
                 l = input.Dequeue();
-                var s = l.Split(' ');
-                a.Add(s[0].Trim().ToCharArray()[0]);
-                b.Add(s[1].Trim().ToCharArray()[0]);
+                if (!String.IsNullOrWhiteSpace(l)) {
+                    var s = l.Split(' ');
+                    a.Add(s[0].Trim().ToCharArray()[0]);
+                    b.Add(s[1].Trim().ToCharArray()[0]);
+                };
             }
 
             // shape points  A and X = Rock, B and Y = Paper, C and Z = Sissors
@@ -102,6 +104,7 @@ namespace advent_of_code_2022
             };
 
             var score1 = 0;
+            // for each value i throw (list b) compare with my opponents value in list a
             // foreach loop with index https://stackoverflow.com/questions/521687/foreach-with-index
             foreach (var it in b.Select((x, i) => new { Value = x, Index = i }))
             {
@@ -109,12 +112,12 @@ namespace advent_of_code_2022
                 var rs = 0;
                 //if (it.Index > SomeNumber) //
                 // is it a win?
-                if (oc.ContainsKey((it.Value, b[it.Index])))
+                if (oc.ContainsKey((it.Value, a[it.Index])))
                 {
                     // score for shape selected + outcome score
                     rs = spts[it.Value] + opts['W'];
                 }
-                else if (it.Value == b[it.Index])  // is it a draw?
+                else if (spts[it.Value] == spts[a[it.Index]])  // is it a draw? i.e., both same item = compare point values
                 {
                     rs = spts[it.Value] + opts['D'];
                 }
@@ -141,4 +144,5 @@ namespace advent_of_code_2022
         }
     }
 }
-
+// 12153 is too low
+// 12645
