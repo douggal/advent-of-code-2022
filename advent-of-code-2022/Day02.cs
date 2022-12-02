@@ -109,7 +109,7 @@ namespace advent_of_code_2022
                 var rs = 0;
                 //if (it.Index > SomeNumber) //
                 // is it a win?
-                if (oc.ContainsKey((it.Value, a[it.Index])))
+                if (oc.ContainsKey((it.Value, b[it.Index])))
                 {
                     // score for shape selected + outcome score
                     rs = spts[it.Value] + opts['W'];
