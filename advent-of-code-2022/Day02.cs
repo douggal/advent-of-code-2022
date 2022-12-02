@@ -13,8 +13,10 @@ namespace advent_of_code_2022
 
             Console.WriteLine("--- Day 02: Rock Paper Scissors ---");
 
-            // read data file
-            var df = "Day02-input.txt";
+            // data file
+            var df = "Day02-test.txt";
+
+            // read in data file
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
             var input = new Queue<String>();
             String? line;
@@ -131,9 +133,52 @@ namespace advent_of_code_2022
             Console.WriteLine("Day 2 Part 1 total score be if everything goes exactly according to your strategy guide?");
             Console.WriteLine($"{score1}");
 
+
             // Part Two
-            // TODO
-            Console.WriteLine("Day 02 Part 2  [TBD]");
+            // 2nd column indicates how the round needs to end
+            // X = I need to Lose, Y = I need to Draw, Z = I need to Win
+            // not very much different, in part 1 I had my throw and could comapre with my opponent
+            // in Part 2 I know the outocme and my opponent's throw and need to find my throw to compute the round's score
+            // my = my throw given outcome and my opponents throw
+            var my = new Dictionary<(Char, Char), Char>
+            {
+                // a = opponent and b = me opposites
+                {('A','Y'),'X'},
+                {('A','X'),'Z'},
+                {('A','Z'),'Y'},
+                {('B','Y'),'Y'},
+                {('B','X'),'X'},
+                {('B','Z'),'Z'},
+                {('C','Y'),'Z'},
+                {('C','X'),'Y'},
+                {('C','Z'),'X'}
+            };
+            var score2 = 0;
+            foreach (var it in a.Select((x, i) => new { Value = x, Index = i }))
+            {
+                // round score
+                var rs = 0;
+
+                // what do I need to throw?
+                var myThrow = my[(it.Value, b[it.Index])];
+                // win?
+                if (oc.ContainsKey((myThrow, a[it.Index])))
+                {
+                    // score for shape selected + outcome score
+                    rs = spts[myThrow] + opts['W'];
+                }
+                else if (spts[myThrow] == spts[a[it.Index]])  // is it a draw? i.e., both same item = compare point values
+                {
+                    rs = spts[myThrow] + opts['D'];
+                }
+                else // loss
+                {
+                    rs = spts[myThrow] + opts['L'];
+                }
+                score2 += rs;
+            }
+            Console.WriteLine("Day 2 Part 2  what would your total score be if everything goes exactly according to your strategy guide?");
+            Console.WriteLine($"{score2}");
 
             // Display run time and exit
             stopwatch.Stop();
