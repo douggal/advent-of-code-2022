@@ -9,7 +9,8 @@ Advent of Code website:  [Advent of Code](https://adventofcode.com/2022)
 Solutions are in C# and cross platform .NET 7 framework unless otherwise noted.
 
 My goals for this year's AoC are to have fun, and apply
-the functional programming techniques in C# 11.
+the functional programming techniques in C# 11.  I'll make
+full use of .NET's built-in collections and for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library.
 
 1. Day   1:  Calorie Counting
 2. Day   2:
@@ -20,3 +21,5 @@ the functional programming techniques in C# 11.
 
 ### Day 1
 Don't forget the last line of input if not blank!
+
+### Day 2
