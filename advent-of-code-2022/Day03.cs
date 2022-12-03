@@ -4,19 +4,19 @@ using System.Diagnostics;
 
 namespace advent_of_code_2022
 {
-    public static class DayXX
+    public static class Day03
     {
-        public static void RunDayXX()
+        public static void RunDay03()
         {
-            // created TODO: add date
-            // https://adventofcode.com/2022/day/1
+            // created 3 December 2022
+            // https://adventofcode.com/2022/day/3
 
-            Console.WriteLine("--- Day XX: ... ---");
+            Console.WriteLine("--- Day 03: Rucksack Reorganization ---");
 
             // data file
-            var df = "dayXX-test.txt";
+            var df = "day03-test.txt";
 
-            // read in data
+            // read in the data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
             var input = new Queue<String>();
             String? line;
@@ -65,12 +65,20 @@ namespace advent_of_code_2022
 
 
             // Part One
-            // TODO
-            Console.WriteLine("Day XX Part 1 TBD");
+
+            // sp = sum of the priorities
+            var sp = 0;
+
+            Console.WriteLine("Day 3 Part 1");
+            Console.WriteLine("Find the item type that appears in both compartments of each rucksack.");
+            Console.WriteLine("What is the sum of the priorities of those item types?");
+            Console.WriteLine($"{sp}\n\n");
+
 
             // Part Two
             // TODO
-            Console.WriteLine("Day XX Part 2  [TBD]");
+            Console.WriteLine("Day 3 Part 2  [TBD]");
+
 
             // Display run time and exit
             stopwatch.Stop();

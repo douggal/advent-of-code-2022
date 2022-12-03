@@ -15,7 +15,7 @@ for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) gra
 
 1. Day   1:  Calorie Counting
 2. Day   2:  Rock Paper Scissors
-3. Day   3:
+3. Day   3:  Rucksack Reorganization
 4. Day   4:
 
 ## Notes
