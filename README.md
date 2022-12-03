@@ -15,7 +15,7 @@ for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) gra
 
 1. Day   1:  Calorie Counting
 2. Day   2:  Rock Paper Scissors
-3. Day   3:
+3. Day   3:  Rucksack Reorganization
 4. Day   4:
 
 ## Notes
@@ -33,3 +33,7 @@ throwing the same item but must account for differnt values
  type, e.g., "('A',1)".  Need value types for Dictionary
  keys.
 
+### Day 3
+
+String splitting and slicing is straightforward, but it pays to read the docs and put in some assertions
+to catch errors.  Making good use of C# .NET Collections, but I'm using mutable implementations.

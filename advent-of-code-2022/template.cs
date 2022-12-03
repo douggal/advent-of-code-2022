@@ -13,8 +13,10 @@ namespace advent_of_code_2022
 
             Console.WriteLine("--- Day XX: ... ---");
 
-            // read data file
-            var df = "DayXX-test.txt";
+            // data file
+            var df = "dayXX-test.txt";
+
+            // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
             var input = new Queue<String>();
             String? line;
@@ -44,8 +46,8 @@ namespace advent_of_code_2022
             Console.WriteLine($"Number lines: {input.Count}");
             if (input.Count > 0)
             {
-                Console.WriteLine($"Input first line: {input.FirstOrDefault()}");
-                Console.WriteLine($"Input last line: {input.LastOrDefault()}");
+                Console.WriteLine($"Input first line: {input.First()}");
+                Console.WriteLine($"Input last line: {input.Last()}");
             }
             else
             {
