@@ -46,8 +46,8 @@ namespace advent_of_code_2022
             Console.WriteLine($"Number lines: {input.Count}");
             if (input.Count > 0)
             {
-                Console.WriteLine($"Input first line: {input.FirstOrDefault()}");
-                Console.WriteLine($"Input last line: {input.LastOrDefault()}");
+                Console.WriteLine($"Input first line: {input.First()}");
+                Console.WriteLine($"Input last line: {input.Last()}");
             }
             else
             {

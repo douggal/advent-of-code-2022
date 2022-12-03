@@ -14,7 +14,7 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 03: Rucksack Reorganization ---");
 
             // data file
-            var df = "day03-test.txt";
+            var df = "day03-input.txt";
 
             // read in the data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
@@ -46,8 +46,8 @@ namespace advent_of_code_2022
             Console.WriteLine($"Number lines: {input.Count}");
             if (input.Count > 0)
             {
-                Console.WriteLine($"Input first line: {input.FirstOrDefault()}");
-                Console.WriteLine($"Input last line: {input.LastOrDefault()}");
+                Console.WriteLine($"Input first line: {input.First()}");
+                Console.WriteLine($"Input last line: {input.Last()}");
             }
             else
             {
@@ -65,9 +65,38 @@ namespace advent_of_code_2022
 
 
             // Part One
-
+            // first thought is us a Set and take the intersection
+            // text says each line is an even number of chars long
+            // let set a be 1st half / 1st compartment
+            // let set b be the 2nd half / 2nd compartment
+            // l = a line of input
             // sp = sum of the priorities
+
+            // pr = priority which is each char's index + 1
+            var pr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray().ToList();
+
             var sp = 0;
+            var l = String.Empty;
+            while (input.Count > 0)
+            {
+                line = input.Dequeue();
+                // ll line length; hll one-half the line length
+                var ll = line.Length;
+                var hll = line.Length / 2;
+                HashSet<Char> a = new HashSet<char>(line.Substring(0,hll-1));
+                HashSet<Char> i = new HashSet<char>(line.Substring(hll, hll));
+                i.IntersectWith(a);
+
+                // assert i should have only 1 item
+                Console.WriteLine($"Assert {i.Count} (should be 1 char), Char is {String.Join("",i)}");
+
+                // find priority
+                var c = i.First();
+                var p = pr.IndexOf(c) + 1;
+                sp += p;
+
+            };
+
 
             Console.WriteLine("Day 3 Part 1");
             Console.WriteLine("Find the item type that appears in both compartments of each rucksack.");
