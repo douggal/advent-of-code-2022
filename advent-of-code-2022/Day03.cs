@@ -69,25 +69,22 @@ namespace advent_of_code_2022
             // text says each line is an even number of chars long
             // let set a be 1st half / 1st compartment
             // let set b be the 2nd half / 2nd compartment
-            // l = a line of input
-            // sp = sum of the priorities
+            // li = a line of input
 
             // pr = priority which is each char's index + 1
             // TODO: what about encoding? UTF-8?
             var pr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray().ToList();
 
-            var sp = 0;
-            var l = String.Empty;
-            var ctr = 0;
-            while (input.Count > 0)
+            var sp = 0;  // sum of the priorities
+            var ctr = 0; // a counter for debugging output
+            foreach (var li in input)  // don't deque need queue for part 2
             {
                 ctr += 1;
-                line = input.Dequeue();
-                // ll line length; hll one-half the line length
-                var ll = line.Length;
-                var hll = line.Length / 2;
-                HashSet<Char> a = new HashSet<char>(line.Substring(0,hll));
-                HashSet<Char> i = new HashSet<char>(line.Substring(hll));
+                // ll = line length; hll = one-half the line length
+                var ll = li.Length;
+                var hll = li.Length / 2;
+                HashSet<Char> a = new HashSet<char>(li.Substring(0,hll));
+                HashSet<Char> i = new HashSet<char>(li.Substring(hll));
                 i.IntersectWith(a);
 
                 // assert i should have only 1 item
@@ -115,8 +112,38 @@ namespace advent_of_code_2022
 
 
             // Part Two
-            // TODO
-            Console.WriteLine("Day 3 Part 2  [TBD]");
+            var sp2 = 0;  // sum of priorities
+            ctr = 0;
+            while (input.Count > 0)
+            {
+                ctr += 1;
+                HashSet<Char> a = new HashSet<char>(input.Dequeue());
+                HashSet<Char> b = new HashSet<char>(input.Dequeue());
+                HashSet<Char> c = new HashSet<char>(input.Dequeue());
+
+                IEnumerable<char> i = a.Intersect(b).Intersect(c);
+                // assert i should have only 1 item
+                //Console.WriteLine($"Line {ctr} Assert {i.Count()} (should be 1 char), Char is {String.Join("",i)}");
+
+                // find priority
+                if (i.Count() == 1)
+                {
+                    var p = pr.IndexOf(i.First()) + 1;
+                    sp2 += p;
+                }
+                else
+                {
+                    Console.WriteLine($"Error no or more than one item found for line {ctr} (should be one).");
+                }
+            }
+
+            // Assert:  there should be 100 groups ctr = 100;
+            if (ctr != 100) Console.WriteLine("Error groups are wrong.");
+
+            Console.WriteLine("Day 3 Part 2");
+            Console.WriteLine("Find the item type that corresponds to the badges of each three-Elf group.");
+            Console.WriteLine("What is the sum of the priorities of those item types?");
+            Console.WriteLine($"{sp2}\n\n");
 
 
             // Display run time and exit
@@ -128,4 +155,4 @@ namespace advent_of_code_2022
         }
     }
 }
-
+// 266800 is too high

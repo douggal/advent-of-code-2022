@@ -35,4 +35,5 @@ throwing the same item but must account for differnt values
 
 ### Day 3
 
-String splitting and slicing is straightforward, but it pays to read the docs and put in some assertions to catch errors.
+String splitting and slicing is straightforward, but it pays to read the docs and put in some assertions
+to catch errors.  Making good use of C# .NET Collections, but I'm using mutable implementations.
