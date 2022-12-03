@@ -33,3 +33,6 @@ throwing the same item but must account for differnt values
  type, e.g., "('A',1)".  Need value types for Dictionary
  keys.
 
+### Day 3
+
+String splitting and slicing is straightforward, but it pays to read the docs and put in some assertions to catch errors.

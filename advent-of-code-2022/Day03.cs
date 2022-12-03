@@ -73,27 +73,37 @@ namespace advent_of_code_2022
             // sp = sum of the priorities
 
             // pr = priority which is each char's index + 1
+            // TODO: what about encoding? UTF-8?
             var pr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray().ToList();
 
             var sp = 0;
             var l = String.Empty;
+            var ctr = 0;
             while (input.Count > 0)
             {
+                ctr += 1;
                 line = input.Dequeue();
                 // ll line length; hll one-half the line length
                 var ll = line.Length;
                 var hll = line.Length / 2;
-                HashSet<Char> a = new HashSet<char>(line.Substring(0,hll-1));
-                HashSet<Char> i = new HashSet<char>(line.Substring(hll, hll));
+                HashSet<Char> a = new HashSet<char>(line.Substring(0,hll));
+                HashSet<Char> i = new HashSet<char>(line.Substring(hll));
                 i.IntersectWith(a);
 
                 // assert i should have only 1 item
-                Console.WriteLine($"Assert {i.Count} (should be 1 char), Char is {String.Join("",i)}");
+                //Console.WriteLine($"Line {ctr} Assert {i.Count} (should be 1 char), Char is {String.Join("",i)}");
 
                 // find priority
-                var c = i.First();
-                var p = pr.IndexOf(c) + 1;
-                sp += p;
+                if (i.Count > 0)
+                {
+                    var c = i.First();
+                    var p = pr.IndexOf(c) + 1;
+                    sp += p;
+                }
+                else
+                {
+                    Console.WriteLine($"Error no item found for line {ctr} (should be one).");
+                }
 
             };
 
