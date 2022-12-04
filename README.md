@@ -41,3 +41,8 @@ to catch errors.  Ditto for the System.Collections types.
 Note that Intersection is a LINQ method while IntersectWith
 is [HashSet\<T>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1?view=net-7.0) method.  
 Making good use of C# .NET System.Collections, but I'm using mutable implementations.
+
+### Day 4
+
+[Looping over a range c# - for loop or use a IEnumerable.Range?](https://stackoverflow.com/questions/915745/thoughts-on-foreach-with-enumerable-range-vs-traditional-for-loop).
+As the post comments point out in C# a for loop may the better choice for looping over a contiguous range of integers.  The clarity comes from long time use in C.

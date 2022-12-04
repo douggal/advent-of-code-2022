@@ -15,7 +15,7 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 04: Camp Cleanup ---");
 
             // data file
-            var df = "day04-test.txt";
+            var df = "day04-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -78,24 +78,31 @@ namespace advent_of_code_2022
                 var elf1 = (int.Parse(e1[0]), int.Parse(e1[1]));  // tuple (start, end)
                 var e2 = pair[1].Split('-');
                 var elf2 = (int.Parse(e2[0]), int.Parse(e2[1]));  // tuple (start, end)
+
                 // are elf1's sections completely within elf2's sections?
-                // could check endpoints...
+                // could check endpoints... maybe like this
                 // if (elf1.Item1 >= elf2.Item1 && elf1.Item2 <= elf2.Item2) ans += 1;
                 // if (elf2.Item1 >= elf1.Item1 && elf2.Item2 <= elf1.Item2) ans += 1;
+
+                // looping over a range c# - for loop or use a Range?
+                // https://stackoverflow.com/questions/915745/thoughts-on-foreach-with-enumerable-range-vs-traditional-for-loop
+                // in C# a for loop may the better choice for looping over a contiguous range.
                 SortedSet<int> a = new();
-                var r1 = elf1.Item2 - elf1.Item1 + 1;  // range between starting section and its end
+                var r1 = elf1.Item2 - elf1.Item1 + 1;  // count between starting section and its end
                 foreach (int i in Enumerable.Range(elf1.Item1, r1)) a.Add(i);
 
                 SortedSet<int> b = new();
-                var r2 = elf2.Item2 - elf2.Item1 + 1;  // range between starting section and its end
+                var r2 = elf2.Item2 - elf2.Item1 + 1;  // count between starting section and its end
                 foreach (int i in Enumerable.Range(elf2.Item1, r2)) b.Add(i);
 
+                // Part 1 does either range fall completely within the other?
                 if (a.IsSubsetOf(b) || b.IsSubsetOf(a))
                 {
                     ans1 += 1;
                     System.Console.WriteLine($"Line {ctr} a sub b {a.IsSubsetOf(b)} or b sub a {b.IsSubsetOf(a)}");
                 }
 
+                // Part 2 do either section ranges overlap at all?
                 if (a.Overlaps(b) || b.Overlaps(a))
                 {
                     ans2 += 1;
@@ -125,4 +132,4 @@ namespace advent_of_code_2022
     }
 }
 // p1 580 go!
-
+// p2 895 go!
