@@ -44,15 +44,12 @@ namespace advent_of_code_2022
             Console.WriteLine("Data Quality Control Checks:");
             Console.WriteLine($"Input file name: {fn}");
             Console.WriteLine($"Number lines: {input.Count}");
-            if (input.Count > 0)
-            {
-                Console.WriteLine($"Input first line: {input.First()}");
-                Console.WriteLine($"Input last line: {input.Last()}");
-            }
-            else
+            if (input.Count == 0)
             {
                 Console.WriteLine("The input file is empty");
             }
+            Console.WriteLine($"Input first line: {input.FirstOrDefault("NOT FOUND")}");
+            Console.WriteLine($"Input last line: {input.LastOrDefault("NOT FOUND")}");
             Console.WriteLine("---End input file specs---{0}{0}", Environment.NewLine);
 
             // Timing
