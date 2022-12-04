@@ -67,7 +67,8 @@ namespace advent_of_code_2022
             // a sorted set, then use built-in to see if one is a subset of the other
             // could also compare endpoints and see if they fall within range of the other
             var ctr = 0;  // counter for debugging
-            var ans = 0;  // answer - count of how many sections completely overlap another
+            var ans1 = 0;  // answer P1 - count of how many sections completely overlap another
+            var ans2 = 0;  // answer P1 - count of how many sections completely overlap another
             foreach (var li in input)
             {
                 ctr += 1;
@@ -89,22 +90,29 @@ namespace advent_of_code_2022
                 var r2 = elf2.Item2 - elf2.Item1 + 1;  // range between starting section and its end
                 foreach (int i in Enumerable.Range(elf2.Item1, r2)) b.Add(i);
 
-                if (a.IsSubsetOf(b) || b.IsSubsetOf(a)) 
+                if (a.IsSubsetOf(b) || b.IsSubsetOf(a))
                 {
-                    ans += 1;
+                    ans1 += 1;
                     System.Console.WriteLine($"Line {ctr} a sub b {a.IsSubsetOf(b)} or b sub a {b.IsSubsetOf(a)}");
-                    }
+                }
+
+                if (a.Overlaps(b) || b.Overlaps(a))
+                {
+                    ans2 += 1;
+                    System.Console.WriteLine($"Line {ctr} a overlaps b {a.IsSubsetOf(b)} or b overlaps a {b.IsSubsetOf(a)}");
+                }
             }
 
             Console.Write('\u2460');
             Console.WriteLine("Day 4 Part 1");
             Console.WriteLine("In how many assignment pairs does one range fully contain the other?");
-            Console.WriteLine($"{ans}\n\n");
+            Console.WriteLine($"{ans1}\n\n");
 
             // Part Two
-            // TODO
             Console.Write('\u2461');
-            Console.WriteLine("Day 4 Part 2  [TBD]");
+            Console.WriteLine("Day 4 Part 2");
+            Console.WriteLine("In how many assignment pairs does either range overlap the other?");
+            Console.WriteLine($"{ans2}\n\n");
 
 
             // Display run time and exit
@@ -116,4 +124,5 @@ namespace advent_of_code_2022
         }
     }
 }
+// p1 580 go!
 
