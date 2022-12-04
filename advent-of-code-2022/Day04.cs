@@ -11,7 +11,8 @@ namespace advent_of_code_2022
             // created 4 December 2022
             // https://adventofcode.com/2022/day/4
 
-            Console.WriteLine("--- Day 04: ... ---");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine("--- Day 04: Camp Cleanup ---");
 
             // data file
             var df = "day04-test.txt";
@@ -50,7 +51,6 @@ namespace advent_of_code_2022
             }
             Console.WriteLine($"Input first line: {input.FirstOrDefault("NOT FOUND")}");
             Console.WriteLine($"Input last line: {input.LastOrDefault("NOT FOUND")}");
-
             Console.WriteLine("---End input file specs---{0}{0}", Environment.NewLine);
 
             // Timing
@@ -63,11 +63,49 @@ namespace advent_of_code_2022
 
 
             // Part One
+            // my first thought is treat each elves section ID list as
+            // a sorted set, then use built-in to see if one is a subset of the other
+            // could also compare endpoints and see if they fall within range of the other
+            var ctr = 0;  // counter for debugging
+            var ans = 0;  // answer - count of how many sections completely overlap another
+            foreach (var li in input)
+            {
+                ctr += 1;
+                var pair = li.Split(',');
+                var e1 = pair[0].Split('-');
+                // assuming section IDs are always in order low-high
+                var elf1 = (int.Parse(e1[0]), int.Parse(e1[1]));  // tuple (start, end)
+                var e2 = pair[1].Split('-');
+                var elf2 = (int.Parse(e2[0]), int.Parse(e2[1]));  // tuple (start, end)
+                // are elf1's sections completely within elf2's sections?
+                // could check endpoints...
+                // if (elf1.Item1 >= elf2.Item1 && elf1.Item2 <= elf2.Item2) ans += 1;
+                // if (elf2.Item1 >= elf1.Item1 && elf2.Item2 <= elf1.Item2) ans += 1;
+                SortedSet<int> a = new();
+                var r1 = elf1.Item2 - elf1.Item1 + 1;  // range between starting section and its end
+                foreach (int i in Enumerable.Range(elf1.Item1, r1)) a.Add(i);
+
+                SortedSet<int> b = new();
+                var r2 = elf2.Item2 - elf2.Item1 + 1;  // range between starting section and its end
+                foreach (int i in Enumerable.Range(elf2.Item1, r2)) b.Add(i);
+
+                if (a.IsSubsetOf(b) || b.IsSubsetOf(a)) 
+                {
+                    ans += 1;
+                    System.Console.WriteLine($"Line {ctr} a sub b {a.IsSubsetOf(b)} or b sub a {b.IsSubsetOf(a)}");
+                    }
+            }
+
+            Console.Write('\u2460');
             Console.WriteLine("Day 4 Part 1");
+            Console.WriteLine("In how many assignment pairs does one range fully contain the other?");
+            Console.WriteLine($"{ans}\n\n");
 
             // Part Two
             // TODO
+            Console.Write('\u2461');
             Console.WriteLine("Day 4 Part 2  [TBD]");
+
 
             // Display run time and exit
             stopwatch.Stop();

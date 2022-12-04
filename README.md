@@ -13,10 +13,11 @@ the functional programming techniques in C# 11.  I'll make
 full use of .NET's built-in data type collections, LINQ extension methods to operate on them,
 and for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library.
 
-1. Day   1:  Calorie Counting
-2. Day   2:  Rock Paper Scissors
-3. Day   3:  Rucksack Reorganization
-4. Day   4:
+1. Day  1:  Calorie Counting
+2. Day  2:  Rock Paper Scissors
+3. Day  3:  Rucksack Reorganization
+4. Day  4:  Camp Cleanup
+5. Day  5:  
 
 ## Notes
 
