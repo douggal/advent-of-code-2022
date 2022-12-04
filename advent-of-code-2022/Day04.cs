@@ -4,20 +4,20 @@ using System.Diagnostics;
 
 namespace advent_of_code_2022
 {
-    public static class DayXX
+    public static class Day04
     {
-        public static void RunDayXX()
+        public static void RunDay04()
         {
-            // created TODO: add date
-            // https://adventofcode.com/2022/day/1
+            // created 4 December 2022
+            // https://adventofcode.com/2022/day/4
 
-            Console.WriteLine("--- Day XX: ... ---");
+            Console.WriteLine("--- Day 04: ... ---");
 
             // data file
-            var df = "dayXX-test.txt";
+            var df = "day04-test.txt";
 
             // read in data
-            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
+            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
             var input = new Queue<String>();
             String? line;
             try
@@ -50,24 +50,24 @@ namespace advent_of_code_2022
             }
             Console.WriteLine($"Input first line: {input.FirstOrDefault("NOT FOUND")}");
             Console.WriteLine($"Input last line: {input.LastOrDefault("NOT FOUND")}");
+
             Console.WriteLine("---End input file specs---{0}{0}", Environment.NewLine);
 
             // Timing
             DateTime utcDateStart = DateTime.UtcNow;
             Console.WriteLine($"Start timestamp {utcDateStart.ToString("O")}");
-        
+
             // create and start a Stopwatch instance
             // https://stackoverflow.com/questions/16376191/measuring-code-execution-time
             Stopwatch stopwatch = Stopwatch.StartNew();
 
 
             // Part One
-            // TODO
-            Console.WriteLine("Day XX Part 1 TBD");
+            Console.WriteLine("Day 4 Part 1");
 
             // Part Two
             // TODO
-            Console.WriteLine("Day XX Part 2  [TBD]");
+            Console.WriteLine("Day 4 Part 2  [TBD]");
 
             // Display run time and exit
             stopwatch.Stop();
