@@ -11,11 +11,11 @@ namespace advent_of_code_2022
             // created 6 December 2022
             // https://adventofcode.com/2022/day/6
 
-            Console.WriteLine("--- Day 06: ... ---");
+            Console.WriteLine("--- Day 05: Tuning Trouble ---");
 
             // data file
-            var df = "day06-test.txt";
-            //var df = "day06-input.txt";
+            //var df = "day06-test.txt";
+            var df = "day06-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
@@ -63,10 +63,35 @@ namespace advent_of_code_2022
 
 
             // Part One
-            var ans =0;
+            // first thought is implement a sliding window
+            // a = answer;
+            var a =0;
+
+            // b = buffer
+            var b = input.Dequeue().ToCharArray();
+            // create and inialize a check buffer
+            var b4 = new Queue<char>( b.Take(3).ToList() );
+            // start sliding along until 4 unique chars are found
+            for (int i = 3; i < b.Length; i++)
+            {
+                b4.Enqueue(b[i]);
+                // check if all 4 chars differ
+                HashSet<char> c = new HashSet<char>(b4.ToList());
+                bool check = (b4.Count == c.Count ? true : false); 
+                if (check) 
+                {
+                    a = i + 1; // account for 0 based indexing
+                    break;
+                }
+                else
+                {
+                    b4.Dequeue();
+                }
+            }
+
             Console.WriteLine("Day 6 Part 1");
             Console.WriteLine("How many characters need to be processed before the first start-of-packet marker is detected?");
-            Console.WriteLine($"{ans}\n\n");
+            Console.WriteLine($"{a}\n\n");
 
             // Part Two
             // TODO

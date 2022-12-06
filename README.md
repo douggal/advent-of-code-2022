@@ -18,7 +18,8 @@ and for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph)
 3. Day  3:  Rucksack Reorganization
 4. Day  4:  Camp Cleanup
 5. Day  5:  Supply Stacks
-6. Day  6:  
+6. Day  6:  Tuning Trouble
+7. Day  7:  
 
 ## Notes
 
