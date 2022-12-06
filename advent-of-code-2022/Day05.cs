@@ -15,8 +15,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 05: Supply Stacks ---");
 
             // data file
-            var df = "day05-test.txt";
-            //var df = "day05-input.txt";
+            //var df = "day05-test.txt";
+            var df = "day05-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -126,35 +126,69 @@ namespace advent_of_code_2022
                         ship[c.Index + 1].Push(m[0].Groups[1].Value);
                 }
             }
-            var y = ship[1].Pop();
 
+            // Part 1:
+            // while (input.Count > 0)
+            // {
+            //     ctr += 1;
+            //     // process the moves
+            //     var mv = input.Dequeue();  // move instr
+            //     var mvs = mv.Split(' ');  // moves 
+            //     // [1] = # containers; [3] = from which stack; and [5] to stack
+            //     var nContainers = int.Parse(mvs[1]);
+            //     for (int i = 0; i < nContainers; i++)
+            //     {
+            //         var from = int.Parse(mvs[3]);
+            //         var toContainer = int.Parse(mvs[5]);
+            //         System.Console.WriteLine($"Move:  {mv} Stack Count {ship[from].Count}");
+            //         if (ship[from].Count == 0) 
+            //         {  System.Console.WriteLine($"{ctr}");
+            //             Environment.Exit(ctr);
+            //         }
+            //             var temp = ship[from].Pop();
+            //             ship[toContainer].Push(temp);
+            //     }
+            // }
+
+            // var ansP1 = string.Empty;
+            // for (var i = 0; i < ship.Count; i++) ansP1 += ship[i+1].First();
+
+            // Console.WriteLine("Day 5 Part 1");
+            // Console.WriteLine("After the rearrangement procedure completes, what crate ends up on top of each stack?");
+            // Console.WriteLine($"{ansP1}\n\n");
+
+            // Part 2:
+            var ansP2 = String.Empty;
+            Stack<string> temp = new();
             while (input.Count > 0)
             {
+                ctr += 1;
                 // process the moves
                 var mv = input.Dequeue();  // move instr
                 var mvs = mv.Split(' ');  // moves 
                 // [1] = # containers; [3] = from which stack; and [5] to stack
-                for (int i = 0; i < int.Parse(mvs[1]); i++)
-                {
-                    System.Console.WriteLine($"Move:  {mv} Count ${ship[int.Parse(mvs[3])].Count}");
-                    if (ship[int.Parse(mvs[3])].Count > 0)
-                    {
-                        var temp = ship[int.Parse(mvs[3])].Pop();
-                        ship[int.Parse(mvs[5])].Push(temp);
-                    }
+                var nContainers = int.Parse(mvs[1]);
+                var from = int.Parse(mvs[3]);
+                var toContainer = int.Parse(mvs[5]);
+
+                System.Console.WriteLine($"Move:  {mv} Stack Count {ship[from].Count}");
+                if (ship[from].Count == 0) 
+                {  System.Console.WriteLine($"{ctr}");
+                    Environment.Exit(ctr);
                 }
+
+                for (int i = 0; i < nContainers; i++)
+                {
+                    temp.Push(ship[from].Pop());
+                }
+                foreach (var x in temp) ship[toContainer].Push(x);
+                temp.Clear();
             }
+            for (var i = 0; i < ship.Count; i++) ansP2 += ship[i+1].First();
 
-            var ansP1 = string.Empty;
-            for (var i = 0; i < ship.Count; i++) ansP1 += ship[i+1].Pop();
-
-            Console.WriteLine("Day 5 Part 1");
+            Console.WriteLine("Day 5 Part 2");
             Console.WriteLine("After the rearrangement procedure completes, what crate ends up on top of each stack?");
-            Console.WriteLine($"{ansP1}\n\n");
-
-            // Part Two
-            // TODO
-            Console.WriteLine("Day 5 Part 2  [TBD]");
+            Console.WriteLine($"{ansP2}\n\n");
 
             // Display run time and exit
             stopwatch.Stop();
@@ -165,4 +199,5 @@ namespace advent_of_code_2022
         }
     }
 }
+// P1  "NTWZZWHFV"
 
