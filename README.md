@@ -17,7 +17,8 @@ and for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph)
 2. Day  2:  Rock Paper Scissors
 3. Day  3:  Rucksack Reorganization
 4. Day  4:  Camp Cleanup
-5. Day  5:  
+5. Day  5:  Supply Stacks
+6. Day  6:  
 
 ## Notes
 
@@ -46,3 +47,8 @@ Making good use of C# .NET System.Collections, but I'm using mutable implementat
 
 [Looping over a range c# - for loop or use a IEnumerable.Range?](https://stackoverflow.com/questions/915745/thoughts-on-foreach-with-enumerable-range-vs-traditional-for-loop).
 As the post comments point out in C# a for loop may the better choice for looping over a contiguous range of integers.  The clarity comes from long time use in C.
+
+### Day 5
+
+I underestimated this one.  Sounded straightforward until I started parsing the picture part of the data needed to initialize the stacks.  Result is messy.  Pays to think about it for while.  Should have just hard coded the input picture data to save time intead of trying
+parse it in a generic manner.
