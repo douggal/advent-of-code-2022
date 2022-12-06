@@ -50,4 +50,4 @@ As the post comments point out in C# a for loop may the better choice for loopin
 
 ### Day 5
 
-I underestimated this one.  Sounded straightforward until I started parsing the picture part of the data needed to initialize the stacks.  Result is messy.
+I underestimated this one.  Sounded straightforward until I started parsing the picture part of the data needed to initialize the stacks.  Result is messy.  Pays to think about it for while.

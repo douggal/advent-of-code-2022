@@ -19,7 +19,7 @@ namespace advent_of_code_2022
             //var df = "day05-input.txt";
 
             // read in data
-            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
+            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
             var input = new Queue<String>();
             String? line;
             try
@@ -57,7 +57,7 @@ namespace advent_of_code_2022
             // Timing
             DateTime utcDateStart = DateTime.UtcNow;
             Console.WriteLine($"Start timestamp {utcDateStart.ToString("O")}");
-        
+
             // create and start a Stopwatch instance
             // https://stackoverflow.com/questions/16376191/measuring-code-execution-time
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -69,19 +69,19 @@ namespace advent_of_code_2022
             // p = picture data
             Stack<string> p = new();
             var li = String.Empty;
-            do 
+            do
             {
                 li = input.Dequeue();
-                p.Push(li.Trim());
+                p.Push(li);  // do not trim :)
             } while (input.Count > 0 && li != String.Empty);
             p.Pop();  // discard blank line
 
             // find out how many stacks there are
             // and create a Dictionary which represents a ship with stacks of containers
-            var stacksStr = p.Pop();
+            var stacksStr = p.Pop().Trim();
             Regex rx = new Regex(@"\s+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            stacksStr = rx.Replace(stacksStr," ");
-            Dictionary<int,Stack<string>> ship = new();
+            stacksStr = rx.Replace(stacksStr, " ");
+            Dictionary<int, Stack<string>> ship = new();
             foreach (string s in (stacksStr.Split(" ")))
             {
                 ship.Add(int.Parse(s), new Stack<string>());
@@ -89,39 +89,66 @@ namespace advent_of_code_2022
             // finish intializing
             //how many stacks of containers are there on the ship?
             var nStacks = ship.Keys.ToList().Max();
-            // get a row of data from picture
-            var r = p.Pop(); 
-            // and break it up into N sections, each will contain 0 or 1 container
-            // cs = containers, and c is a single container
-            List<string> cs = new();
-            var columnWidth = r.Length / nStacks + 1;
-            var i = 0;
-            while (i < r.Length)
+            var columnWidth = 4;
+            var ctr = 0; // debugging
+            while (p.Count > 0)
             {
-                if (i + columnWidth <= r.Length) {
-                    // pick up this section or chunk
-                    cs.Add(String.Join(String.Empty, String.Join(String.Empty, r.Substring(i, columnWidth).ToList())));
-                }
-                else if (i < r.Length) {
-                    // near end of the string, pick up last section/chunk
-                    cs.Add(String.Join(String.Empty, String.Join(String.Empty, r.Substring(i).ToList())));
-    
-                }
-                i+=columnWidth;
-            }
-            // then parse each section to find 0 or 1 container 
-            // and add it to the container stack if one is found
-            Regex cx = new Regex(@"\[(\w+)]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            // foreach loop with index https://stackoverflow.com/questions/521687/foreach-with-index
-            foreach (var c in cs.Select((x, i) => new { Value = x, Index = i }))
-            {
-                var m = cx.Matches(c.Value).ToList();
-                ship[c.Index+1].Push(m[0].Groups[1].Value);
-            }
-var y=1;
+                ctr += 1;
+                // get a row of data from picture
+                var r = p.Pop();
+                // and break it up into N sections, each will contain 0 or 1 container
+                // cs = containers, and c is a single container
+                List<string> cs = new();
+                var i = 0;
+                while (i < r.Length)
+                {
+                    if (i + columnWidth <= r.Length)
+                    {
+                        // pick up this section or chunk
+                        cs.Add(String.Join(String.Empty, String.Join(String.Empty, r.Substring(i, columnWidth).ToList())));
+                    }
+                    else if (i < r.Length)
+                    {
+                        // near end of the string, pick up last section/chunk
+                        cs.Add(String.Join(String.Empty, String.Join(String.Empty, r.Substring(i).ToList())));
 
-            var ansP1 = "ABCD";
-            Console.WriteLine("Day 5 Part 1 TBD");
+                    }
+                    i += columnWidth;
+                }
+                // then parse each section to find 0 or 1 container 
+                // and add it to the container stack if one is found
+                Regex cx = new Regex(@"\[(\w+)]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                // foreach loop with index https://stackoverflow.com/questions/521687/foreach-with-index
+                foreach (var c in cs.Select((x, i) => new { Value = x, Index = i }))
+                {
+                    var m = cx.Matches(c.Value).ToList();
+                    if (m.Count > 0 && m[0].Groups.Count > 0)
+                        ship[c.Index + 1].Push(m[0].Groups[1].Value);
+                }
+            }
+            var y = ship[1].Pop();
+
+            while (input.Count > 0)
+            {
+                // process the moves
+                var mv = input.Dequeue();  // move instr
+                var mvs = mv.Split(' ');  // moves 
+                // [1] = # containers; [3] = from which stack; and [5] to stack
+                for (int i = 0; i < int.Parse(mvs[1]); i++)
+                {
+                    System.Console.WriteLine($"Move:  {mv} Count ${ship[int.Parse(mvs[3])].Count}");
+                    if (ship[int.Parse(mvs[3])].Count > 0)
+                    {
+                        var temp = ship[int.Parse(mvs[3])].Pop();
+                        ship[int.Parse(mvs[5])].Push(temp);
+                    }
+                }
+            }
+
+            var ansP1 = string.Empty;
+            for (var i = 0; i < ship.Count; i++) ansP1 += ship[i+1].Pop();
+
+            Console.WriteLine("Day 5 Part 1");
             Console.WriteLine("After the rearrangement procedure completes, what crate ends up on top of each stack?");
             Console.WriteLine($"{ansP1}\n\n");
 
