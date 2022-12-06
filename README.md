@@ -11,7 +11,7 @@ Solutions are in C# and cross platform .NET 7 framework unless otherwise noted.
 My goals for this year's AoC are to have fun, and apply
 the functional programming techniques in C# 11.  I'll make
 full use of .NET's built-in data type collections, LINQ extension methods to operate on them,
-and for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library.
+and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library.
 
 1. Day  1:  Calorie Counting
 2. Day  2:  Rock Paper Scissors
