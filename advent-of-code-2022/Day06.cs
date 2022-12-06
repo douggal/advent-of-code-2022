@@ -65,17 +65,47 @@ namespace advent_of_code_2022
             // Part One
             // first thought is implement a sliding window
             // a = answer;
+            // var a =0;
+
+            // // b = buffer
+            // var b = input.Dequeue().ToCharArray();
+            // // create and inialize a check buffer
+            // var b4 = new Queue<char>( b.Take(3).ToList() );
+            // // start sliding along until 4 unique chars are found
+            // for (int i = 3; i < b.Length; i++)
+            // {
+            //     b4.Enqueue(b[i]);
+            //     // check if all 4 chars differ
+            //     HashSet<char> c = new HashSet<char>(b4.ToList());
+            //     bool check = (b4.Count == c.Count ? true : false); 
+            //     if (check) 
+            //     {
+            //         a = i + 1; // account for 0 based indexing
+            //         break;
+            //     }
+            //     else
+            //     {
+            //         b4.Dequeue();
+            //     }
+            // }
+
+            // Console.WriteLine("Day 6 Part 1");
+            // Console.WriteLine("How many characters need to be processed before the first start-of-packet marker is detected?");
+            // Console.WriteLine($"{a}\n\n");
+
+            // Part Two
+            // a = answer;
             var a =0;
 
             // b = buffer
             var b = input.Dequeue().ToCharArray();
             // create and inialize a check buffer
-            var b4 = new Queue<char>( b.Take(3).ToList() );
+            var b4 = new Queue<char>( b.Take(13).ToList() );
             // start sliding along until 4 unique chars are found
-            for (int i = 3; i < b.Length; i++)
+            for (int i = 13; i < b.Length; i++)
             {
                 b4.Enqueue(b[i]);
-                // check if all 4 chars differ
+                // check if all chars differ
                 HashSet<char> c = new HashSet<char>(b4.ToList());
                 bool check = (b4.Count == c.Count ? true : false); 
                 if (check) 
@@ -87,15 +117,11 @@ namespace advent_of_code_2022
                 {
                     b4.Dequeue();
                 }
-            }
-
-            Console.WriteLine("Day 6 Part 1");
-            Console.WriteLine("How many characters need to be processed before the first start-of-packet marker is detected?");
+            }   
+            Console.WriteLine("Day 6 Part 2");
+            Console.WriteLine("How many characters need to be processed before the first start-of-message marker is detected?");
             Console.WriteLine($"{a}\n\n");
 
-            // Part Two
-            // TODO
-            Console.WriteLine("Day 6 Part 2  [TBD]");
 
             // Display run time and exit
             stopwatch.Stop();
