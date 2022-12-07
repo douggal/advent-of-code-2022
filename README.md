@@ -11,14 +11,15 @@ Solutions are in C# and cross platform .NET 7 framework unless otherwise noted.
 My goals for this year's AoC are to have fun, and apply
 the functional programming techniques in C# 11.  I'll make
 full use of .NET's built-in data type collections, LINQ extension methods to operate on them,
-and for graph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library.
+and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library.
 
 1. Day  1:  Calorie Counting
 2. Day  2:  Rock Paper Scissors
 3. Day  3:  Rucksack Reorganization
 4. Day  4:  Camp Cleanup
 5. Day  5:  Supply Stacks
-6. Day  6:  
+6. Day  6:  Tuning Trouble
+7. Day  7:  
 
 ## Notes
 
@@ -52,3 +53,13 @@ As the post comments point out in C# a for loop may the better choice for loopin
 
 I underestimated this one.  Sounded straightforward until I started parsing the picture part of the data needed to initialize the stacks.  Result is messy.  Pays to think about it for while.  Should have just hard coded the input picture data to save time intead of trying
 parse it in a generic manner.
+
+### Day 6
+
+Straightforward.  Trying to use FP but finding for loops and mutable variables often seems
+efficient and easier to read.  Maybe it's the language, and C# is not really geared for FP.  To loop over
+a array and have the index of each character available a for loop might be clearer than 
+```csharp
+foreach (var e in ins.Skip(3).Select((x, i) => new { Value = x, Index = i }))
+```
+
