@@ -11,13 +11,14 @@ namespace advent_of_code_2022
             // created 7 December 2022
             // https://adventofcode.com/2022/day/7
 
-            Console.WriteLine("--- Day 07: ... ---");
+            Console.WriteLine("--- Day 07: No Space Left On Device ---");
 
             // data file
             var df = "day07-test.txt";
+            //var df = "day-07-input.txt";
 
             // read in data
-            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
+            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
             var input = new Queue<String>();
             String? line;
             try
@@ -55,14 +56,59 @@ namespace advent_of_code_2022
             // Timing
             DateTime utcDateStart = DateTime.UtcNow;
             Console.WriteLine($"Start timestamp {utcDateStart.ToString("O")}");
-        
+
             // create and start a Stopwatch instance
             // https://stackoverflow.com/questions/16376191/measuring-code-execution-time
             Stopwatch stopwatch = Stopwatch.StartNew();
 
 
             // Part One
+
+            // first thought is to model the folder structure as a dictionary of paths
+            // one entry for each folder/directory
+            // fs = filesystem
+            Dictionary<string, int> fs = new() { { "/", 0 } };  // init to root folder
+
+            // wd = working directory - current location
+            var wd = String.Empty;
+
+            while (input.Count > 0)
+            {
+                var li = input.Dequeue().Split(' ');
+
+                // try out new C# version 11 list pattern matching feature
+                if (li is ["$", "cd", var o])  // o = operand = folder name
+                {
+                    // change directory cmd - check and add to fs
+                    ;
+                }
+                else if (li is ["$", "ls"])
+                {
+                    // listing - set working directory
+
+                }
+                else if (li is ["dir", var o])
+                {
+                    // have a directory
+                }
+                else if ( li is [var fsize, var fname])
+                {
+                    // file with size and name
+
+                }
+                else
+                {
+                    Console.WriteLine("Houston, we have a problem.");
+                }
+            }
+
+
+
+            var answer = 0;
             Console.WriteLine("Day 07 Part 1");
+            Console.WriteLine("Find all of the directories with a total size of at most 100000.");
+            Console.WriteLine("What is the sum of the total sizes of those directories?");
+            Console.WriteLine($"{answer}");
 
 
             // Part Two
