@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Diagnostics;
+using System.Net;
 
 namespace advent_of_code_2022
 {
@@ -11,7 +12,7 @@ namespace advent_of_code_2022
             // created 6 December 2022
             // https://adventofcode.com/2022/day/6
 
-            Console.WriteLine("--- Day 05: Tuning Trouble ---");
+            Console.WriteLine("--- Day 06: Tuning Trouble ---");
 
             // data file
             //var df = "day06-test.txt";
@@ -19,17 +20,17 @@ namespace advent_of_code_2022
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
-            var input = new Queue<String>();
+            var input = new List<String>();
             String? line;
             try
             {
                 // Open the text file using a stream reader.
-                using (var sr = new StreamReader(fn))
+                using (var sr = new StreamReader(fn, Encoding.UTF8))
                 {
                     while ((line = sr.ReadLine()) != null)
                     {
                         //var items = line.Trim().Split(',').ToList();
-                        input.Enqueue(line);
+                        input.Add(line);
                     }
                 }
             }
@@ -64,63 +65,25 @@ namespace advent_of_code_2022
 
             // Part One
             // first thought is implement a sliding window
-            // a = answer;
-            // var a =0;
+            var bs = 3;  // start-of-packet marker size in chars - 1
 
-            // // b = buffer
-            // var b = input.Dequeue().ToCharArray();
-            // // create and inialize a check buffer
-            // var b4 = new Queue<char>( b.Take(3).ToList() );
-            // // start sliding along until 4 unique chars are found
-            // for (int i = 3; i < b.Length; i++)
-            // {
-            //     b4.Enqueue(b[i]);
-            //     // check if all 4 chars differ
-            //     HashSet<char> c = new HashSet<char>(b4.ToList());
-            //     bool check = (b4.Count == c.Count ? true : false); 
-            //     if (check) 
-            //     {
-            //         a = i + 1; // account for 0 based indexing
-            //         break;
-            //     }
-            //     else
-            //     {
-            //         b4.Dequeue();
-            //     }
-            // }
+            // ins = input data stream
+            var ins = input.First().ToCharArray();
 
-            // Console.WriteLine("Day 6 Part 1");
-            // Console.WriteLine("How many characters need to be processed before the first start-of-packet marker is detected?");
-            // Console.WriteLine($"{a}\n\n");
+            var a = FindStartOfPacket(ins, bs);
+
+            Console.WriteLine("Day 6 Part 1");
+            Console.WriteLine("How many characters need to be processed before the first start-of-packet marker is detected?");
+            Console.WriteLine($"{a}\n\n");
 
             // Part Two
-            // a = answer;
-            var a =0;
+            bs = 13;  // start-of-packet marker size in chars - 1
 
-            // b = buffer
-            var b = input.Dequeue().ToCharArray();
-            // create and inialize a check buffer
-            var b4 = new Queue<char>( b.Take(13).ToList() );
-            // start sliding along until 4 unique chars are found
-            for (int i = 13; i < b.Length; i++)
-            {
-                b4.Enqueue(b[i]);
-                // check if all chars differ
-                HashSet<char> c = new HashSet<char>(b4.ToList());
-                bool check = (b4.Count == c.Count ? true : false); 
-                if (check) 
-                {
-                    a = i + 1; // account for 0 based indexing
-                    break;
-                }
-                else
-                {
-                    b4.Dequeue();
-                }
-            }   
+            var a2 = FindStartOfPacket(ins, bs);
+
             Console.WriteLine("Day 6 Part 2");
             Console.WriteLine("How many characters need to be processed before the first start-of-message marker is detected?");
-            Console.WriteLine($"{a}\n\n");
+            Console.WriteLine($"{a2}\n\n");
 
 
             // Display run time and exit
@@ -130,6 +93,39 @@ namespace advent_of_code_2022
             Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
             //Console.ReadKey();
         }
+
+        public static int FindStartOfPacket(char[] ins, int bs)
+        {
+            var a = 0;
+            var buff = new Queue<char>(ins.Take(bs).ToList());
+
+            // start sliding along begining at buff size (smallest chunk possible)
+            // until 4 unique chars are found
+            // Skip(buff size) is fine, but I need the index of each char too
+            // a for loop might be clearer.
+            foreach (var e in ins.Skip(bs).Select((x, i) => new { Value = x, Index = i }))
+            {
+                // add character
+                buff.Enqueue(e.Value);
+                // helper to check if all chars differ
+                HashSet<char> c = new HashSet<char>(buff);
+
+                bool check = buff.Count == c.Count ? true : false;
+                if (check)
+                {
+                    a = e.Index + bs + 1; // account for 0 based indexing and buff size
+                    break;
+                }
+                else
+                {
+                    // not start of packet/message, discard head and try again
+                    buff.Dequeue();
+                }
+            }
+
+            return a;
+        }
     }
 }
-
+// 1140
+// 3495

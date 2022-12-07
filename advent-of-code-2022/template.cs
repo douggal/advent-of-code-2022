@@ -23,7 +23,7 @@ namespace advent_of_code_2022
             try
             {
                 // Open the text file using a stream reader.
-                using (var sr = new StreamReader(fn))
+                using (var sr = new StreamReader(fn, Encoding.UTF8))
                 {
                     while ((line = sr.ReadLine()) != null)
                     {
