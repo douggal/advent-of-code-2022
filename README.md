@@ -19,7 +19,8 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 4. Day  4:  Camp Cleanup
 5. Day  5:  Supply Stacks
 6. Day  6:  Tuning Trouble
-7. Day  7:  
+7. Day  7:  No Space Left On Device
+8. Day  8:  
 
 ## Notes
 
@@ -62,4 +63,20 @@ a array and have the index of each character available a for loop might be clear
 ```csharp
 foreach (var e in ins.Skip(3).Select((x, i) => new { Value = x, Index = i }))
 ```
+
+### Day 7
+
+No go. Couldn't solve this one in same day.
+
+I modelled the folder structure as a dictionary of paths,
+one entry for each folder/directory and each entry contains the sum of file sizes
+for that directory (not including its subfolders).  Once that is built, then it should
+be just a matter of adding up each folder's size along with sum of its subfolders sizes.  
+
+Tried out new to C# version 11 [list pattern matching feature](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching).
+and [IAmTimCorey](https://www.youtube.com/watch?v=SztvGBv8uVM).  Very nice. 
+
+Surprised the linting tool/features didn't catch this mistake: I had following an if stmt `String.Concat(wd, f);`
+and should have been an assignment stmt, `wd = String.Concat(wd, f);`.
+Just silence on it (Visual Studio 2022 for Mac).
 
