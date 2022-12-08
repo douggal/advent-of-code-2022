@@ -85,12 +85,15 @@ namespace advent_of_code_2022
                     {
                         // remove last dir from end of wd
                         var i = wd.LastIndexOf('/');
-                        wd = wd.Substring(0, i);
+                        if (i > 0) wd = wd.Substring(0, i-1);  // below root, move up
+                        else wd = "/"; // root
                     }
                     else
                     {
-                        // add folder to wd
-                        wd = (f.Trim().CompareTo("/") != 0) ? String.Concat(wd, "/", f) : "/";
+                        // add folder f to wd
+                        if (f.CompareTo("/") == 0) wd = "/";  // to root
+                        else if (wd.CompareTo("/") == 0) wd = String.Concat(wd, f); // in root down 1
+                        else wd = String.Concat(wd, "/", f);  // not root, add /folder
 
                         if (!fs.ContainsKey(wd)) fs[wd] = 0;
                     }
