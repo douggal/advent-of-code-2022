@@ -63,3 +63,7 @@ a array and have the index of each character available a for loop might be clear
 foreach (var e in ins.Skip(3).Select((x, i) => new { Value = x, Index = i }))
 ```
 
+### Day 7
+Try out C# version 11 [list pattern matching feature](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching).
+and [IAmTimCorey](https://www.youtube.com/watch?v=SztvGBv8uVM).
+

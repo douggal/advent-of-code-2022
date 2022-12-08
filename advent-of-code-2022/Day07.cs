@@ -74,27 +74,43 @@ namespace advent_of_code_2022
 
             while (input.Count > 0)
             {
-                var li = input.Dequeue().Split(' ');
+                var li = input.Dequeue().Trim().Split(' ');
 
                 // try out new C# version 11 list pattern matching feature
-                if (li is ["$", "cd", var o])  // o = operand = folder name
+                if (li is ["$", "cd", var f])  // f = folder name
                 {
                     // change directory cmd - check and add to fs
-                    ;
+                    // cd = going in to a directory (or up one)
+                    if (f == "..")
+                    {
+                        // remove last dir from end of wd
+                        var i = wd.LastIndexOf('/');
+                        wd = wd.Substring(0, i);
+                    }
+                    else
+                    {
+                        // add folder to wd
+                        wd = (f.Trim().CompareTo("/") != 0) ? String.Concat(wd, "/", f) : "/";
+
+                        if (!fs.ContainsKey(wd)) fs[wd] = 0;
+                    }
                 }
                 else if (li is ["$", "ls"])
                 {
-                    // listing - set working directory
+                    // listing - need to do anything?
 
                 }
-                else if (li is ["dir", var o])
+                else if (li is ["dir", var dn])  // dn = directory name
                 {
                     // have a directory
+                    var newDir = (wd.Last().CompareTo('/') != 0) ? String.Concat(wd,"/",dn) : String.Concat("/",dn);
+                    if (!fs.ContainsKey(newDir)) fs[newDir] = 0;
                 }
-                else if ( li is [var fsize, var fname])
+                else if (li is [var fsize, var fname])
                 {
                     // file with size and name
-
+                    // for part 1 don't care about fname
+                    fs[wd] += int.Parse(fsize);
                 }
                 else
                 {
@@ -102,9 +118,15 @@ namespace advent_of_code_2022
                 }
             }
 
+            // print folder tree
+            foreach (var d in fs)
+            {
+                Console.WriteLine($"{d.Value,-15} : {d.Key}");
+            }
 
+            // compute answer
+            var answer = fs.Sum(x => x.Value <= 1e5 ? x.Value : 0);
 
-            var answer = 0;
             Console.WriteLine("Day 07 Part 1");
             Console.WriteLine("Find all of the directories with a total size of at most 100000.");
             Console.WriteLine("What is the sum of the total sizes of those directories?");
