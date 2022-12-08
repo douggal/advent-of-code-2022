@@ -64,11 +64,11 @@ namespace advent_of_code_2022
 
             // Part One
 
-            // first thought is to model the folder structure as a dictionary of paths
+            // Model the folder structure as a dictionary of path strings
             // one entry for each folder/directory
-            // fs = filesystem
-            // each entry contains the sum of file sizes for that directory only
-            Dictionary<string, int> fs = new() { { "/", 0 } };  // init to root folder
+            // fs = filesystem: each key is the path
+            // and value is sum of file sizes for that directory only
+            Dictionary<string, int> fs = new() { { "/", 0 } };
 
             // wd = working directory - current location
             var wd = String.Empty;
@@ -122,17 +122,65 @@ namespace advent_of_code_2022
                 }
                 else
                 {
-                    Console.WriteLine("Houston, we have a problem.");
+                    Console.WriteLine($"Houston, we have a problem. Input line {ctr}: {String.Join(' ', li)}");
                 }
             }
 
-            //debug: print the collected paths and size
+            //debug: print the collected paths and size, look for mistakes
+            //printPaths(fs);
+
+            // compute answer
+            // sum of folder if less than 1e5 + total size of any subfolders
+            var answer = Sum100k(fs, 100000);
+
+            Console.WriteLine("Day 7 Part 1");
+            Console.WriteLine("Find all of the directories with a total size of at most 100000.");
+            Console.WriteLine("What is the sum of the total sizes of those directories?");
+            Console.WriteLine($"{answer}");
+
+
+            // Part Two
+            var totalSpace = 70000000;
+            var neededSpace = 30000000;
+            var answerp2 = 0;
+            var freeSpace = totalSpace - sumFolders(fs, "/");
+            Console.WriteLine($"Free {freeSpace}");
+
+            // Therefore, the update still requires a directory with total size of at least
+            // 27 573 755 to be deleted before it can run.
+
+            // find size of all directories
+            // in C# the LINQ Select() method is a map operation
+            List<int> candidates = fs.Select(x => sumFolders(fs,x.Key)).ToList();
+
+            // What is the size of the smallest that would free up neededSpace?
+            answerp2 = candidates.Where(x => x >= neededSpace).Min();
+
+            Console.WriteLine("Day 7 Part 2");
+            Console.WriteLine("Find the smallest directory that, if deleted, would free up enough space on the filesystem to run the update.");
+            Console.WriteLine($"What is the total size of that directory?");
+            Console.WriteLine($"{answerp2}\n\n");
+
+
+
+            // Display run time and exit
+            stopwatch.Stop();
+            Console.WriteLine("\nDone.");
+            Console.WriteLine("Time elapsed: {0:0.0} ms", stopwatch.ElapsedMilliseconds);
+            Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
+            //Console.ReadKey();
+        }
+
+        private static void printPaths(Dictionary<string, int> fs)
+        {
             foreach (var d in fs)
             {
                 Console.WriteLine($"{d.Key} : {d.Value,-15}");
             }
+        }
 
-            // compute answer
+        private static int Sum100k(Dictionary<string, int> fs, int limit)
+        {
             // sum of folder if less than 1e5 + total size of any subfolders
             var answer = 0;
             foreach (var d in fs)
@@ -143,6 +191,7 @@ namespace advent_of_code_2022
                 // sfs = its subfolders
                 // note don't add same folder back in again
                 var sumOfSubfolders = 0;
+                sumOfSubfolders = sumFolders(fs, d.Key);
                 if (d.Key.CompareTo("/") == 0)
                 {
                     // root sum up everything
@@ -159,39 +208,50 @@ namespace advent_of_code_2022
                                             .Sum(x => x.Value);
                     // debug:
                     //Console.WriteLine($"\n[{d.Key}]  Sum of folders: {total}");
-                    foreach (var q in sfs)
-                    {
-                        //Console.WriteLine($"{q}");
-                        ;
-                    }
+                    //foreach (var q in sfs)
+                    //{
+                    //Console.WriteLine($"{q}");
+                    //}
                 }
 
                 var total = sum + sumOfSubfolders;
 
-                if (total <= 100000) answer += total;
+                if (total <= limit) answer += total;
             }
 
-            Console.WriteLine("Day 07 Part 1");
-            Console.WriteLine("Find all of the directories with a total size of at most 100000.");
-            Console.WriteLine("What is the sum of the total sizes of those directories?");
-            Console.WriteLine($"{answer}");
+            return answer;
+        }
 
+        private static int sumFolders(Dictionary<string, int> fs, string d)
+        {
+            var s = 0;
+            if (d.CompareTo("/") == 0)
+            {
+                // root sum up everything
+                s = fs.Where(x => x.Key.CompareTo("/") != 0)
+                    .Sum(x => x.Value);
+            }
+            else
+            {
+                var sfs = fs.Where(x => x.Key.StartsWith(d + "/") && x.Key.CompareTo(d) != 0)
+                            .Select(x => x.Key).ToList();
 
-            // Part Two
-            // TODO
-            Console.WriteLine("Day 07 Part 2  [TBD]");
+                // sumOfSubfolders = sum of sizes of each subfolder
+                s = fs.Where(x => sfs.Contains(x.Key))
+                                        .Sum(x => x.Value);
+                // debug:
+                //Console.WriteLine($"\n[{d.Key}]  Sum of folders: {total}");
+                //foreach (var q in sfs)
+                //{
+                //Console.WriteLine($"{q}");
+                //}
+            }
 
-
-
-            // Display run time and exit
-            stopwatch.Stop();
-            Console.WriteLine("\nDone.");
-            Console.WriteLine("Time elapsed: {0:0.0} ms", stopwatch.ElapsedMilliseconds);
-            Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
-            //Console.ReadKey();
+            return s;
         }
     }
 }
 
 // 2190855 too high
 // 2031851
+//  37134888  p2  51ms
