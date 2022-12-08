@@ -64,11 +64,18 @@ foreach (var e in ins.Skip(3).Select((x, i) => new { Value = x, Index = i }))
 ```
 
 ### Day 7
+
+No go. Couldn't solve this one in same day.
+
+I modelled the folder structure as a dictionary of paths,
+one entry for each folder/directory and each entry contains the sum of file sizes
+for that directory (not including its subfolders).  Once that is built, then it should
+be just a matter of adding up each folder's size along with sum of its subfolders sizes.  
+
 Tried out new to C# version 11 [list pattern matching feature](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching).
-and [IAmTimCorey](https://www.youtube.com/watch?v=SztvGBv8uVM).  Very nice.  My implementation is not
-ugly.  Seems like could be better somehow, but it will do.
+and [IAmTimCorey](https://www.youtube.com/watch?v=SztvGBv8uVM).  Very nice. 
 
 Surprised the linting tool/features didn't catch this mistake: I had following an if stmt `String.Concat(wd, f);`
 and should have been an assignment stmt, `wd = String.Concat(wd, f);`.
-Just silence on it  (Visual Studio 2022 for Mac).
+Just silence on it (Visual Studio 2022 for Mac).
 

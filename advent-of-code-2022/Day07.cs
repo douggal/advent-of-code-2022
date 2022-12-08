@@ -67,6 +67,7 @@ namespace advent_of_code_2022
             // first thought is to model the folder structure as a dictionary of paths
             // one entry for each folder/directory
             // fs = filesystem
+            // each entry contains the sum of file sizes for that directory only
             Dictionary<string, int> fs = new() { { "/", 0 } };  // init to root folder
 
             // wd = working directory - current location
@@ -121,11 +122,11 @@ namespace advent_of_code_2022
                 }
             }
 
-            // print folder tree
-            foreach (var d in fs)
-            {
-                Console.WriteLine($"{d.Value,-15} : {d.Key}");
-            }
+            // debug: print folder tree
+            // foreach (var d in fs)
+            // {
+            //    Console.WriteLine($"{d.Value,-15} : {d.Key}");
+            // }
 
             // compute answer
             // sum of folder if less than 1e5 + total size of any subfolders
@@ -134,12 +135,28 @@ namespace advent_of_code_2022
             var answer = 0;
             foreach (var d in fs)
             {
-                var sum = d.Value +
-                    fs.Sum(x => (x.Key.StartsWith(d.Key + "/")
-                        && (x.Key != d.Key) // not same folder
-                        && (x.Key.Length > d.Key.Length)) // and is longer, i.e., sub-folder
-                        ? x.Value : 0);
-                if (sum <= 1e5) answer += sum;
+                // this folder
+                var sum = d.Value;
+
+                // sfs = its subfolders
+                var sfs = fs.Where(x => x.Key.StartsWith(d.Key) && x.Key.CompareTo(d.Key) != 0)
+                            .Select(x => x.Key).ToList();
+
+                // sumOfSubfolders = sum of sizes of each subfolder
+                var sumOfSubfolders = fs.Where(x => sfs.Contains(x.Key))
+                                        .Sum(x => x.Value);
+
+                var total = sum + sumOfSubfolders;
+
+                if (total <= 100000) answer += total;
+
+                // debug:
+                Console.WriteLine($"\n[{d.Key}]  Sum of folders: {total}");
+                foreach (var q in sfs)
+                {
+                    Console.WriteLine($"{q}");
+                    ;
+                }
             }
 
             Console.WriteLine("Day 07 Part 1");
@@ -165,3 +182,5 @@ namespace advent_of_code_2022
 }
 
 // 2190855 too high
+// 18950383
+// 2190855
