@@ -72,42 +72,46 @@ namespace advent_of_code_2022
 
             // wd = working directory - current location
             var wd = String.Empty;
-
+            var ctr = 0;  //debug
             while (input.Count > 0)
             {
+                ctr += 1;
                 var li = input.Dequeue().Trim().Split(' ');
 
                 // try out new C# version 11 list pattern matching feature
-                if (li is ["$", "cd", var f])  // f = folder name
+
+                if (li is ["$", "cd", "/"])  // move to root
+                {
+                    wd = "/";
+                }
+                else if (li is ["$", "cd", ".."])
                 {
                     // change directory cmd - check and add to fs
                     // cd = going in to a directory (or up one)
-                    if (f == "..")
-                    {
-                        // remove last dir from end of wd
-                        var i = wd.LastIndexOf('/');
-                        if (i > 0) wd = wd.Substring(0, i-1);  // below root, move up
-                        else wd = "/"; // root
-                    }
-                    else
-                    {
-                        // add folder f to wd
-                        if (f.CompareTo("/") == 0) wd = "/";  // to root
-                        else if (wd.CompareTo("/") == 0) wd = String.Concat(wd, f); // in root down 1
-                        else wd = String.Concat(wd, "/", f);  // not root, add /folder
-
-                        if (!fs.ContainsKey(wd)) fs[wd] = 0;
-                    }
+                    // remove last dir from end of wd
+                    var i = wd.LastIndexOf('/');
+                    if (i > 0) wd = wd.Substring(0, i);  // below root, chop off last dir
+                    else wd = "/"; // move to root
+                    if (!fs.ContainsKey(wd)) fs[wd] = 0;  // shouldn't happen?
+                }
+                else if (li is ["$", "cd", var f])
+                {
+                    // add folder f to wd
+                    // if in root then add folder to wd; else add "/" directory name
+                    if (wd.CompareTo("/") == 0) wd = String.Concat(wd, f);
+                    else wd = String.Concat(wd, "/", f);
+                    // if filesystem doesn't already contain this folder add it
+                    if (!fs.ContainsKey(wd)) fs[wd] = 0;
                 }
                 else if (li is ["$", "ls"])
                 {
-                    // listing - need to do anything?
+                    // listing follows - need to do anything with "ls"?
 
                 }
                 else if (li is ["dir", var dn])  // dn = directory name
                 {
-                    // have a directory
-                    var newDir = (wd.Last().CompareTo('/') != 0) ? String.Concat(wd,"/",dn) : String.Concat("/",dn);
+                    // ls output, found a directory
+                    var newDir = (wd.Last().CompareTo('/') != 0) ? String.Concat(wd, "/", dn) : String.Concat(wd, dn);
                     if (!fs.ContainsKey(newDir)) fs[newDir] = 0;
                 }
                 else if (li is [var fsize, var fname])
@@ -122,16 +126,14 @@ namespace advent_of_code_2022
                 }
             }
 
-            // debug: print folder tree
-            // foreach (var d in fs)
-            // {
-            //    Console.WriteLine($"{d.Value,-15} : {d.Key}");
-            // }
+            //debug: print the collected paths and size
+            foreach (var d in fs)
+            {
+                Console.WriteLine($"{d.Key} : {d.Value,-15}");
+            }
 
             // compute answer
             // sum of folder if less than 1e5 + total size of any subfolders
-            // note to self - don't add same folder back in again
-            // no go: var answer = fs.Sum(x => x.Value <= 1e5 ? x.Value + fs.Sum(y => y.Key.Contains(x.Key) ? y.Value : 0) : 0);
             var answer = 0;
             foreach (var d in fs)
             {
@@ -139,24 +141,34 @@ namespace advent_of_code_2022
                 var sum = d.Value;
 
                 // sfs = its subfolders
-                var sfs = fs.Where(x => x.Key.StartsWith(d.Key) && x.Key.CompareTo(d.Key) != 0)
-                            .Select(x => x.Key).ToList();
+                // note don't add same folder back in again
+                var sumOfSubfolders = 0;
+                if (d.Key.CompareTo("/") == 0)
+                {
+                    // root sum up everything
+                    sumOfSubfolders = fs.Where(x => x.Key.CompareTo("/") != 0)
+                        .Sum(x => x.Value);
+                }
+                else
+                {
+                    var sfs = fs.Where(x => x.Key.StartsWith(d.Key + "/") && x.Key.CompareTo(d.Key) != 0)
+                                .Select(x => x.Key).ToList();
 
-                // sumOfSubfolders = sum of sizes of each subfolder
-                var sumOfSubfolders = fs.Where(x => sfs.Contains(x.Key))
-                                        .Sum(x => x.Value);
+                    // sumOfSubfolders = sum of sizes of each subfolder
+                    sumOfSubfolders = fs.Where(x => sfs.Contains(x.Key))
+                                            .Sum(x => x.Value);
+                    // debug:
+                    //Console.WriteLine($"\n[{d.Key}]  Sum of folders: {total}");
+                    foreach (var q in sfs)
+                    {
+                        //Console.WriteLine($"{q}");
+                        ;
+                    }
+                }
 
                 var total = sum + sumOfSubfolders;
 
                 if (total <= 100000) answer += total;
-
-                // debug:
-                Console.WriteLine($"\n[{d.Key}]  Sum of folders: {total}");
-                foreach (var q in sfs)
-                {
-                    Console.WriteLine($"{q}");
-                    ;
-                }
             }
 
             Console.WriteLine("Day 07 Part 1");
@@ -182,5 +194,4 @@ namespace advent_of_code_2022
 }
 
 // 2190855 too high
-// 18950383
-// 2190855
+// 2031851
