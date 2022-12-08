@@ -128,7 +128,19 @@ namespace advent_of_code_2022
             }
 
             // compute answer
-            var answer = fs.Sum(x => x.Value <= 1e5 ? x.Value : 0);
+            // sum of folder if less than 1e5 + total size of any subfolders
+            // note to self - don't add same folder back in again
+            // no go: var answer = fs.Sum(x => x.Value <= 1e5 ? x.Value + fs.Sum(y => y.Key.Contains(x.Key) ? y.Value : 0) : 0);
+            var answer = 0;
+            foreach (var d in fs)
+            {
+                var sum = d.Value +
+                    fs.Sum(x => (x.Key.StartsWith(d.Key)
+                        && (x.Key != d.Key) // not same folder
+                        && (x.Key.Count() > d.Key.Count())) // and is longer, i.e., sub-folder
+                        ? x.Value : 0);
+                if (sum <= 1e5) answer += sum;
+            }
 
             Console.WriteLine("Day 07 Part 1");
             Console.WriteLine("Find all of the directories with a total size of at most 100000.");
