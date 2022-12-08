@@ -19,7 +19,8 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 4. Day  4:  Camp Cleanup
 5. Day  5:  Supply Stacks
 6. Day  6:  Tuning Trouble
-7. Day  7:  
+7. Day  7:  No Space Left On Device
+8. Day  8:  
 
 ## Notes
 
