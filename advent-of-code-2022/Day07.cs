@@ -141,9 +141,9 @@ namespace advent_of_code_2022
 
             // Part Two
             var totalSpace = 70000000;
-            var neededSpace = 30000000;
-            var answerp2 = 0;
+            var updateSpace = 30000000;
             var freeSpace = totalSpace - sumFolders(fs, "/");
+            var neededSpace = updateSpace - freeSpace;
             Console.WriteLine($"Free {freeSpace}");
 
             // Therefore, the update still requires a directory with total size of at least
@@ -154,7 +154,7 @@ namespace advent_of_code_2022
             List<int> candidates = fs.Select(x => sumFolders(fs,x.Key)).ToList();
 
             // What is the size of the smallest that would free up neededSpace?
-            answerp2 = candidates.Where(x => x >= neededSpace).Min();
+            var answerp2 = candidates.Where(x => x >= neededSpace).Min();
 
             Console.WriteLine("Day 7 Part 2");
             Console.WriteLine("Find the smallest directory that, if deleted, would free up enough space on the filesystem to run the update.");
@@ -254,4 +254,5 @@ namespace advent_of_code_2022
 
 // 2190855 too high
 // 2031851
-//  37134888  p2  51ms
+//  37134888  p2  51ms too high
+// 2654809  49ms  still too high
