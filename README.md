@@ -64,9 +64,11 @@ foreach (var e in ins.Skip(3).Select((x, i) => new { Value = x, Index = i }))
 ```
 
 ### Day 7
-Try out C# version 11 [list pattern matching feature](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching).
-and [IAmTimCorey](https://www.youtube.com/watch?v=SztvGBv8uVM).
+Tried out new to C# version 11 [list pattern matching feature](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching).
+and [IAmTimCorey](https://www.youtube.com/watch?v=SztvGBv8uVM).  Very nice.  My implementation is not
+ugly.  Seems like could be better somehow, but it will do.
 
-Surprised the linting tool/features didn't catch this mistake: `String.Concat(wd, f);`
-and should have been an assignment stmt, `wd = String.Concat(wd, f);`. Just silence on it  (Visual Studio 2022 for Mac).
+Surprised the linting tool/features didn't catch this mistake: I had following an if stmt `String.Concat(wd, f);`
+and should have been an assignment stmt, `wd = String.Concat(wd, f);`.
+Just silence on it  (Visual Studio 2022 for Mac).
 

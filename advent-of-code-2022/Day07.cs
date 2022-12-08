@@ -14,8 +14,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 07: No Space Left On Device ---");
 
             // data file
-            var df = "day07-test.txt";
-            //var df = "day-07-input.txt";
+            //var df = "day07-test.txt";
+            var df = "day07-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -135,9 +135,9 @@ namespace advent_of_code_2022
             foreach (var d in fs)
             {
                 var sum = d.Value +
-                    fs.Sum(x => (x.Key.StartsWith(d.Key)
+                    fs.Sum(x => (x.Key.StartsWith(d.Key + "/")
                         && (x.Key != d.Key) // not same folder
-                        && (x.Key.Count() > d.Key.Count())) // and is longer, i.e., sub-folder
+                        && (x.Key.Length > d.Key.Length)) // and is longer, i.e., sub-folder
                         ? x.Value : 0);
                 if (sum <= 1e5) answer += sum;
             }
@@ -164,3 +164,4 @@ namespace advent_of_code_2022
     }
 }
 
+// 2190855 too high
