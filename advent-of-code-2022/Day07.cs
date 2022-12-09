@@ -14,8 +14,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 07: No Space Left On Device ---");
 
             // data file
-            //var df = "day07-test.txt";
-            var df = "day07-input.txt";
+            var df = "day07-test.txt";
+            //var df = "day07-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -136,22 +136,24 @@ namespace advent_of_code_2022
             Console.WriteLine("Day 7 Part 1");
             Console.WriteLine("Find all of the directories with a total size of at most 100000.");
             Console.WriteLine("What is the sum of the total sizes of those directories?");
-            Console.WriteLine($"{answer}");
+            Console.WriteLine($"{answer}\n\n");
 
 
             // Part Two
             var totalSpace = 70000000;
             var updateSpace = 30000000;
-            var freeSpace = totalSpace - sumFolders(fs, "/");
+            var freeSpace = totalSpace - (fs["/"] + sumSubFolders(fs, "/"));
             var neededSpace = updateSpace - freeSpace;
             Console.WriteLine($"Free {freeSpace}");
+            Console.WriteLine($"Needed {neededSpace}");
+            Console.WriteLine($"In use {fs["/"] + sumSubFolders(fs, "/")}");
 
             // Therefore, the update still requires a directory with total size of at least
             // 27 573 755 to be deleted before it can run.
 
             // find size of all directories
             // in C# the LINQ Select() method is a map operation
-            List<int> candidates = fs.Select(x => sumFolders(fs,x.Key)).ToList();
+            List<int> candidates = fs.Select(x => x.Value + sumSubFolders(fs,x.Key)).ToList();
 
             // What is the size of the smallest that would free up neededSpace?
             var answerp2 = candidates.Where(x => x >= neededSpace).Min();
@@ -190,29 +192,7 @@ namespace advent_of_code_2022
 
                 // sfs = its subfolders
                 // note don't add same folder back in again
-                var sumOfSubfolders = 0;
-                sumOfSubfolders = sumFolders(fs, d.Key);
-                if (d.Key.CompareTo("/") == 0)
-                {
-                    // root sum up everything
-                    sumOfSubfolders = fs.Where(x => x.Key.CompareTo("/") != 0)
-                        .Sum(x => x.Value);
-                }
-                else
-                {
-                    var sfs = fs.Where(x => x.Key.StartsWith(d.Key + "/") && x.Key.CompareTo(d.Key) != 0)
-                                .Select(x => x.Key).ToList();
-
-                    // sumOfSubfolders = sum of sizes of each subfolder
-                    sumOfSubfolders = fs.Where(x => sfs.Contains(x.Key))
-                                            .Sum(x => x.Value);
-                    // debug:
-                    //Console.WriteLine($"\n[{d.Key}]  Sum of folders: {total}");
-                    //foreach (var q in sfs)
-                    //{
-                    //Console.WriteLine($"{q}");
-                    //}
-                }
+                var sumOfSubfolders = sumSubFolders(fs, d.Key);
 
                 var total = sum + sumOfSubfolders;
 
@@ -222,7 +202,7 @@ namespace advent_of_code_2022
             return answer;
         }
 
-        private static int sumFolders(Dictionary<string, int> fs, string d)
+        private static int sumSubFolders(Dictionary<string, int> fs, string d)
         {
             var s = 0;
             if (d.CompareTo("/") == 0)
