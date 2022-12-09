@@ -63,14 +63,15 @@ namespace advent_of_code_2022
 
 
             // Part One
-            // TODO
-            Console.WriteLine("Day 08 Part 1 TBD");
+            var answer = 0;
+            Console.WriteLine("Day 8 Part 1");
             System.Console.WriteLine("Consider your map; how many trees are visible from outside the grid?");
+            Console.WriteLine($"{answer}\n\n");
 
 
             // Part Two
             // TODO
-            Console.WriteLine("Day 08 Part 2  [TBD]");
+            Console.WriteLine("Day 8 Part 2");
 
             // Display run time and exit
             stopwatch.Stop();
