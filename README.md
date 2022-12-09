@@ -67,7 +67,7 @@ foreach (var e in ins.Skip(3).Select((x, i) => new { Value = x, Index = i }))
 
 ### Day 7
 
-Couldn't solve this one in same day.
+Couldn't solve this one in same day. The idea worked, but it was buggy and not easy to find problems.
 
 I modelled the folder structure as a dictionary of paths,
 one entry for each folder/directory and each entry contains the sum of file sizes
