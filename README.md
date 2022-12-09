@@ -20,7 +20,8 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 5. Day  5:  Supply Stacks
 6. Day  6:  Tuning Trouble
 7. Day  7:  No Space Left On Device
-8. Day  8:  
+8. Day  8:  Treetop Tree House
+9. Day  9:  
 
 ## Notes
 
@@ -66,7 +67,7 @@ foreach (var e in ins.Skip(3).Select((x, i) => new { Value = x, Index = i }))
 
 ### Day 7
 
-No go. Couldn't solve this one in same day.
+Couldn't solve this one in same day. The idea worked, but it was buggy and not easy to find problems.
 
 I modelled the folder structure as a dictionary of paths,
 one entry for each folder/directory and each entry contains the sum of file sizes
