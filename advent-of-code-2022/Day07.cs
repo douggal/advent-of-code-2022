@@ -14,8 +14,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 07: No Space Left On Device ---");
 
             // data file
-            var df = "day07-test.txt";
-            //var df = "day07-input.txt";
+            //var df = "day07-test.txt";
+            var df = "day07-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -233,6 +233,7 @@ namespace advent_of_code_2022
 }
 
 // 2190855 too high
-// 2031851
+// 2031851 star!
 //  37134888  p2  51ms too high
 // 2654809  49ms  still too high
+// 2568781  47ms  star!
