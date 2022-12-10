@@ -117,7 +117,7 @@ namespace advent_of_code_2022
                 row.Last().Visible = true;
 
                 // for each tree in this row
-                for (int j = 1; j < nItemsPerRow; j++)
+                for (int j = 0; j < nItemsPerRow; j++)
                 {
                     // Look right, for each item are all the trees shorter than this one trees?
                     // if so then set Visible property to true
@@ -128,20 +128,24 @@ namespace advent_of_code_2022
                     // e.g., looking at 5 in this row, 3,3,5,4,9
                     // get vector 4, 9, then count how many steps until find a
                     // tree as tall or taller than current (5) or hit the edge.
-                    var ssVector = row.Skip(j + 1)
-                        .ToList();
-                    var ss = 0;
-                    for (int k = ssVector.Count - 1; k >= 0; k--)
+                    if (j == 0 || j == nItemsPerRow - 1)
+                        row[j].ScenicScores.Add(0);  //edge
+                    else
                     {
-                        if (ssVector[ss].Height <= row[j].Height)
+                        var ssVector = row.Skip(j + 1)
+                            .ToList();
+                        var ss = 0;
+                        for (int k = 0; k < ssVector.Count; k++)
                         {
                             ss += 1;
+                            // keep counting until reach a tree >= current tree
+                            if (ssVector[k].Height >= row[j].Height) break;
                         }
-                        if (ssVector[k].Height >= row[j].Height) break;
+                        row[j].ScenicScores.Add(ss);
                     }
-                    row[j].ScenicScores.Add(ss);
 
                     // Look left, ditto looking left
+                    // All() returns true when empty, but that's ok here
                     if (row.Take(j)
                         .All(x => x.Height < row[j].Height)) row[j].Visible = true;
 
@@ -149,18 +153,20 @@ namespace advent_of_code_2022
                     // e.g., looking at 5 in this row, 3,3,5,4,9
                     // get vector 3,3, then count how many steps to the left until find a
                     // tree as tall or taller than current (5) or hit the edge.
-                    ssVector = row.Take(j)
-                        .ToList();
-                    ss = 0;
-                    for (int k = ssVector.Count - 1; k >= 0; k--)
+                    if (j == 0 || j == nItemsPerRow - 1)
+                        row[j].ScenicScores.Add(0);  //edge
+                    else
                     {
-                        if (ssVector[ss].Height <= row[j].Height)
+                        var ssVector = row.Take(j).ToList();
+                        var ss = 0;
+                        for (int k = ssVector.Count - 1; k >= 0; k--)  // loop reverse
                         {
                             ss += 1;
+                            // keep counting until reach a tree >= current tree
+                            if (ssVector[k].Height >= row[j].Height) break;
                         }
-                        if (ssVector[k].Height >= row[j].Height) break;
+                        row[j].ScenicScores.Add(ss);
                     }
-                    row[j].ScenicScores.Add(ss);
                 }
             }
 
@@ -177,50 +183,55 @@ namespace advent_of_code_2022
                 col.Last().Visible = true;
 
                 // for each tree in this column = # rows
-                for (int j = 1; j < nRows; j++)
+                for (int j = 0; j < nRows; j++)
                 {
                     // Part 1: Look down, for each item are all the trees shorter than this one trees?
                     // if so then set Visible property to true
-                    if (col.Skip(j)
-                        .All(x => x.Height < col[j].Height))  col[j].Visible = true;
+                    if (col.Skip(j + 1)
+                        .All(x => x.Height < col[j].Height)) col[j].Visible = true;
 
                     // Part2: still looking down, find scenic index
                     // e.g., looking at last 5 in this column, 3,5,3,5,3
                     // get vector 3, then count how many steps until find a
                     // tree as tall or taller than current (5) or hit the edge.
-                    var ssVector = col.Skip(j)
+                    if (j == 0 || j == nItemsPerRow - 1)
+                        col[j].ScenicScores.Add(0);  //edge
+                    else
+                    {
+                        var ssVector = col.Skip(j + 1)
                         .Select(x => x)
                         .ToList();
-                    var ss2 = 0;
-                    for (int k = ssVector.Count - 1; k >= 0; k--)
-                    {
-                        if (ssVector[k].Height <= col[j].Height)
+
+                        var ss2 = 0;
+                        for (int k = 0; k < ssVector.Count; k++)
                         {
                             ss2 += 1;
+                            // keep counting until reach a tree >= current tree
+                            if (ssVector[k].Height >= col[j].Height) break;
                         }
-                        if (ssVector[k].Height >= col[j].Height) break;
+                        col[j].ScenicScores.Add(ss2);
                     }
-                    col[j].ScenicScores.Add(ss2);
 
 
                     // Part 1: Look up, ditto similar to looking down
                     if (col.Take(j)
-                        .All(x => x.Height < col[j].Height))  col[j].Visible = true;
+                        .All(x => x.Height < col[j].Height)) col[j].Visible = true;
 
                     // Part2: still looking up, find scenic index
-                    ssVector = col.Take(j)
-                        .ToList();
-                    ss2 = 0;
-                    for (int k = ssVector.Count - 1; k >= 0; k--)
+                    if (j == 0 || j == nItemsPerRow - 1)
+                        col[j].ScenicScores.Add(0);  //edge
+                    else
                     {
-                        if (ssVector[k].Height <= col[j].Height)
+                        var ssVector = col.Take(j).ToList();
+                        var ss2 = 0;
+                        for (int k = ssVector.Count - 1; k >= 0; k--) // loop reverse
                         {
                             ss2 += 1;
+                            // keep counting until reach a tree >= current tree
+                            if (ssVector[k].Height >= col[j].Height) break;
                         }
-                        if (ssVector[k].Height >= col[j].Height) break;
+                        col[j].ScenicScores.Add(ss2);
                     }
-                    col[j].ScenicScores.Add(ss2);
-
                 }
             }
 
