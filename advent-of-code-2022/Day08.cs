@@ -15,8 +15,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 08: Treetop Tree House ---");
 
             // data file
-            var df = "day08-test.txt";
-            //var df = "day08-input.txt";
+            //var df = "day08-test.txt";
+            var df = "day08-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -86,7 +86,7 @@ namespace advent_of_code_2022
 
             #region debug1
             // debug: print out the patch of trees on the console
-            PrintTreePatch(treePatch, nItemsPerRow);
+            //PrintTreePatch(treePatch, nItemsPerRow);
             #endregion
 
             /* Each tree is represented as a single digit whose value is its height,
@@ -156,7 +156,7 @@ namespace advent_of_code_2022
                 }
             }
 
-            PrintTreePatch(treePatch, nItemsPerRow);
+            //PrintTreePatch(treePatch, nItemsPerRow);
 
 
             var answer = treePatch.Where(t => t.Visible).Count();
@@ -208,4 +208,5 @@ namespace advent_of_code_2022
         }
     }
 }
+// 1763 go
 
