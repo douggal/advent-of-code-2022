@@ -83,11 +83,15 @@ Just silence on it (Visual Studio 2022 for Mac).
 
 ### Day 8
 
+Finally completed both parts on the 10th.  Had a serious logic error, and several smaller skip/take endnpoint errors.
+I did not see the logic error for a long time.
+
 To make all the overhead Linq introduces performant, Linq features lazy evaluation.  This can
 take some getting used to.  In sending string items from a Linq query for output
 to the screen using String.Join for concatenation I had to force an evaluation before
 I could get the expected output.
 
 [When does Linq shine over a for loop?](https://stackoverflow.com/questions/37361331/how-to-iterate-a-loop-every-n-items)
-Answer is for C# to use both and choose according to situation.  Both worked together well for problem.
+Answer seems to be for C# to use both and choose according to situation.
+Both worked together well for this problem.
 
