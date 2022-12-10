@@ -15,8 +15,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 08: Treetop Tree House ---");
 
             // data file
-            var df = "day08-test.txt";
-            //var df = "day08-input.txt";
+            //var df = "day08-test.txt";
+            var df = "day08-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -132,8 +132,7 @@ namespace advent_of_code_2022
                         row[j].ScenicScores.Add(0);  //edge
                     else
                     {
-                        var ssVector = row.Skip(j + 1)
-                            .ToList();
+                        var ssVector = row.Skip(j + 1).ToList();
                         var ss = 0;
                         for (int k = 0; k < ssVector.Count; k++)
                         {
@@ -198,9 +197,7 @@ namespace advent_of_code_2022
                         col[j].ScenicScores.Add(0);  //edge
                     else
                     {
-                        var ssVector = col.Skip(j + 1)
-                        .Select(x => x)
-                        .ToList();
+                        var ssVector = col.Skip(j + 1).ToList();
 
                         var ss2 = 0;
                         for (int k = 0; k < ssVector.Count; k++)
@@ -297,4 +294,4 @@ namespace advent_of_code_2022
     }
 }
 // 1763 go
-
+// p2 671160 go
