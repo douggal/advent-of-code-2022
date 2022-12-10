@@ -109,26 +109,25 @@ namespace advent_of_code_2022
             {
                 // get row
                 var skip = i * nItemsPerRow;
-                var row = treePatch.Skip(skip).Take(nItemsPerRow).ToList();
+                var row = treePatch.Skip(skip)
+                    .Take(nItemsPerRow)
+                    .ToList();
 
-                row.First().Visible = true; 
+                row.First().Visible = true;
                 row.Last().Visible = true;
 
                 // for each tree in the row
                 for (int j = 1; j < nItemsPerRow; j++)
                 {
                     // Look right, for each item are all the trees shorter than this one trees?
-                    // are all the trees to the right shorter than this one?
                     // if so then set Visible property to true
-                    if (row.Skip(j+1).All(x => x.Height < row[j].Height))
+                    if (row.Skip(j + 1).All(x => x.Height < row[j].Height))
                         row[j].Visible = true;
 
                     // Look left, ditto looking left
                     if (row.Take(j).All(x => x.Height < row[j].Height))
                         row[j].Visible = true;
                 }
-
-                // TODO: Look up and down
             }
 
             // up and down
@@ -136,7 +135,9 @@ namespace advent_of_code_2022
             {
                 // get column
                 // ref: https://stackoverflow.com/questions/682615/how-can-i-get-every-nth-item-from-a-listt
-                var col = treePatch.Skip(i).Where((t, idx) => idx % nItemsPerRow == 0).ToList();
+                var col = treePatch.Skip(i)
+                    .Where((t, idx) => idx % nItemsPerRow == 0)
+                    .ToList();
 
                 col.First().Visible = true;
                 col.Last().Visible = true;
@@ -144,13 +145,12 @@ namespace advent_of_code_2022
                 // for each tree in the row
                 for (int j = 1; j < nRows; j++)
                 {
-                    // Look right, for each item are all the trees shorter than this one trees?
-                    // are all the trees to the right shorter than this one?
+                    // Look down, for each item are all the trees shorter than this one trees?
                     // if so then set Visible property to true
                     if (col.Skip(j + 1).All(x => x.Height < col[j].Height))
                         col[j].Visible = true;
 
-                    // Look left, ditto looking left
+                    // Look up, ditto looking left
                     if (col.Take(j).All(x => x.Height < col[j].Height))
                         col[j].Visible = true;
                 }
@@ -191,7 +191,7 @@ namespace advent_of_code_2022
             // evaluation of each row in order for whole list (row) to be sent to String.Join.
             foreach (var t in tmp)
             {
-                Console.WriteLine(String.Join(", ", t.Select(y => String.Format("h:{0},v:{1}",y.Height,y.Visible)).ToList()));
+                Console.WriteLine(String.Join(", ", t.Select(y => String.Format("h:{0},v:{1}", y.Height, y.Visible)).ToList()));
             }
             Console.WriteLine();
         }
