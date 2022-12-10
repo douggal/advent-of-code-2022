@@ -55,16 +55,14 @@ namespace advent_of_code_2022
 
             // Timing
             DateTime utcDateStart = DateTime.UtcNow;
+            Stopwatch stopwatch = Stopwatch.StartNew();  // start stopwatch
             Console.WriteLine($"Start timestamp {utcDateStart.ToString("O")}");
         
-            // create and start a Stopwatch instance
-            // https://stackoverflow.com/questions/16376191/measuring-code-execution-time
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
 
             // Part One
             // TODO
             Console.WriteLine("Day XX Part 1 TBD");
+
 
             // Part Two
             // TODO

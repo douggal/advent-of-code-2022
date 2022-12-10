@@ -81,3 +81,9 @@ Surprised the linting tool/features didn't catch this mistake: I had following a
 and should have been an assignment stmt, `wd = String.Concat(wd, f);`.
 Just silence on it (Visual Studio 2022 for Mac).
 
+### Day 8
+
+To make all the overhead Linq introduces performant, Linq features lazy evaluation.  This can
+take some getting used to.  In sending string items from a Linq query output
+to String.Join for concatenation I had to force an evaluation before I could get the expected output.
+

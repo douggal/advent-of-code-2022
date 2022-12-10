@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace advent_of_code_2022
 {
@@ -8,7 +9,7 @@ namespace advent_of_code_2022
     {
         public static void RunDay08()
         {
-            // created 8 December 2022
+            // created 9 December 2022
             // https://adventofcode.com/2022/day/8
 
             Console.WriteLine("--- Day 08: Treetop Tree House ---");
@@ -18,7 +19,7 @@ namespace advent_of_code_2022
             //var df = "day08-input.txt";
 
             // read in data
-            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
+            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
             var input = new Queue<String>();
             String? line;
             try
@@ -55,15 +56,48 @@ namespace advent_of_code_2022
 
             // Timing
             DateTime utcDateStart = DateTime.UtcNow;
-            Console.WriteLine($"Start timestamp {utcDateStart.ToString("O")}");
-        
-            // create and start a Stopwatch instance
-            // https://stackoverflow.com/questions/16376191/measuring-code-execution-time
             Stopwatch stopwatch = Stopwatch.StartNew();
+            Console.WriteLine($"Start timestamp {utcDateStart.ToString("O")}");
 
 
             // Part One
-            var answer = 0;
+
+            // Model the patch of trees as a single List of trees
+            // An offset, o, identifies which column a tree is in
+            // A tree has a height property and a visible true/false property
+
+            List<Tree> treePatch = new();
+            var offset = input.First().Length;
+
+            while (input.Count > 0)
+            {
+                var li = input.Dequeue()
+                    .Trim()
+                    .ToCharArray()
+                    .Select(x => int.Parse(x.ToString()));
+                foreach (var t in li)
+                {
+                    treePatch.Add(new Tree(t));
+                }
+            }
+
+            // debug: print out the patch of trees on the console
+            // Note: Linq features lazy evaluation - doesn't do anything until ToList etc is
+            // called forcing an evaluation. Hence I first split up the treePatch,
+            var tmp = treePatch.Select((value, index) => new { Index = index, Value = value })
+                            .GroupBy(i => i.Index / offset)
+                            .Select(i => i.Select(i2 => i2.Value));
+            // and then interate over the IEnumerable<IEnumerable<Tree>> calling ToList to force
+            // evaluation of each row in order for whole list to be sent to String.Join.
+            foreach (var t in tmp)
+            {
+                Console.WriteLine(String.Join(", ",t.Select(y => y.Height).ToList()));
+            }
+            Console.WriteLine();
+
+
+
+            var answer = 0; 
             Console.WriteLine("Day 8 Part 1");
             System.Console.WriteLine("Consider your map; how many trees are visible from outside the grid?");
             Console.WriteLine($"{answer}\n\n");
@@ -79,6 +113,17 @@ namespace advent_of_code_2022
             Console.WriteLine("Time elapsed: {0:0.0} ms", stopwatch.ElapsedMilliseconds);
             Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
             //Console.ReadKey();
+        }
+    }
+
+    public class Tree
+    {
+        public int Height { get; set; }
+        public bool? Visible { get; set; }
+        public Tree(int h)
+        {
+            Height = h;
+            Visible = null;
         }
     }
 }
