@@ -65,6 +65,8 @@ namespace advent_of_code_2022
             // Model the patch of trees as a single List of trees
             // An offset identifies which column a tree is in
             // A tree has a height property and a visible true/false property
+            // Each tree is a instance of class, so we can pass the reference
+            // around as needed.
 
             List<Tree> treePatch = new();
             var nItemsPerRow = input.First().Length;
@@ -104,24 +106,29 @@ namespace advent_of_code_2022
 
             for (int i = 0; i < nRows; i += 1)
             {
-                // Look right, for each item are all the trees shorter than this one trees?
                 Console.WriteLine($"{i}");
                 // get row
                 var skip = i * nItemsPerRow;
                 var row = treePatch.Skip(skip).Take(nItemsPerRow).ToList();
+
                 Console.WriteLine($"Row: {i}" + String.Join(", ", row.Select(y => String.Format("h:{0},v:{1}", y.Height, y.Visible)).ToList()));
 
-                row.First().Visible = true;
+                row.First().Visible = true; 
                 row.Last().Visible = true;
 
                 // for each tree in the row
                 for (int j = 1; j < nItemsPerRow; j++)
                 {
+                    // Look right, for each item are all the trees shorter than this one trees?
                     // are all the trees to the right shorter than this one?
                     // if so then set Visible property to true
                     if (row.Skip(j+1).All(x => x.Height < row[j].Height))
                         row[j].Visible = true;
-                } 
+
+                    // Look left, ditto looking left
+                    if (row.Take(j).All(x => x.Height < row[j].Height))
+                        row[j].Visible = true;
+                }
 
                 // TODO: Look up and down
             }
