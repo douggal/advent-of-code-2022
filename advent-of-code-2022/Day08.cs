@@ -104,14 +104,12 @@ namespace advent_of_code_2022
              * ref: https://stackoverflow.com/questions/37361331/how-to-iterate-a-loop-every-n-items 
              */
 
-            for (int i = 0; i < nRows; i += 1)
+            // right and left
+            for (int i = 0; i < nItemsPerRow; i += 1)
             {
-                Console.WriteLine($"{i}");
                 // get row
                 var skip = i * nItemsPerRow;
                 var row = treePatch.Skip(skip).Take(nItemsPerRow).ToList();
-
-                Console.WriteLine($"Row: {i}" + String.Join(", ", row.Select(y => String.Format("h:{0},v:{1}", y.Height, y.Visible)).ToList()));
 
                 row.First().Visible = true; 
                 row.Last().Visible = true;
@@ -132,6 +130,32 @@ namespace advent_of_code_2022
 
                 // TODO: Look up and down
             }
+
+            // up and down
+            for (int i = 0; i < nRows; i += 1)
+            {
+                // get column
+                // ref: https://stackoverflow.com/questions/682615/how-can-i-get-every-nth-item-from-a-listt
+                var col = treePatch.Skip(i).Where((t, idx) => idx % nItemsPerRow == 0).ToList();
+
+                col.First().Visible = true;
+                col.Last().Visible = true;
+
+                // for each tree in the row
+                for (int j = 1; j < nRows; j++)
+                {
+                    // Look right, for each item are all the trees shorter than this one trees?
+                    // are all the trees to the right shorter than this one?
+                    // if so then set Visible property to true
+                    if (col.Skip(j + 1).All(x => x.Height < col[j].Height))
+                        col[j].Visible = true;
+
+                    // Look left, ditto looking left
+                    if (col.Take(j).All(x => x.Height < col[j].Height))
+                        col[j].Visible = true;
+                }
+            }
+
             PrintTreePatch(treePatch, nItemsPerRow);
 
 
