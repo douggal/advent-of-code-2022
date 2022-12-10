@@ -72,7 +72,7 @@ namespace advent_of_code_2022
             // li = a line of input
 
             // pr = priority which is each char's index + 1
-            // TODO: what about encoding? UTF-8?
+            // what about encoding? UTF-8?
             var pr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray().ToList();
 
             var sp = 0;  // sum of the priorities
