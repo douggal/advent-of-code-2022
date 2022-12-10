@@ -121,38 +121,46 @@ namespace advent_of_code_2022
                 {
                     // Look right, for each item are all the trees shorter than this one trees?
                     // if so then set Visible property to true
-                    if (row.Skip(j + 1).All(x => x.Height < row[j].Height))
-                        row[j].Visible = true;
+                    if (row.Skip(j + 1)
+                        .All(x => x.Height < row[j].Height)) row[j].Visible = true;
 
                     // Part2: still looking right, find scenic index
                     // e.g., looking at 5 in this row, 3,3,5,4,9
                     // get vector 4, 9, then count how many steps until find a
                     // tree as tall or taller than current (5) or hit the edge.
-                    var ssVector = row.Skip(j + 1).Select(x => x)
+                    var ssVector = row.Skip(j + 1)
+                        .Select(x => x)
                         .ToList();
                     var ss = 0;
-                    while (ss < ssVector.Count
-                        && ssVector[ss].Height < row[j].Height)
+                    for (int k = ssVector.Count - 1; k >= 0; k--)
                     {
-                        ss++;
+                        if (ssVector[ss].Height < row[j].Height)
+                        {
+                            ss += 1;
+                        }
+                        else break;
                     }
                     row[j].ScenicScores.Add(ss);
 
                     // Look left, ditto looking left
-                    if (row.Take(j).All(x => x.Height < row[j].Height))
-                        row[j].Visible = true;
+                    if (row.Take(j)
+                        .All(x => x.Height < row[j].Height)) row[j].Visible = true;
 
                     // Part2: still looking left, find scenic index
                     // e.g., looking at 5 in this row, 3,3,5,4,9
                     // get vector 3,3, then count how many steps to the left until find a
                     // tree as tall or taller than current (5) or hit the edge.
-                    ssVector = row.Take(j).Select(x => x)
+                    ssVector = row.Take(j)
+                        .Select(x => x)
                         .ToList();
                     ss = 0;
                     for (int k = ssVector.Count - 1; k >= 0; k--)
                     {
                         if (ssVector[ss].Height < row[j].Height)
-                                ss++;
+                        {
+                            ss += 1;
+                        }
+                        else break;
                     }
                     row[j].ScenicScores.Add(ss);
                 }
@@ -173,34 +181,53 @@ namespace advent_of_code_2022
                 // for each tree in the row
                 for (int j = 1; j < nRows; j++)
                 {
-                    // Look down, for each item are all the trees shorter than this one trees?
+                    // Part 1: Look down, for each item are all the trees shorter than this one trees?
                     // if so then set Visible property to true
-                    if (col.Skip(j + 1).All(x => x.Height < col[j].Height))
-                        col[j].Visible = true;
+                    if (col.Skip(j + 1)
+                        .All(x => x.Height < col[j].Height))  col[j].Visible = true;
 
-                    // Part2: still looking down, find scenic index
-                    var ss = col.Skip(j + 1).Select((v, i) => new { i, v }) // attach index
-                        .Where(x => x.v.Height >= col[j].Height) // all trees taller or equal than current
-                        .Select(x => int.Abs(x.i - j))  // compute how far away each is
-                        .FirstOrDefault(1);  // distance to first tree taller or equal to current
-                    col[j].ScenicScores.Add(ss);
+                    // Part2: still looking right, find scenic index
+                    // e.g., looking at last 5 in this column, 3,5,3,5,3
+                    // get vector 3, then count how many steps until find a
+                    // tree as tall or taller than current (5) or hit the edge.
+                    var ssVector = col.Skip(j + 1)
+                        .Select(x => x)
+                        .ToList();
+                    var ss2 = 0;
+                    for (int k = ssVector.Count - 1; k >= 0; k--)
+                    {
+                        if (ssVector[k].Height < col[j].Height)
+                        {
+                            ss2 += 1;
+                        }
+                        else break;
+                    }
+                    col[j].ScenicScores.Add(ss2);
 
-                    // Look up, ditto looking left
-                    if (col.Take(j).All(x => x.Height < col[j].Height))
-                        col[j].Visible = true;
 
-                    // Part2: still looking down, find scenic index
-                    ss = col.Take(j).Select((v, i) => new { i, v }) // attach index
-                        .Where(x => x.v.Height >= col[j].Height) // all trees taller or equal than current
-                        .Select(x => int.Abs(x.i - j))  // compute how far away each is
-                        .LastOrDefault(1);  // distance to first tree taller or equal to current
-                    col[j].ScenicScores.Add(ss);
+                    // Part 1: Look up, ditto looking left
+                    if (col.Take(j)
+                        .All(x => x.Height < col[j].Height))  col[j].Visible = true;
+
+                    // Part2: still looking up, find scenic index
+                    ssVector = col.Take(j)
+                        .Select(x => x)
+                        .ToList();
+                    ss2 = 0;
+                    for (int k = ssVector.Count - 1; k >= 0; k--)
+                    {
+                        if (ssVector[ss2].Height < col[j].Height)
+                        {
+                            ss2 += 1;
+                        }
+                        else break;
+                    }
+                    col[j].ScenicScores.Add(ss2);
 
                 }
             }
 
             //PrintTreePatch(treePatch, nItemsPerRow);
-
 
             var answer = treePatch.Where(t => t.Visible).Count();
 
