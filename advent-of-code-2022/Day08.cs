@@ -15,8 +15,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 08: Treetop Tree House ---");
 
             // data file
-            //var df = "day08-test.txt";
-            var df = "day08-input.txt";
+            var df = "day08-test.txt";
+            //var df = "day08-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -124,9 +124,24 @@ namespace advent_of_code_2022
                     if (row.Skip(j + 1).All(x => x.Height < row[j].Height))
                         row[j].Visible = true;
 
+                    // Part2: still looking right, find scenic index
+                    var ss = row.Skip(j + 1).Select((v, i) => new { i, v }) // attach index
+                        .Where(x => x.v.Height >= row[j].Height) // all trees taller or equal than current
+                        .Select(x => int.Abs(x.i - j))  // compute how far away each is
+                        .FirstOrDefault(1);  // distance to first tree taller or equal to current
+                    row[j].ScenicScores.Add(ss);
+
                     // Look left, ditto looking left
                     if (row.Take(j).All(x => x.Height < row[j].Height))
                         row[j].Visible = true;
+
+                    // Part2: still looking left, find scenic index
+                    ss = row.Take(j).Select((v, i) => new { i, v }) // attach index
+                        .Where(x => x.v.Height >= row[j].Height) // all trees taller or equal than current
+                        .Select(x => int.Abs(x.i - j))  // compute how far away each is
+                        .LastOrDefault(1);  // distance to first tree taller or equal to current
+                    row[j].ScenicScores.Add(ss);
+
                 }
             }
 
@@ -150,9 +165,24 @@ namespace advent_of_code_2022
                     if (col.Skip(j + 1).All(x => x.Height < col[j].Height))
                         col[j].Visible = true;
 
+                    // Part2: still looking down, find scenic index
+                    var ss = col.Skip(j + 1).Select((v, i) => new { i, v }) // attach index
+                        .Where(x => x.v.Height >= col[j].Height) // all trees taller or equal than current
+                        .Select(x => int.Abs(x.i - j))  // compute how far away each is
+                        .FirstOrDefault(1);  // distance to first tree taller or equal to current
+                    col[j].ScenicScores.Add(ss);
+
                     // Look up, ditto looking left
                     if (col.Take(j).All(x => x.Height < col[j].Height))
                         col[j].Visible = true;
+
+                    // Part2: still looking down, find scenic index
+                    ss = col.Take(j).Select((v, i) => new { i, v }) // attach index
+                        .Where(x => x.v.Height >= col[j].Height) // all trees taller or equal than current
+                        .Select(x => int.Abs(x.i - j))  // compute how far away each is
+                        .LastOrDefault(1);  // distance to first tree taller or equal to current
+                    col[j].ScenicScores.Add(ss);
+
                 }
             }
 
@@ -167,8 +197,15 @@ namespace advent_of_code_2022
 
 
             // Part Two
-            // TODO
+
+            // best possible scenic score is max value found in the list of product of each tree's ss
+            var answerp2 = treePatch
+                .Select(t => t.ScenicScores.Aggregate(1, (a, b) => a * b))
+                .Max();
+
             Console.WriteLine("Day 8 Part 2");
+            Console.WriteLine($"Consider each tree on your map. What is the highest scenic score possible for any tree?");
+            Console.WriteLine($"{answerp2}");
 
             // Display run time and exit
             stopwatch.Stop();
@@ -201,13 +238,13 @@ namespace advent_of_code_2022
     {
         public int Height { get; set; }
         public bool Visible { get; set; }
-        public int ScenicScore { get; set; }
+        public List<int> ScenicScores { get; set; }
 
         public Tree(int h)
         {
             Height = h;
             Visible = false;  // assume it's not visible unless shown otherwise.
-            ScenicScore = 0;
+            ScenicScores = new();  // multiplicative identity
         }
     }
 }
