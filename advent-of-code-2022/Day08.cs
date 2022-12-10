@@ -201,10 +201,13 @@ namespace advent_of_code_2022
     {
         public int Height { get; set; }
         public bool Visible { get; set; }
+        public int ScenicScore { get; set; }
+
         public Tree(int h)
         {
             Height = h;
             Visible = false;  // assume it's not visible unless shown otherwise.
+            ScenicScore = 0;
         }
     }
 }
