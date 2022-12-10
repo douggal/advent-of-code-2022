@@ -63,11 +63,12 @@ namespace advent_of_code_2022
             // Part One
 
             // Model the patch of trees as a single List of trees
-            // An offset, o, identifies which column a tree is in
+            // An offset identifies which column a tree is in
             // A tree has a height property and a visible true/false property
 
             List<Tree> treePatch = new();
-            var offset = input.First().Length;
+            var nCols = input.First().Length;
+            var nRows = input.Count;
 
             while (input.Count > 0)
             {
@@ -82,13 +83,14 @@ namespace advent_of_code_2022
             }
 
             // debug: print out the patch of trees on the console
+            // Ref: https://stackoverflow.com/questions/419019/split-list-into-sublists-with-linq
             // Note: Linq features lazy evaluation - doesn't do anything until ToList etc is
             // called forcing an evaluation. Hence I first split up the treePatch,
             var tmp = treePatch.Select((value, index) => new { Index = index, Value = value })
-                            .GroupBy(i => i.Index / offset)
+                            .GroupBy(i => i.Index / nCols)
                             .Select(i => i.Select(i2 => i2.Value));
             // and then interate over the IEnumerable<IEnumerable<Tree>> calling ToList to force
-            // evaluation of each row in order for whole list to be sent to String.Join.
+            // evaluation of each row in order for whole list (row) to be sent to String.Join.
             foreach (var t in tmp)
             {
                 Console.WriteLine(String.Join(", ",t.Select(y => y.Height).ToList()));
@@ -97,7 +99,8 @@ namespace advent_of_code_2022
 
 
 
-            var answer = 0; 
+            var answer = treePatch.Where(t => t.Visible).Count();
+
             Console.WriteLine("Day 8 Part 1");
             System.Console.WriteLine("Consider your map; how many trees are visible from outside the grid?");
             Console.WriteLine($"{answer}\n\n");
@@ -119,11 +122,11 @@ namespace advent_of_code_2022
     public class Tree
     {
         public int Height { get; set; }
-        public bool? Visible { get; set; }
+        public bool Visible { get; set; }
         public Tree(int h)
         {
             Height = h;
-            Visible = null;
+            Visible = false;  // assume it's visible unless shown otherwise.
         }
     }
 }
