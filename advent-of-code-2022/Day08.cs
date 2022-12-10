@@ -125,10 +125,17 @@ namespace advent_of_code_2022
                         row[j].Visible = true;
 
                     // Part2: still looking right, find scenic index
-                    var ss = row.Skip(j + 1).Select((v, i) => new { i, v }) // attach index
-                        .Where(x => x.v.Height >= row[j].Height) // all trees taller or equal than current
-                        .Select(x => int.Abs(x.i - j))  // compute how far away each is
-                        .FirstOrDefault(1);  // distance to first tree taller or equal to current
+                    // e.g., looking at 5 in this row, 3,3,5,4,9
+                    // get vector 4, 9, then count how many steps until find a
+                    // tree as tall or taller than current (5) or hit the edge.
+                    var ssVector = row.Skip(j + 1).Select(x => x)
+                        .ToList();
+                    var ss = 0;
+                    while (ss < ssVector.Count
+                        && ssVector[ss].Height < row[j].Height)
+                    {
+                        ss++;
+                    }
                     row[j].ScenicScores.Add(ss);
 
                     // Look left, ditto looking left
@@ -136,12 +143,18 @@ namespace advent_of_code_2022
                         row[j].Visible = true;
 
                     // Part2: still looking left, find scenic index
-                    ss = row.Take(j).Select((v, i) => new { i, v }) // attach index
-                        .Where(x => x.v.Height >= row[j].Height) // all trees taller or equal than current
-                        .Select(x => int.Abs(x.i - j))  // compute how far away each is
-                        .LastOrDefault(1);  // distance to first tree taller or equal to current
+                    // e.g., looking at 5 in this row, 3,3,5,4,9
+                    // get vector 3,3, then count how many steps to the left until find a
+                    // tree as tall or taller than current (5) or hit the edge.
+                    ssVector = row.Take(j).Select(x => x)
+                        .ToList();
+                    ss = 0;
+                    for (int k = ssVector.Count - 1; k >= 0; k--)
+                    {
+                        if (ssVector[ss].Height < row[j].Height)
+                                ss++;
+                    }
                     row[j].ScenicScores.Add(ss);
-
                 }
             }
 
