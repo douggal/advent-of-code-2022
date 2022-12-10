@@ -102,13 +102,17 @@ namespace advent_of_code_2022
              * ref: https://stackoverflow.com/questions/37361331/how-to-iterate-a-loop-every-n-items 
              */
 
-            for (int i = 0; i < nRows; i += nItemsPerRow)
+            for (int i = 0; i < nRows; i += 1)
             {
                 // Look right, for each item are all the trees shorter than this one trees?
-
+                Console.WriteLine($"{i}");
                 // get row
-                var row = treePatch.Skip(i).Take(nItemsPerRow).ToList();
-                row[0].Visible = true;
+                var skip = i * nItemsPerRow;
+                var row = treePatch.Skip(skip).Take(nItemsPerRow).ToList();
+                Console.WriteLine($"Row: {i}" + String.Join(", ", row.Select(y => String.Format("h:{0},v:{1}", y.Height, y.Visible)).ToList()));
+
+                row.First().Visible = true;
+                row.Last().Visible = true;
 
                 // for each tree in the row
                 for (int j = 1; j < nItemsPerRow; j++)
@@ -120,8 +124,8 @@ namespace advent_of_code_2022
                 } 
 
                 // TODO: Look up and down
-                PrintTreePatch(treePatch, nItemsPerRow);
             }
+            PrintTreePatch(treePatch, nItemsPerRow);
 
 
             var answer = treePatch.Where(t => t.Visible).Count();
@@ -156,7 +160,7 @@ namespace advent_of_code_2022
             // evaluation of each row in order for whole list (row) to be sent to String.Join.
             foreach (var t in tmp)
             {
-                Console.WriteLine(String.Join(", ", t.Select(y => String.Format("(h:{0},v:{1}",y.Height,y.Visible)).ToList()));
+                Console.WriteLine(String.Join(", ", t.Select(y => String.Format("h:{0},v:{1}",y.Height,y.Visible)).ToList()));
             }
             Console.WriteLine();
         }
