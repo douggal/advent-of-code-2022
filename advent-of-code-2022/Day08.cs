@@ -96,7 +96,7 @@ namespace advent_of_code_2022
             */
 
             /* All trees are visible by default - no need to work the perimeter */
-            /* TODO: for each tree compute if visible */
+            /* for each tree compute if visible */
             /* skip/take - take trees one row at a time */
 
             /* For loop or Linq?  Answer: combine best of both Linq and C for loops
@@ -104,8 +104,8 @@ namespace advent_of_code_2022
              * ref: https://stackoverflow.com/questions/37361331/how-to-iterate-a-loop-every-n-items 
              */
 
-            // right and left
-            for (int i = 0; i < nItemsPerRow; i += 1)
+            // right and left for each row of trees
+            for (int i = 0; i < nRows; i += 1)
             {
                 // get row
                 var skip = i * nItemsPerRow;
@@ -116,7 +116,7 @@ namespace advent_of_code_2022
                 row.First().Visible = true;
                 row.Last().Visible = true;
 
-                // for each tree in the row
+                // for each tree in this row
                 for (int j = 1; j < nItemsPerRow; j++)
                 {
                     // Look right, for each item are all the trees shorter than this one trees?
@@ -129,16 +129,15 @@ namespace advent_of_code_2022
                     // get vector 4, 9, then count how many steps until find a
                     // tree as tall or taller than current (5) or hit the edge.
                     var ssVector = row.Skip(j + 1)
-                        .Select(x => x)
                         .ToList();
                     var ss = 0;
                     for (int k = ssVector.Count - 1; k >= 0; k--)
                     {
-                        if (ssVector[ss].Height < row[j].Height)
+                        if (ssVector[ss].Height <= row[j].Height)
                         {
                             ss += 1;
                         }
-                        else break;
+                        if (ssVector[k].Height >= row[j].Height) break;
                     }
                     row[j].ScenicScores.Add(ss);
 
@@ -151,23 +150,22 @@ namespace advent_of_code_2022
                     // get vector 3,3, then count how many steps to the left until find a
                     // tree as tall or taller than current (5) or hit the edge.
                     ssVector = row.Take(j)
-                        .Select(x => x)
                         .ToList();
                     ss = 0;
                     for (int k = ssVector.Count - 1; k >= 0; k--)
                     {
-                        if (ssVector[ss].Height < row[j].Height)
+                        if (ssVector[ss].Height <= row[j].Height)
                         {
                             ss += 1;
                         }
-                        else break;
+                        if (ssVector[k].Height >= row[j].Height) break;
                     }
                     row[j].ScenicScores.Add(ss);
                 }
             }
 
-            // up and down
-            for (int i = 0; i < nRows; i += 1)
+            // up and down, for each column of trees
+            for (int i = 0; i < nItemsPerRow; i += 1)
             {
                 // get column
                 // ref: https://stackoverflow.com/questions/682615/how-can-i-get-every-nth-item-from-a-listt
@@ -178,49 +176,48 @@ namespace advent_of_code_2022
                 col.First().Visible = true;
                 col.Last().Visible = true;
 
-                // for each tree in the row
+                // for each tree in this column = # rows
                 for (int j = 1; j < nRows; j++)
                 {
                     // Part 1: Look down, for each item are all the trees shorter than this one trees?
                     // if so then set Visible property to true
-                    if (col.Skip(j + 1)
+                    if (col.Skip(j)
                         .All(x => x.Height < col[j].Height))  col[j].Visible = true;
 
-                    // Part2: still looking right, find scenic index
+                    // Part2: still looking down, find scenic index
                     // e.g., looking at last 5 in this column, 3,5,3,5,3
                     // get vector 3, then count how many steps until find a
                     // tree as tall or taller than current (5) or hit the edge.
-                    var ssVector = col.Skip(j + 1)
+                    var ssVector = col.Skip(j)
                         .Select(x => x)
                         .ToList();
                     var ss2 = 0;
                     for (int k = ssVector.Count - 1; k >= 0; k--)
                     {
-                        if (ssVector[k].Height < col[j].Height)
+                        if (ssVector[k].Height <= col[j].Height)
                         {
                             ss2 += 1;
                         }
-                        else break;
+                        if (ssVector[k].Height >= col[j].Height) break;
                     }
                     col[j].ScenicScores.Add(ss2);
 
 
-                    // Part 1: Look up, ditto looking left
+                    // Part 1: Look up, ditto similar to looking down
                     if (col.Take(j)
                         .All(x => x.Height < col[j].Height))  col[j].Visible = true;
 
                     // Part2: still looking up, find scenic index
                     ssVector = col.Take(j)
-                        .Select(x => x)
                         .ToList();
                     ss2 = 0;
                     for (int k = ssVector.Count - 1; k >= 0; k--)
                     {
-                        if (ssVector[ss2].Height < col[j].Height)
+                        if (ssVector[k].Height <= col[j].Height)
                         {
                             ss2 += 1;
                         }
-                        else break;
+                        if (ssVector[k].Height >= col[j].Height) break;
                     }
                     col[j].ScenicScores.Add(ss2);
 
