@@ -87,3 +87,6 @@ To make all the overhead Linq introduces performant, Linq features lazy evaluati
 take some getting used to.  In sending string items from a Linq query output
 to String.Join for concatenation I had to force an evaluation before I could get the expected output.
 
+[When does Linq shine over a for loop?](https://stackoverflow.com/questions/37361331/how-to-iterate-a-loop-every-n-items)
+Answer is in C# use both and choose according to situation.
+

@@ -67,7 +67,7 @@ namespace advent_of_code_2022
             // A tree has a height property and a visible true/false property
 
             List<Tree> treePatch = new();
-            var nCols = input.First().Length;
+            var nItemsPerRow = input.First().Length;
             var nRows = input.Count;
 
             while (input.Count > 0)
@@ -82,21 +82,46 @@ namespace advent_of_code_2022
                 }
             }
 
+            #region debug1
             // debug: print out the patch of trees on the console
-            // Ref: https://stackoverflow.com/questions/419019/split-list-into-sublists-with-linq
-            // Note: Linq features lazy evaluation - doesn't do anything until ToList etc is
-            // called forcing an evaluation. Hence I first split up the treePatch,
-            var tmp = treePatch.Select((value, index) => new { Index = index, Value = value })
-                            .GroupBy(i => i.Index / nCols)
-                            .Select(i => i.Select(i2 => i2.Value));
-            // and then interate over the IEnumerable<IEnumerable<Tree>> calling ToList to force
-            // evaluation of each row in order for whole list (row) to be sent to String.Join.
-            foreach (var t in tmp)
-            {
-                Console.WriteLine(String.Join(", ",t.Select(y => y.Height).ToList()));
-            }
-            Console.WriteLine();
+            PrintTreePatch(treePatch, nItemsPerRow);
+            #endregion
 
+            /* Each tree is represented as a single digit whose value is its height,
+             * where 0 is the shortest and 9 is the tallest. 
+             * A tree is visible if all of the other trees between it and an edge
+             * of the grid are shorter than it.
+            */
+
+            /* All trees are visible by default - no need to work the perimeter */
+            /* TODO: for each tree compute if visible */
+            /* skip/take - take trees one row at a time */
+
+            /* For loop or Linq?  Answer: combine best of both Linq and C for loops
+             * and choose the best tool for the job.
+             * ref: https://stackoverflow.com/questions/37361331/how-to-iterate-a-loop-every-n-items 
+             */
+
+            for (int i = 0; i < nRows; i += nItemsPerRow)
+            {
+                // Look right, for each item are all the trees shorter than this one trees?
+
+                // get row
+                var row = treePatch.Skip(i).Take(nItemsPerRow).ToList();
+                row[0].Visible = true;
+
+                // for each tree in the row
+                for (int j = 1; j < nItemsPerRow; j++)
+                {
+                    // are all the trees to the right shorter than this one?
+                    // if so then set Visible property to true
+                    if (row.Skip(j+1).All(x => x.Height < row[j].Height))
+                        row[j].Visible = true;
+                } 
+
+                // TODO: Look up and down
+                PrintTreePatch(treePatch, nItemsPerRow);
+            }
 
 
             var answer = treePatch.Where(t => t.Visible).Count();
@@ -115,7 +140,25 @@ namespace advent_of_code_2022
             Console.WriteLine("\nDone.");
             Console.WriteLine("Time elapsed: {0:0.0} ms", stopwatch.ElapsedMilliseconds);
             Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
-            //Console.ReadKey();
+            Console.ReadKey();
+        }
+
+        private static void PrintTreePatch(List<Tree> treePatch, int n)
+        {
+            // n = nbr trees per row
+            // Ref: https://stackoverflow.com/questions/419019/split-list-into-sublists-with-linq
+            // Note: Linq features lazy evaluation - doesn't do anything until ToList etc is
+            // called forcing an evaluation. Hence I first split up the treePatch,
+            var tmp = treePatch.Select((value, index) => new { Index = index, Value = value })
+                            .GroupBy(i => i.Index / n)
+                            .Select(i => i.Select(i2 => i2.Value));
+            // and then interate over the IEnumerable<IEnumerable<Tree>> calling ToList to force
+            // evaluation of each row in order for whole list (row) to be sent to String.Join.
+            foreach (var t in tmp)
+            {
+                Console.WriteLine(String.Join(", ", t.Select(y => String.Format("(h:{0},v:{1}",y.Height,y.Visible)).ToList()));
+            }
+            Console.WriteLine();
         }
     }
 
@@ -126,7 +169,7 @@ namespace advent_of_code_2022
         public Tree(int h)
         {
             Height = h;
-            Visible = false;  // assume it's visible unless shown otherwise.
+            Visible = false;  // assume it's not visible unless shown otherwise.
         }
     }
 }
