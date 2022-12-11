@@ -21,7 +21,8 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 6. Day  6:  Tuning Trouble
 7. Day  7:  No Space Left On Device
 8. Day  8:  Treetop Tree House
-9. Day  9:  
+9. Day  9:  Rope Bridge
+10. Day 10:  
 
 ## Notes
 
