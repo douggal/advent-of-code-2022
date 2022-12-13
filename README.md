@@ -22,6 +22,8 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 7. Day  7:  No Space Left On Device
 8. Day  8:  Treetop Tree House
 9. Day  9:  
+12. Day 12:  Hill Climbing Algorithm
+
 
 ## Notes
 
@@ -94,4 +96,9 @@ I could get the expected output.
 [When does Linq shine over a for loop?](https://stackoverflow.com/questions/37361331/how-to-iterate-a-loop-every-n-items)
 Answer seems to be for C# to use both and choose according to situation.
 Both worked together well for this problem.
+
+
+### Day 12
+
+Model the data as a graph and use QuikGraph to solve for shortest path.
 
