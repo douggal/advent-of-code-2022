@@ -3,7 +3,10 @@ using System.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
 using QuikGraph;
+using QuikGraph.Algorithms;
 using System.Diagnostics.Metrics;
+using QuikGraph.Algorithms.Observers;
+using QuikGraph.Algorithms.ShortestPath;
 
 namespace advent_of_code_2022
 {
@@ -193,10 +196,44 @@ namespace advent_of_code_2022
                 }
             }
 
+            //  workaround: could not find a "ConvertAll" for List
+            // convert Dictionary's values from List<int> to int[]
+            Dictionary<int, int[]> heightmap2 = new();
+            foreach (var kv in heightmap)
+            {
+                heightmap2[kv.Key] = heightmap[kv.Key].ToArray();
+            }
+
             // QuikGraph: create a graph
             // Ref: https://github.com/KeRNeLith/QuikGraph/wiki/Creating-Graphs
-            var graph = heightmap.ToDelegateVertexAndEdgeListGraph(
+            var graph = heightmap2.ToDelegateVertexAndEdgeListGraph(
                 kv => Array.ConvertAll(kv.Value, v => new Edge<int>(kv.Key, v)));
+
+            // https://github.com/KeRNeLith/QuikGraph/wiki/Shortest-Path
+            Func<Edge<int>, double> cityDistances = edge => 1; // A delegate that gives the distance between cities
+            int sourceCity = startVertexID; // Starting city
+            int targetCity = endVertexID; // Ending city
+
+            // Creating the algorithm instance
+            var dijkstra = new DijkstraShortestPathAlgorithm<int, Edge<int>>(graph, cityDistances);
+
+            // Creating the observer
+            var vis = new VertexPredecessorRecorderObserver<int, Edge<int>>();
+
+            // Compute and record shortest paths
+            using (vis.Attach(dijkstra))
+            {
+                dijkstra.Compute(sourceCity);
+            }
+
+            // vis can create all the shortest path in the graph
+            if (vis.TryGetPath(targetCity, out IEnumerable<Edge<int>> path))
+            {
+                foreach (Edge<int> edge in path)
+                {
+                    Console.WriteLine(edge);
+                }
+            }
 
             var xyz = 0;
 
