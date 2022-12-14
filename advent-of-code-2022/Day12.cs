@@ -222,6 +222,7 @@ namespace advent_of_code_2022
             var graph = heightmap2.ToDelegateVertexAndEdgeListGraph(
                 kv => Array.ConvertAll(kv.Value, v => new Edge<int>(kv.Key, v)));
 
+            // Following example in tutorial here...
             // https://github.com/KeRNeLith/QuikGraph/wiki/Shortest-Path
             Func<Edge<int>, double> cityDistances = edge => 1; // A delegate that gives the distance between cities
             int sourceCity = startVertexID; // Starting city
@@ -239,18 +240,21 @@ namespace advent_of_code_2022
                 dijkstra.Compute(sourceCity);
             }
 
+            var answer = 0;
+
             // vis can create all the shortest path in the graph
             if (vis.TryGetPath(targetCity, out IEnumerable<Edge<int>> path))
             {
+                answer = path.Count();
                 foreach (Edge<int> edge in path)
                 {
                     Console.WriteLine(edge);
                 }
             }
 
-            var answer = 0;
-
             Console.WriteLine("Day 12 Part 1");
+            Console.WriteLine($"What is the fewest steps required to move from your current position to");
+            Console.WriteLine("the location that should get the best signal?");
             Console.WriteLine($"{answer}\n\n");
 
 
