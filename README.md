@@ -21,8 +21,12 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 6. Day  6:  Tuning Trouble
 7. Day  7:  No Space Left On Device
 8. Day  8:  Treetop Tree House
-9. Day  9:  
+9. Day  9:
+10. Day 10:
+11. Day 11:
 12. Day 12:  Hill Climbing Algorithm
+13. Day 13:
+14. Day 14:
 
 
 ## Notes
@@ -100,5 +104,7 @@ Both worked together well for this problem.
 
 ### Day 12
 
-Model the data as a graph and use QuikGraph to solve for shortest path.
+Model the data as a digraph in a Dictionary<int, int[]> and use QuikGraph
+to solve for shortest path.  Almost had a quick win.  I had errors in building the
+graph and took a while to find them all and fix.
 

@@ -20,8 +20,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 12: Hill Climbing Algorithm ---");
 
             // data file
-            var df = "day12-test.txt";
-            //var df = "day12-input.txt";
+            //var df = "day12-test.txt";
+            var df = "day12-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -202,22 +202,21 @@ namespace advent_of_code_2022
                 }
             }
 
-            // print tree
-            foreach (var kv in heightmap.OrderBy(k => k.Key))
-            {
-                Console.WriteLine($"{kv.Key}: {String.Join(',', kv.Value)}");
-            }
+            // debug: print tree
+            //foreach (var kv in heightmap.OrderBy(k => k.Key))
+            //{
+            //    Console.WriteLine($"{kv.Key}: {String.Join(',', kv.Value)}");
+            //}
 
-
-            // workaround: could not find a "ConvertAll" for List<T>
-            // copy to new Dictionary but turn the values from List<int> to int[]
+            // Workaround: could not find a "ConvertAll" method for List<T>
+            // So, copy to new Dictionary but turn the values from List<int> to int[]
             Dictionary<int, int[]> heightmap2 = new();
             foreach (var kv in heightmap)
             {
                 heightmap2[kv.Key] = heightmap[kv.Key].ToArray();
             }
 
-            // QuikGraph: create a graph
+            // Bring in QuikGraph: create a graph
             // Ref: https://github.com/KeRNeLith/QuikGraph/wiki/Creating-Graphs
             var graph = heightmap2.ToDelegateVertexAndEdgeListGraph(
                 kv => Array.ConvertAll(kv.Value, v => new Edge<int>(kv.Key, v)));
@@ -240,6 +239,7 @@ namespace advent_of_code_2022
                 dijkstra.Compute(sourceCity);
             }
 
+            // what answer did it find?
             var answer = 0;
 
             // vis can create all the shortest path in the graph
@@ -259,8 +259,48 @@ namespace advent_of_code_2022
 
 
             // Part Two
-            // TODO
-            Console.WriteLine("Day 12 Part 2  [TBD]");
+
+            // which vertices have a "a" elevation?
+            var a = labels.Where(x => string.Compare(x.Value, "a") == 0)
+                .Select(x => x.Key)
+                .ToList();
+
+            Console.WriteLine($"Number of vertices with 'a' elevation is {a.Count}");
+
+            // for each vertex at elevation "a", find shortest path to E
+            var stepsInEachPath = new List<int>();
+            foreach (var v in a)
+            {
+
+                // Creating the observer
+                var o = new VertexPredecessorRecorderObserver<int, Edge<int>>();
+
+                // Compute and record shortest paths
+                using (o.Attach(dijkstra))
+                {
+                    dijkstra.Compute(v);
+                }
+
+                // what answer did it find?  Add to list.
+                // vis can create all the shortest path in the graph
+                if (o.TryGetPath(targetCity, out IEnumerable<Edge<int>> pth))
+                {
+                    stepsInEachPath.Add(pth.Count());
+                    Console.WriteLine($"Computed vertex ID {v} value {pth.Count()}");
+                    //foreach (Edge<int> edge in pth)
+                    //{
+                    //    Console.WriteLine(edge);
+                    //}
+                }
+            }
+
+            var answer2 = stepsInEachPath.Min();
+
+            Console.WriteLine("Day 12 Part 2");
+            Console.WriteLine("What is the fewest steps required to move starting from any square with elevation a");
+            Console.WriteLine("to the location that should get the best signal?");
+            Console.WriteLine($"{answer2}\n\n");
+
 
             // Display run time and exit
             stopwatch.Stop();
@@ -280,4 +320,6 @@ namespace advent_of_code_2022
         }
     }
 }
+
+// P1 394
 
