@@ -15,7 +15,7 @@ namespace advent_of_code_2022
 
             // data file
             var df = "dayXX-test.txt";
-            //var df = "day-XX-input.txt";
+            //var df = "dayXX-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
