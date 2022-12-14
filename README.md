@@ -26,7 +26,7 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 11. Day 11:
 12. Day 12:  Hill Climbing Algorithm
 13. Day 13:
-14. Day 14:
+14. Day 14:  Regolith Reservoir
 
 
 ## Notes
