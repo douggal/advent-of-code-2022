@@ -75,7 +75,7 @@ namespace advent_of_code_2022
             // 2 = sand unit
 
             // estimate size at 1024^2 cells
-            var sm = new SparseMatrix<int>(1024, 1024);
+            var sm = new SparseMatrix<int>(520, 10);
 
             // load the sparse matrix, sm
             while (input.Count > 0)
@@ -100,42 +100,58 @@ namespace advent_of_code_2022
                     if (p.A.Item2 == p.B.Item2)
                     {
                         // horizontal line of rocks
+                        var y = p.A.Item2;
                         if (p.A.Item1 <= p.B.Item1)
                         {
-                            for (int x = p.A.Item1; x < p.B.Item1; x++)
+                            for (int x = p.A.Item1; x <= p.B.Item1; x++)
                             {
-                                sm[x, p.A.Item2] = 2;
+                                sm[x, y] = 2;
                             }
                         }
                         else
                         {
-                            for (int x = p.B.Item1; x < p.A.Item1; x++)
+                            for (int x = p.B.Item1; x <= p.A.Item1; x++)
                             {
-                                sm[x, p.A.Item2] = 2;
+                                sm[x, y] = 2;
                             }
                         }
                     }
                     else  // (p.A.Item1 == p.B.Item1)
                     {
                         // vertical line of rocks
+                        var x = p.A.Item1;
                         if (p.A.Item2 <= p.B.Item2)
                         {
-                            for (int y = p.A.Item2; y < p.B.Item2; y++)
+                            for (int y = p.A.Item2; y <= p.B.Item2; y++)
                             {
-                                sm[p.A.Item2, y] = 2;
+                                sm[x, y] = 2;
                             }
                         }
                         else
                         {
-                            for (int y = p.B.Item2; y < p.A.Item2; y++)
+                            for (int y = p.B.Item2; y <= p.A.Item2; y++)
                             {
-                                sm[p.A.Item2, y] = 2;
+                                sm[x, y] = 2;
                             }
                         }
                     }
                 }
             }
             var z = 0;
+
+            // debug: visualize the sm
+            // Assert:  known cell has value of 2
+            Console.WriteLine($"Assert: (498,5) == 2 {sm[498, 5] == 2}");
+            Console.WriteLine($"Assert: (500,9) == 2 {sm[500, 9] == 2}");
+            for (int y = 0; y < sm.Height; y++)
+            {
+                for (int x = 490; x < sm.Width; x++)
+                {
+                    if (x==500 && y==0) Console.Write("+");
+                    else Console.Write(sm[x,y]==0 ? "." : sm[x,y].ToString());
+                }
+                Console.WriteLine();
+            }
 
 
             var answer = 0;
@@ -202,13 +218,5 @@ namespace advent_of_code_2022
             }
         }
     }
-
-    public static MakeRange(int st, int end)
-    {
-
-
-        return Enumerable.Range(st, range);
-    }
-
 
 }
