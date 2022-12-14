@@ -108,3 +108,15 @@ Model the data as a digraph in a Dictionary<int, int[]> and use QuikGraph
 to solve for shortest path.  Almost had a quick win.  I had errors in building the
 graph and took a while to find them all and fix.
 
+### Day 14
+
+I'm going to represent the two-dimensional vertical slice the
+scan produces as a sparse matrix.  Googling around to see if .NET has a
+built-in sparse matrix type in the BCL (it doesn't) I found a simple implementation on Stackoverflow.com
+which I borrow here.  Should reduce the problem
+to loading of data then calling IsEmptyCell() method to test each unit of sand as it falls
+thru the gird at each point an handling each case.
+[Ref:](https://stackoverflow.com/questions/756329/best-way-to-store-a-sparse-matrix-in-net)
+
+
+
