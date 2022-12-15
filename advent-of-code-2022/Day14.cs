@@ -15,8 +15,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 14: Regolith Reservoir ---");
 
             // data file
-            var df = "day14-test.txt";
-            //var df = "day14-input.txt";
+            //var df = "day14-test.txt";
+            var df = "day14-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -75,7 +75,7 @@ namespace advent_of_code_2022
             // 1 = sand unit
 
             // estimate size at 1024^2 cells
-            var sm = new SparseMatrix<int>(520, 10);
+            var sm = new SparseMatrix<int>(1024, 1024);
 
             // load the sparse matrix, sm
             while (input.Count > 0)
@@ -151,7 +151,7 @@ namespace advent_of_code_2022
             // Drop a sand unit
             // Let it fall thru the system
             // Until it either falls towards infinity or stops moving
-            var range = Enumerable.Range(0, 100);
+            var range = Enumerable.Range(0, 10000000);
             foreach (var d in range)
             {
                 // drop sand unit
@@ -194,7 +194,7 @@ namespace advent_of_code_2022
             // print sparse matrix
             foreach (var y in Enumerable.Range(0, sm.Height))
             {
-                foreach (var x in Enumerable.Range(490, 50))
+                foreach (var x in Enumerable.Range(0, 1024))
                 {
                     if (x == 500 && y == 0) Console.Write("+");
                     else Console.Write(sm[x, y] == 0 ? "." : sm[x, y].ToString());
@@ -206,6 +206,7 @@ namespace advent_of_code_2022
 
         private static bool DropSandUnit(ref SparseMatrix<int> sm, int x, int y)
         {
+            // TODO: needs clean up - could be recursive?  tail recursive?
 
             if (y >= sm.Height) 
             {
@@ -249,7 +250,7 @@ namespace advent_of_code_2022
             } while (!done);
 
             sm[newx, newy] = 1; // sand unit is at rest
-            PrintSM(sm);
+            //PrintSM(sm);
             return false;
         }
     }
@@ -300,3 +301,5 @@ namespace advent_of_code_2022
     }
 
 }
+
+// P1 897
