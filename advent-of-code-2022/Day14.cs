@@ -15,8 +15,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 14: Regolith Reservoir ---");
 
             // data file
-            //var df = "day14-test.txt";
-            var df = "day14-input.txt";
+            var df = "day14-test.txt";
+            //var df = "day14-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -76,6 +76,8 @@ namespace advent_of_code_2022
 
             // estimate size at 1024^2 cells
             var sm = new SparseMatrix<int>(1024, 1024);
+            var highx = int.MinValue;
+            var highy = int.MinValue;
 
             // load the sparse matrix, sm
             while (input.Count > 0)
@@ -135,6 +137,10 @@ namespace advent_of_code_2022
                             }
                         }
                     }
+                    if (p.A.Item1 > highx) highx = p.A.Item1;
+                    if (p.B.Item1 > highx) highx = p.B.Item1;
+                    if (p.A.Item2 > highy) highy = p.A.Item2;
+                    if (p.B.Item2 > highy) highy = p.B.Item2;
                 }
             }
 
@@ -152,24 +158,24 @@ namespace advent_of_code_2022
             // Let it fall thru the system
             // Until it either falls towards infinity or stops moving
             var range = Enumerable.Range(0, 10000000);
-            foreach (var d in range)
-            {
-                // drop sand unit
-                bool end = DropSandUnit(ref sm, 500, 0);
+            //foreach (var d in range)
+            //{
+            //    // drop sand unit
+            //    bool end = DropSandUnit(ref sm, 500, 0, 1024);
 
-                // if is infinity then done?
-                // I think so, there's no randomness so once
-                // one grain falls to infinity all after will do same.
+            //    // if is infinity then done?
+            //    // I think so, there's no randomness so once
+            //    // one grain falls to infinity all after will do same.
 
-                if (end)
-                {
-                    answer = d;
-                    break;
-                }
+            //    if (end)
+            //    {
+            //        answer = d;   // How many units BEFORE runs to infinity?
+            //        break;
+            //    }
 
-            }
+            //}
 
-            PrintSM(sm);
+            //PrintSM(sm);
 
             Console.WriteLine("Day 14 Part 1");
             Console.WriteLine("Using your scan, simulate the falling sand.");
@@ -178,8 +184,45 @@ namespace advent_of_code_2022
 
 
             // Part Two
-            // TODO
-            Console.WriteLine("Day 14 Part 2  [TBD]");
+
+            // add the floor, a horizontal line of rocks
+            for (int x = 0; x <=sm.Width; x++)
+            {
+                sm[x, highy+2] = 2;
+            }
+
+
+
+            var answer2 = 0;
+            var done = false;
+            var ctr = 0;
+            do
+            {
+                // drop sand unit
+                ctr += 1;
+                bool end = DropSandUnit(ref sm, 500, 0);
+
+                // if is infinity then done?
+                // I think so, there's no randomness so once
+                // one grain falls to infinity all after will do same.
+
+                if (end)
+                {
+                    answer2 = ctr-1;
+                    break;
+                }
+            } while (!done);
+
+            //PrintSM(sm);
+
+
+            Console.WriteLine("Day 14 Part 2");
+            Console.WriteLine("Using your scan, simulate the falling sand until the source of the sand becomes blocked.");
+            Console.WriteLine("How many units of sand come to rest?");
+            Console.WriteLine($"{answer2}");
+
+
+
 
             // Display run time and exit
             stopwatch.Stop();
