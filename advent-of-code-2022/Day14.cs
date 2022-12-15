@@ -71,8 +71,8 @@ namespace advent_of_code_2022
             // Ref:  https://stackoverflow.com/questions/756329/best-way-to-store-a-sparse-matrix-in-net
 
             // 0 = empty space
-            // 1 = rock
-            // 2 = sand unit
+            // 2 = rock
+            // 1 = sand unit
 
             // estimate size at 1024^2 cells
             var sm = new SparseMatrix<int>(520, 10);
@@ -141,18 +141,30 @@ namespace advent_of_code_2022
 
             // debug: visualize the sm
             // Assert:  known cell has value of 2
-            Console.WriteLine($"Assert: (498,5) == 2 {sm[498, 5] == 2}");
-            Console.WriteLine($"Assert: (500,9) == 2 {sm[500, 9] == 2}");
-            for (int y = 0; y < sm.Height; y++)
+            //Console.WriteLine($"Assert: (498,5) == 2 {sm[498, 5] == 2}");
+            //Console.WriteLine($"Assert: (500,9) == 2 {sm[500, 9] == 2}");
+            //PrintSM(sm);
+
+            // Drop a sand unit
+            // Let it fall thru the system
+            // Until it either falls towards infinity or stops moving
+            var range = Enumerable.Range(0, 100);
+            foreach (var d in range)
             {
-                for (int x = 490; x < sm.Width; x++)
+                // drop sand unit
+                Tuple<int, int> end = DropSandUnit(sm, 500, 0);
+
+                // where did it stop?
+                // if is infinity then done?
+
+                if (end.Item2 == int.MaxValue)
                 {
-                    if (x==500 && y==0) Console.Write("+");
-                    else Console.Write(sm[x,y]==0 ? "." : sm[x,y].ToString());
+                    ;  // ?
                 }
-                Console.WriteLine();
+
             }
 
+            PrintSM(sm);
 
             var answer = 0;
             Console.WriteLine("Day 14 Part 1");
@@ -172,6 +184,47 @@ namespace advent_of_code_2022
             Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
             //Console.ReadKey();
         }
+
+        private static void PrintSM(SparseMatrix<int> sm)
+        {
+            // print sparse matrix
+            foreach (var y in Enumerable.Range(0, sm.Height))
+            {
+                foreach (var x in Enumerable.Range(490, 50))
+                {
+                    if (x == 500 && y == 0) Console.Write("+");
+                    else Console.Write(sm[x, y] == 0 ? "." : sm[x, y].ToString());
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private static Tuple<int, int> DropSandUnit(SparseMatrix<int> sm, int x, int y)
+        {
+            // tail recursive?
+
+            if (y > sm.Height) // infinity
+            {
+                return Tuple.Create(x, int.MaxValue);
+            }
+            else if (sm.IsCellEmpty(x, y + 1))
+            {
+                DropSandUnit(sm, x, y + 1); // can go down 1? keep falling
+            }
+            else if (sm.IsCellEmpty(x - 1, y))
+            {
+                DropSandUnit(sm, x - 1, y + 1); // can go down 1 and left 1? keep falling
+            }
+            else if (sm.IsCellEmpty(x + 1, y + 1))
+            {
+                DropSandUnit(sm, x + 1, y + 1); // can go down 1 and right 1? keep falling
+            }
+            else
+                ; // sand unit is at rest?
+            sm[x, y] = 1;
+            return Tuple.Create(x, y);
+        }
+
     }
 
     /// <summary>
