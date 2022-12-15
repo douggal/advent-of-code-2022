@@ -137,13 +137,16 @@ namespace advent_of_code_2022
                     }
                 }
             }
-            var z = 0;
 
             // debug: visualize the sm
             // Assert:  known cell has value of 2
             //Console.WriteLine($"Assert: (498,5) == 2 {sm[498, 5] == 2}");
             //Console.WriteLine($"Assert: (500,9) == 2 {sm[500, 9] == 2}");
             //PrintSM(sm);
+
+
+            // run simulation and find answer
+            var answer = 0;
 
             // Drop a sand unit
             // Let it fall thru the system
@@ -152,21 +155,22 @@ namespace advent_of_code_2022
             foreach (var d in range)
             {
                 // drop sand unit
-                Tuple<int, int> end = DropSandUnit(sm, 500, 0);
+                bool end = DropSandUnit(ref sm, 500, 0);
 
-                // where did it stop?
                 // if is infinity then done?
+                // I think so, there's no randomness so once
+                // one grain falls to infinity all after will do same.
 
-                if (end.Item2 == int.MaxValue)
+                if (end)
                 {
-                    ;  // ?
+                    answer = d;
+                    break;
                 }
 
             }
 
             PrintSM(sm);
 
-            var answer = 0;
             Console.WriteLine("Day 14 Part 1");
             Console.WriteLine("Using your scan, simulate the falling sand.");
             Console.WriteLine("How many units of sand come to rest before sand starts flowing into the abyss below?");
@@ -197,38 +201,61 @@ namespace advent_of_code_2022
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
 
-        private static Tuple<int, int> DropSandUnit(SparseMatrix<int> sm, int x, int y)
+        private static bool DropSandUnit(ref SparseMatrix<int> sm, int x, int y)
         {
-            // tail recursive?
 
-            if (y > sm.Height) // infinity
+            if (y >= sm.Height) 
             {
-                return Tuple.Create(x, int.MaxValue);
+                // infinity
+                return true;
             }
-            else if (sm.IsCellEmpty(x, y + 1))
+            else if (!sm.IsCellEmpty(x, y))
             {
-                DropSandUnit(sm, x, y + 1); // can go down 1? keep falling
+                // full
+                return true;
             }
-            else if (sm.IsCellEmpty(x - 1, y))
+
+            var newx = x;
+            var newy = y;
+
+            var done = false;
+            do
             {
-                DropSandUnit(sm, x - 1, y + 1); // can go down 1 and left 1? keep falling
-            }
-            else if (sm.IsCellEmpty(x + 1, y + 1))
-            {
-                DropSandUnit(sm, x + 1, y + 1); // can go down 1 and right 1? keep falling
-            }
-            else
-                ; // sand unit is at rest?
-            sm[x, y] = 1;
-            return Tuple.Create(x, y);
+                if (newx >= sm.Width || newx < 0 || newy >= sm.Height)
+                {
+                    // infinity - off the grid on or more directions
+                    return true;
+                }
+                else if (sm.IsCellEmpty(newx, newy + 1)) // can go down 1? keep falling
+                {
+                    newy += 1;
+                }
+                else if (sm.IsCellEmpty(newx - 1, newy + 1)) // can go down 1 and left 1? keep falling
+                {
+                    newx -= 1;
+                    newy += 1;
+                }
+                else if (sm.IsCellEmpty(newx + 1, newy + 1))
+                {
+                    newx += 1;
+                    newy += 1;
+                }
+                else
+                    done = true;
+
+            } while (!done);
+
+            sm[newx, newy] = 1; // sand unit is at rest
+            PrintSM(sm);
+            return false;
         }
-
     }
 
     /// <summary>
-    /// Sparse matrix class
+    /// Simple Sparse Matrix class
     /// Original code borrowed from Stackoverflow.com reply by "Erich Mirabal"
     /// https://stackoverflow.com/users/79294/erich-mirabal
     /// Ref:  https://stackoverflow.com/questions/756329/best-way-to-store-a-sparse-matrix-in-net
@@ -252,7 +279,7 @@ namespace advent_of_code_2022
         public bool IsCellEmpty(int row, int col)
         {
             long index = row * Width + col;
-            return _cells.ContainsKey(index);
+            return !_cells.ContainsKey(index);
         }
 
         public T this[int row, int col]
