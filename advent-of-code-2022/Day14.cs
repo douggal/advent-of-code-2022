@@ -15,8 +15,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 14: Regolith Reservoir ---");
 
             // data file
-            var df = "day14-test.txt";
-            //var df = "day14-input.txt";
+            //var df = "day14-test.txt";
+            var df = "day14-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -346,3 +346,5 @@ namespace advent_of_code_2022
 }
 
 // P1 897
+// P2 26683
+
