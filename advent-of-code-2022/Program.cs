@@ -11,4 +11,5 @@ Console.WriteLine("Advent of Code 2022!");
 //Day06.RunDay06();
 //Day07.RunDay07();
 //Day08.RunDay08();
-Day12.RunDay12();
+//Day12.RunDay12();
+Day14.RunDay14();
