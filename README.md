@@ -27,6 +27,7 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 12. Day 12:  Hill Climbing Algorithm
 13. Day 13:
 14. Day 14:  Regolith Reservoir
+15. Day 15:  Beacon Exclusion Zone
 
 
 ## Notes
