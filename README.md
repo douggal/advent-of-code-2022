@@ -119,5 +119,7 @@ to loading of data then calling IsEmptyCell() method to test each unit of sand a
 thru the gird at each point an handling each case.
 [Ref:](https://stackoverflow.com/questions/756329/best-way-to-store-a-sparse-matrix-in-net)
 
+### Day 15
 
+Part 1 was not too hard once I figured out how to solve it.
 

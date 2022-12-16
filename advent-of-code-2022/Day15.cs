@@ -67,6 +67,9 @@ namespace advent_of_code_2022
             // Line of Interest
             var LOI = 10;
 
+            // List of x values of ccords on Line of Interest which are covered by a sensor
+            List<int> cannotContain = new();
+
             // List of sensors
             // Tuple (p1, p2, m) = index is sensor ID, p1 = sensor loc, p2 = beacon loc, m = distance
             var sl = new List<((int, int), (int, int), int)>();
@@ -107,9 +110,26 @@ namespace advent_of_code_2022
                 }
             }
 
+            // Find all the points in each sensor-beacon pairing that
+            // overlap / touch the LOI.
+            foreach (var i in slToCheck)
+            {
+                var s = sl[i];
+                var bottomY = s.Item1.Item2 + s.Item3;  // Y + manhattan (highest Y value)
+                var topY = s.Item1.Item2 - s.Item3;   // Y - manhattan (lowest Y value)
+
+                // TODO: sweep line down from top to bottom (low to high Y)
+                // if coord(s) fall on LOI, save them in List
+                for (int j = topY; j <= bottomY; j++)
+                {
+                    if (j == LOI)
+                    {
+                        // count points overlapping LOI
+
+                    }
+                }
+            }
             var z = 0;
-
-
 
 
             var answer = 0;
