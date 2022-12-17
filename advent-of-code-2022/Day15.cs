@@ -78,7 +78,7 @@ namespace advent_of_code_2022
             // Tuple (p2)
             var bs = new List<(int, int)>();
 
-            // split string on regex
+            // split string on regex and use capture groups to pull out numbers
             // Sensor at x=2, y=18: closest beacon is at x=-2, y=15
             string pat = @".*(Sensor at x=)([-]{0,1}\d+), y=([-]{0,1}\d+): closest beacon is at x=([-]{0,1}\d+), y=([-]{0,1}\d+)";
             Regex r = new Regex(pat, RegexOptions.IgnoreCase);
@@ -128,7 +128,8 @@ namespace advent_of_code_2022
                 // N of squares to count off
                 // on either side of where the Y coord crosses the area
                 // covered by this sensor-beacon pairiing
-                var N = int.Abs(s.Item1.Item2 - LOI);
+                // diamond shape, take Abs values
+                var N = int.Abs(s.Item3 - int.Abs(LOI -s.Item1.Item2));
 
                 // add X coords to cannot contain list:
                 // the X coord of sensor beacon + the X coords on either side 
@@ -138,7 +139,7 @@ namespace advent_of_code_2022
                     cannotContain.Add(s.Item1.Item1);
                 for (int k = 0; k <= N; k++)
                 {
-                    var x1 = s.Item1.Item1 + k;
+                    var x1 = s.Item1.Item1 - k;
                     if (!bs.Contains((x1, LOI)))
                         cannotContain.Add(x1);
 
@@ -149,6 +150,11 @@ namespace advent_of_code_2022
             }
 
             // number of X coords cover by some sensor-beacon pair
+            // debug:
+            cannotContain.ToList().Sort();
+            Console.WriteLine(String.Join(',',cannotContain.ToArray()));
+
+
             var answer = cannotContain.Count;
 
 
@@ -172,4 +178,4 @@ namespace advent_of_code_2022
         }
     }
 }
-
+// 2682985 too low!
