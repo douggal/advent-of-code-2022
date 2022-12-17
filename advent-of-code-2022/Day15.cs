@@ -165,8 +165,18 @@ namespace advent_of_code_2022
 
 
             // Part Two
-            // TODO
-            Console.WriteLine("Day 15 Part 2  [TBD]");
+            var lo = 0;
+            var hi = 20;
+            // var hi = 4000000;
+
+            // tuning frequency, which can be found by multiplying its x coordinate by 4000000
+            // and then adding its y coordinate
+            var tf = 0;
+
+            Console.WriteLine("Day 15 Part 2");
+            Console.WriteLine("Find the only possible position for the distress beacon.");
+            Console.WriteLine("What is its tuning frequency?");
+            Console.WriteLine($"{tf}");
 
             // Display run time and exit
             stopwatch.Stop();
@@ -178,3 +188,5 @@ namespace advent_of_code_2022
     }
 }
 // 2682985 too low!
+// 5367037 p1
+
