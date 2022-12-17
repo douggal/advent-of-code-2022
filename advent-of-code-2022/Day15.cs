@@ -68,11 +68,15 @@ namespace advent_of_code_2022
             var LOI = 10;
 
             // List of x values of ccords on Line of Interest which are covered by a sensor
-            List<int> cannotContain = new();
+            HashSet<int> cannotContain = new();
 
             // List of sensors
             // Tuple (p1, p2, m) = index is sensor ID, p1 = sensor loc, p2 = beacon loc, m = distance
             var sl = new List<((int, int), (int, int), int)>();
+
+            // List of beacons, the "b"s for short
+            // Tuple (p2)
+            var bs = new List<(int, int)>();
 
             // split string on regex
             // Sensor at x=2, y=18: closest beacon is at x=-2, y=15
@@ -93,6 +97,7 @@ namespace advent_of_code_2022
 
                 var man = int.Abs(p1.Item1 - p2.Item1) + int.Abs(p1.Item2 - p2.Item2);
                 sl.Add((p1, p2, man));
+                bs.Add(p2);
             }
 
             // Eliminate any points whose Manhattan dist to beacon puts them
@@ -115,24 +120,39 @@ namespace advent_of_code_2022
             foreach (var i in slToCheck)
             {
                 var s = sl[i];
-                var bottomY = s.Item1.Item2 + s.Item3;  // Y + manhattan (highest Y value)
-                var topY = s.Item1.Item2 - s.Item3;   // Y - manhattan (lowest Y value)
 
-                // TODO: sweep line down from top to bottom (low to high Y)
-                // if coord(s) fall on LOI, save them in List
-                for (int j = topY; j <= bottomY; j++)
+                // count points overlapping LOI
+                var top = s.Item1.Item2 - s.Item3;  // Y - m top of the diamond
+                var bot = s.Item1.Item2 + s.Item3;  // Y + m bottom of the diamond
+
+                // N of squares to count off
+                // on either side of where the Y coord crosses the area
+                // covered by this sensor-beacon pairiing
+                var N = int.Abs(s.Item1.Item2 - LOI);
+
+                // add X coords to cannot contain list:
+                // the X coord of sensor beacon + the X coords on either side 
+                // the line the LOI cuts thru the sensor-beacon covered area:
+                // AND this spot doesn't have a beacon in it.
+                if (!bs.Contains( (s.Item1.Item1, LOI) ) )
+                    cannotContain.Add(s.Item1.Item1);
+                for (int k = 0; k <= N; k++)
                 {
-                    if (j == LOI)
-                    {
-                        // count points overlapping LOI
+                    var x1 = s.Item1.Item1 + k;
+                    if (!bs.Contains((x1, LOI)))
+                        cannotContain.Add(x1);
 
-                    }
+                    var x2 = s.Item1.Item1 + k;
+                    if (!bs.Contains((x2, LOI)))
+                        cannotContain.Add(x2);
                 }
             }
-            var z = 0;
+
+            // number of X coords cover by some sensor-beacon pair
+            var answer = cannotContain.Count;
 
 
-            var answer = 0;
+
             Console.WriteLine("Day 15 Part 1");
             Console.WriteLine("Consult the report from the sensors you just deployed.");
             Console.WriteLine("In the row where y=2000000, how many positions cannot contain a beacon?");
