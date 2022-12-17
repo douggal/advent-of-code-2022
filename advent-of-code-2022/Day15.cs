@@ -17,8 +17,12 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 15: Beacon Exclusion Zone ---");
 
             // data file
-            var df = "day15-test.txt";
-            //var df = "day15-input.txt";
+            //var df = "day15-test.txt";
+            var df = "day15-input.txt";
+
+            // Line of Interest
+            //var LOI = 10;
+            var LOI = 2000000;
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -63,9 +67,6 @@ namespace advent_of_code_2022
 
 
             // Part One
-
-            // Line of Interest
-            var LOI = 10;
 
             // List of x values of ccords on Line of Interest which are covered by a sensor
             HashSet<int> cannotContain = new();
@@ -135,8 +136,6 @@ namespace advent_of_code_2022
                 // the X coord of sensor beacon + the X coords on either side 
                 // the line the LOI cuts thru the sensor-beacon covered area:
                 // AND this spot doesn't have a beacon in it.
-                if (!bs.Contains( (s.Item1.Item1, LOI) ) )
-                    cannotContain.Add(s.Item1.Item1);
                 for (int k = 0; k <= N; k++)
                 {
                     var x1 = s.Item1.Item1 - k;
@@ -151,8 +150,8 @@ namespace advent_of_code_2022
 
             // number of X coords cover by some sensor-beacon pair
             // debug:
-            cannotContain.ToList().Sort();
-            Console.WriteLine(String.Join(',',cannotContain.ToArray()));
+            //cannotContain.ToList().Sort();
+            //Console.WriteLine(String.Join(',',cannotContain.ToArray()));
 
 
             var answer = cannotContain.Count;
