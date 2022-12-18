@@ -80,9 +80,9 @@ namespace advent_of_code_2022
                 var subtractThisMany = 0;
                 foreach (var cube in grid)
                 {
-                    if ((nc.Item1 == cube.Item1 && nc.Item2 == cube.Item2)
-                        || (nc.Item1 == cube.Item1 && nc.Item3 == cube.Item3)
-                        || (nc.Item2 == cube.Item2 && nc.Item3 == cube.Item3))
+                    if ((nc.Item1 == cube.Item1 && nc.Item2 == cube.Item2 && int.Abs(nc.Item3 - cube.Item3) == 1)
+                        || (nc.Item1 == cube.Item1 && nc.Item3 == cube.Item3 && int.Abs(nc.Item2 - cube.Item2) == 1)
+                        || (nc.Item2 == cube.Item2 && nc.Item3 == cube.Item3 && int.Abs(nc.Item1 - cube.Item1) == 1))
                     {
                         subtractThisMany += 2;
                     }
