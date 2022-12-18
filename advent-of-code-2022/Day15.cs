@@ -17,12 +17,12 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 15: Beacon Exclusion Zone ---");
 
             // data file
-            //var df = "day15-test.txt";
-            var df = "day15-input.txt";
+            var df = "day15-test.txt";
+            //var df = "day15-input.txt";
 
             // Line of Interest
-            //var LOI = 10;
-            var LOI = 2000000;
+            var LOI = 10;
+            //var LOI = 2000000;
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -165,9 +165,19 @@ namespace advent_of_code_2022
 
 
             // Part Two
+
             var lo = 0;
-            var hi = 20;
+            var cnt = 20;
             // var hi = 4000000;
+
+            foreach (var q in Enumerable.Range(lo, cnt))
+            {
+                var result = Test(sl, bs, q);
+                if (result.Count > 0)
+                {
+                    Console.WriteLine("Winner! " + string.Join(',', result.ToList()));
+                }
+            }
 
             // tuning frequency, which can be found by multiplying its x coordinate by 4000000
             // and then adding its y coordinate
@@ -185,6 +195,67 @@ namespace advent_of_code_2022
             Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
             //Console.ReadKey();
         }
+
+
+        public static HashSet<int> Test(List<((int, int), (int, int), int)> sl, List<(int, int)> bs, int LOI)
+        {
+            // List of x values of ccords on Line of Interest which are covered by a sensor
+            HashSet<int> cannotContain = new();
+
+            // Eliminate any points whose Manhattan dist to beacon puts them
+            // completely above (Y axis) or below the Line of Interest
+            // Check only those sensors that overlap LOI
+            var slToCheck = new List<int>();
+            foreach (var s in sl.Select((value, i) => new { i, value }))
+            {
+                var bottomY = s.value.Item1.Item2 + s.value.Item3;  // Y + manhattan
+                var topY = s.value.Item1.Item2 - s.value.Item3;   // Y - manhattan
+
+                if (bottomY >= LOI && topY <= LOI)
+                {
+                    slToCheck.Add(s.i);
+                }
+            }
+
+            // Find all the points in each sensor-beacon pairing that
+            // overlap / touch the LOI.
+            foreach (var i in slToCheck)
+            {
+                var s = sl[i];
+
+                // count points overlapping LOI
+                var top = s.Item1.Item2 - s.Item3;  // Y - m top of the diamond
+                var bot = s.Item1.Item2 + s.Item3;  // Y + m bottom of the diamond
+
+                // N of squares to count off
+                // on either side of where the Y coord crosses the area
+                // covered by this sensor-beacon pairiing
+                // diamond shape, take Abs values
+                var N = int.Abs(s.Item3 - int.Abs(LOI - s.Item1.Item2));
+
+                // add X coords to cannot contain list:
+                // the X coord of sensor beacon + the X coords on either side 
+                // the line the LOI cuts thru the sensor-beacon covered area:
+                // AND this spot doesn't have a beacon in it.
+                for (int k = 0; k <= N; k++)
+                {
+                    var x1 = s.Item1.Item1 - k;
+                    if (x1 > 0 && !bs.Contains((x1, LOI)))
+                        cannotContain.Add(x1);
+
+                    var x2 = s.Item1.Item1 + k;
+                    if (x2 <= 20 && !bs.Contains((x2, LOI)))
+                        cannotContain.Add(x2);
+                }
+            }
+            HashSet<int> possible = new();
+            possible.UnionWith(Enumerable.Range(0, 20));
+            possible.IntersectWith(cannotContain);
+            return possible;
+        }
+
+
+
     }
 }
 // 2682985 too low!
