@@ -14,11 +14,11 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 18: Boiling Boulders ---");
 
             // data file
-            var df = "day18-test.txt";
-            //var df = "day18-input.txt";
+            //var df = "day18-test.txt";
+            var df = "day18-input.txt";
 
             // read in data
-            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
+            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
             var input = new Queue<String>();
             String? line;
             try
@@ -69,12 +69,13 @@ namespace advent_of_code_2022
 
             List<(int, int, int)> grid = new();
             var exposedSides = 0;
+            var countAllSidesCovered = 0;
 
             while (input.Count > 0)
             {
                 // get a new cube, nc
                 var li = input.Dequeue().Split(',').ToArray();
-                var nc = ( int.Parse(li[0]), int.Parse(li[1]), int.Parse(li[2]) );
+                var nc = (int.Parse(li[0]), int.Parse(li[1]), int.Parse(li[2]));
 
                 // each cube adds 6 sides minus 2 sides for each cube it abuts
                 var subtractThisMany = 0;
@@ -84,21 +85,59 @@ namespace advent_of_code_2022
                         || (nc.Item1 == cube.Item1 && nc.Item3 == cube.Item3 && int.Abs(nc.Item2 - cube.Item2) == 1)
                         || (nc.Item2 == cube.Item2 && nc.Item3 == cube.Item3 && int.Abs(nc.Item1 - cube.Item1) == 1))
                     {
-                        subtractThisMany += 2;
+                        subtractThisMany += 2;  // two sides - one for each cube - no longer exposed
                     }
                 }
+                if (subtractThisMany == nbrSides * 2)
+                    countAllSidesCovered += 1;
                 grid.Add(nc);
                 exposedSides += (nbrSides - subtractThisMany);
             }
 
             Console.WriteLine("Day 18 Part 1");
-            System.Console.WriteLine("What is the surface area of your scanned lava droplet?");
-            System.Console.WriteLine($"{exposedSides}\n\n");
+            Console.WriteLine("What is the surface area of your scanned lava droplet?");
+            Console.WriteLine($"{exposedSides}\n\n");
 
 
             // Part Two
-            // TODO
-            Console.WriteLine("Day 18 Part 2  [TBD]");
+
+            // Scan whole object and count exposed sides
+
+            // max possible sides exposed
+            var wholeObject = grid.Count * nbrSides;
+            var alreadyCounted = new List<(int, int, int)>();
+
+            foreach (var cube in grid)
+            {
+                alreadyCounted.Add(cube);
+                // does it have one or more sides exposed?
+                // compare it to it's neighbors - if it's covered by another remove side
+                foreach (var cube2 in grid)
+                {
+                    // look at each side  - is it covered by another cube?
+                    if (!alreadyCounted.Contains(cube2))
+                    {
+                        if (cube.Item1 == cube2.Item1 && cube.Item2 == cube2.Item2 && cube.Item3 - cube2.Item3 == 1)
+                            wholeObject -= 2;
+                        if (cube.Item1 == cube2.Item1 && cube.Item3 == cube2.Item3 && cube.Item2 - cube2.Item2 == 1)
+                            wholeObject -= 2;
+                        if (cube.Item2 == cube2.Item2 && cube.Item3 == cube2.Item3 && cube.Item1 - cube2.Item1 == 1)
+                            wholeObject -= 2;
+
+                        if (cube.Item1 == cube2.Item1 && cube.Item2 == cube2.Item2 && cube.Item3 - cube2.Item3 == -1)
+                            wholeObject -= 2;
+                        if (cube.Item1 == cube2.Item1 && cube.Item3 == cube2.Item3 && cube.Item2 - cube2.Item2 == -1)
+                            wholeObject -= 2;
+                        if (cube.Item2 == cube2.Item2 && cube.Item3 == cube2.Item3 && cube.Item1 - cube2.Item1 == -1)
+                            wholeObject -= 2;
+                    }
+                }
+            }
+
+
+            Console.WriteLine("Day 18 Part 2");
+            Console.WriteLine("What is the exterior surface area of your scanned lava droplet?");
+            Console.WriteLine($"{wholeObject}");
 
             // Display run time and exit
             stopwatch.Stop();
@@ -109,4 +148,6 @@ namespace advent_of_code_2022
         }
     }
 }
+// 4310
+// 3823 too high!
 
