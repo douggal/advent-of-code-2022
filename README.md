@@ -21,7 +21,7 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 6. Day  6:  Tuning Trouble
 7. Day  7:  No Space Left On Device
 8. Day  8:  Treetop Tree House
-9. Day  9:
+9. Day  9:  Rope Bridge - TODO
 10. Day 10:
 11. Day 11:
 12. Day 12:  Hill Climbing Algorithm
@@ -103,6 +103,9 @@ I could get the expected output.
 Answer seems to be for C# to use both and choose according to situation.
 Both worked together well for this problem.
 
+### Day 9
+
+TODO
 
 ### Day 12
 
