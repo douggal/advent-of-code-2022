@@ -120,5 +120,9 @@ thru the gird at each point an handling each case.
 
 ### Day 18
 
+Part 1 was straightforward, and I thought Day 18 would be a softball.  But no go on part 2.
+Maybe slicing the object on x-y, x-z, and y-z axes and counting the outside edges?
+
+[Red Blob Games](https://www.redblobgames.com/) and 
 [Amit's Thoughts on Grids](https://www.redblobgames.com/grids/parts/)
 

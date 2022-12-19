@@ -101,7 +101,7 @@ namespace advent_of_code_2022
 
             // Part Two
 
-            // Scan whole object and count exposed sides
+            // no go as of 12/19/2022.  Does not appear to be an easy follow-up count.
 
             // max possible sides exposed
             var wholeObject = grid.Count * nbrSides;
