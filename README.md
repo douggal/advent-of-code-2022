@@ -27,6 +27,8 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 12. Day 12:  Hill Climbing Algorithm
 13. Day 13:
 14. Day 14:  Regolith Reservoir
+15. Day 15:  Beacon Exclusion Zone
+
 18. Day 18:  Boiling Boulders
 
 ## Notes
@@ -118,6 +120,9 @@ to loading of data then calling IsEmptyCell() method to test each unit of sand a
 thru the gird at each point an handling each case.
 [Ref:](https://stackoverflow.com/questions/756329/best-way-to-store-a-sparse-matrix-in-net)
 
+### Day 15
+
+Part 1 was not too hard once I figured out how to solve it.
 ### Day 18
 
 Part 1 was straightforward, and I thought Day 18 would be a softball.  But no go on part 2.
