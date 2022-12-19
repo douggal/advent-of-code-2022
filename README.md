@@ -21,8 +21,15 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 6. Day  6:  Tuning Trouble
 7. Day  7:  No Space Left On Device
 8. Day  8:  Treetop Tree House
-9. Day  9:  Rope Bridge
-10. Day 10:  
+9. Day  9:  Rope Bridge - TODO
+10. Day 10:
+11. Day 11:
+12. Day 12:  Hill Climbing Algorithm
+13. Day 13:
+14. Day 14:  Regolith Reservoir
+15. Day 15:  Beacon Exclusion Zone
+
+18. Day 18:  Boiling Boulders
 
 ## Notes
 
@@ -95,4 +102,35 @@ I could get the expected output.
 [When does Linq shine over a for loop?](https://stackoverflow.com/questions/37361331/how-to-iterate-a-loop-every-n-items)
 Answer seems to be for C# to use both and choose according to situation.
 Both worked together well for this problem.
+
+### Day 9
+
+TODO
+
+### Day 12
+
+Model the data as a digraph in a Dictionary<int, int[]> and use QuikGraph
+to solve for shortest path.  Almost had a quick win.  I had errors in building the
+graph and took a while to find them all and fix.
+
+### Day 14
+
+I'm going to represent the two-dimensional vertical slice the
+scan produces as a sparse matrix.  Googling around to see if .NET has a
+built-in sparse matrix type in the BCL (it doesn't) I found a simple implementation on Stackoverflow.com
+which I borrow here.  Should reduce the problem
+to loading of data then calling IsEmptyCell() method to test each unit of sand as it falls
+thru the gird at each point an handling each case.
+[Ref:](https://stackoverflow.com/questions/756329/best-way-to-store-a-sparse-matrix-in-net)
+
+### Day 15
+
+Part 1 was not too hard once I figured out how to solve it.
+### Day 18
+
+Part 1 was straightforward, and I thought Day 18 would be a softball.  But no go on part 2.
+Maybe slicing the object on x-y, x-z, and y-z axes and counting the outside edges?
+
+[Red Blob Games](https://www.redblobgames.com/) and 
+[Amit's Thoughts on Grids](https://www.redblobgames.com/grids/parts/)
 
