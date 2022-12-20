@@ -53,11 +53,38 @@ namespace advent_of_code_2022
             DateTime utcDateStart = DateTime.UtcNow;
             Stopwatch stopwatch = Stopwatch.StartNew();  // start stopwatch
             Console.WriteLine($"Start timestamp {utcDateStart.ToString("O")}");
-        
+
 
             // Part One
-            // TODO
-            Console.WriteLine("Day 20 Part 1 TBD");
+
+            // Frist thought, use a Linked List
+
+            List<int> cypherOrig = new();
+            LinkedList<int> cypherText = new();
+
+            while (input.Count > 0)
+            {
+                var li = input.Dequeue().Trim();
+                cypherOrig.Add(int.Parse(li));
+                cypherText.AddLast(int.Parse(li));
+            }
+
+            // move item in cypher text according to value in cypherOrig
+            // attach an index becaue we need to keep track which item we're on
+            foreach (var item in cypherOrig.Select((v,i) => new {i, v}))
+            {
+                // move item in cyphertext the specified amount
+
+
+            }
+
+            
+
+            var answer = 0;
+            Console.WriteLine("Day 20 Part 1");
+            Console.WriteLine("Mix your encrypted file exactly once.");
+            Console.WriteLine("What is the sum of the three numbers that form the grove coordinates?");
+            Console.WriteLine($"{answer}");
 
 
             // Part Two
