@@ -11,7 +11,8 @@ Solutions are in C# and cross platform .NET 7 framework unless otherwise noted.
 My goals for this year's AoC are to have fun, and apply
 the functional programming techniques in C# 11.  I'll make
 full use of .NET's built-in data type collections, LINQ extension methods to operate on them,
-and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library.
+for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLith/QuikGraph) graph algorithmm library,
+and for visualizations [ScottPlot and Maui.Graphics](https://swharden.com/csdv/maui.graphics/quickstart-console/).
 
 1. Day  1:  Calorie Counting
 2. Day  2:  Rock Paper Scissors
@@ -22,10 +23,10 @@ and for graph and digraph traversals the [QuikGraph](https://github.com/KeRNeLit
 7. Day  7:  No Space Left On Device
 8. Day  8:  Treetop Tree House
 9. Day  9:  Rope Bridge - TODO
-10. Day 10:
-11. Day 11:
+10. Day 10:  Todo
+11. Day 11:  Todo
 12. Day 12:  Hill Climbing Algorithm
-13. Day 13:
+13. Day 13:  Todo
 14. Day 14:  Regolith Reservoir
 15. Day 15:  Beacon Exclusion Zone
 
@@ -115,13 +116,17 @@ graph and took a while to find them all and fix.
 
 ### Day 14
 
-I'm going to represent the two-dimensional vertical slice the
-scan produces as a sparse matrix.  Googling around to see if .NET has a
-built-in sparse matrix type in the BCL (it doesn't) I found a simple implementation on Stackoverflow.com
-which I borrow here.  Should reduce the problem
-to loading of data then calling IsEmptyCell() method to test each unit of sand as it falls
-thru the gird at each point an handling each case.
+I represented the two-dimensional vertical slice the
+scan produces as a sparse matrix.  Googled around to see if .NET has a
+built-in sparse matrix type in the BCL. It doesn't, but I found a simple implementation on Stackoverflow.com
+which I borrow here.  Approach was to load data from input to set up the rock walls, and
+then call IsEmptyCell() method to test each unit of sand as it falls
+thru the gird at each point an handling each case as sand bumps into other sand and rock until it
+comes to rest (part 2) or falls into infinity (part 1).
 [Ref:](https://stackoverflow.com/questions/756329/best-way-to-store-a-sparse-matrix-in-net)
+
+C# visualizations: [Scott Plot and MS Maui.Graphics example](https://swharden.com/csdv/)
+[Maui.Graphics quick start](https://swharden.com/csdv/maui.graphics/quickstart-console/)
 
 ### Day 15
 

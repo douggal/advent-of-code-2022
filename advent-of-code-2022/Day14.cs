@@ -2,6 +2,11 @@
 using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Drawing;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Skia;
+using System.Collections;
+using System.Text.Unicode;
 
 namespace advent_of_code_2022
 {
@@ -76,6 +81,7 @@ namespace advent_of_code_2022
 
             // estimate size at 1024^2 cells
             var sm = new SparseMatrix<int>(1024, 1024);
+            var smP2 = new SparseMatrix<int>(1024, 1024);  // same as sm, copy for Pt 2
             var highx = int.MinValue;
             var highy = int.MinValue;
 
@@ -108,6 +114,7 @@ namespace advent_of_code_2022
                             for (int x = p.A.Item1; x <= p.B.Item1; x++)
                             {
                                 sm[x, y] = 2;
+                                smP2[x, y] = 2;
                             }
                         }
                         else
@@ -115,6 +122,7 @@ namespace advent_of_code_2022
                             for (int x = p.B.Item1; x <= p.A.Item1; x++)
                             {
                                 sm[x, y] = 2;
+                                smP2[x, y] = 2;
                             }
                         }
                     }
@@ -127,6 +135,7 @@ namespace advent_of_code_2022
                             for (int y = p.A.Item2; y <= p.B.Item2; y++)
                             {
                                 sm[x, y] = 2;
+                                smP2[x, y] = 2;
                             }
                         }
                         else
@@ -134,6 +143,7 @@ namespace advent_of_code_2022
                             for (int y = p.B.Item2; y <= p.A.Item2; y++)
                             {
                                 sm[x, y] = 2;
+                                smP2[x, y] = 2;
                             }
                         }
                     }
@@ -158,24 +168,28 @@ namespace advent_of_code_2022
             // Let it fall thru the system
             // Until it either falls towards infinity or stops moving
             var range = Enumerable.Range(0, 10000000);
-            //foreach (var d in range)
-            //{
-            //    // drop sand unit
-            //    bool end = DropSandUnit(ref sm, 500, 0, 1024);
+            foreach (var d in range)
+            {
+                // drop sand unit
+                bool end = DropSandUnit(ref sm, 500, 0);
 
-            //    // if is infinity then done?
-            //    // I think so, there's no randomness so once
-            //    // one grain falls to infinity all after will do same.
+                // if is infinity then done?
+                // I think so, there's no randomness so once
+                // one grain falls to infinity all after will do same.
 
-            //    if (end)
-            //    {
-            //        answer = d;   // How many units BEFORE runs to infinity?
-            //        break;
-            //    }
+                if (end)
+                {
+                    answer = d;   // How many units BEFORE runs to infinity?
+                    break;
+                }
 
-            //}
+            }
 
+            //debug:
             //PrintSM(sm);
+
+            // Visualization of Part 1:
+            VisualizeRegolith(sm, "AoC22-D14-Regolith-Reservoir.png");
 
             Console.WriteLine("Day 14 Part 1");
             Console.WriteLine("Using your scan, simulate the falling sand.");
@@ -185,13 +199,11 @@ namespace advent_of_code_2022
 
             // Part Two
 
-            // add the floor, a horizontal line of rocks
-            for (int x = 0; x <=sm.Width; x++)
+            // Add the floor, a horizontal line of rocks
+            for (int x = 0; x <= sm.Width; x++)
             {
-                sm[x, highy+2] = 2;
+                smP2[x, highy + 2] = 2;
             }
-
-
 
             var answer2 = 0;
             var done = false;
@@ -200,7 +212,7 @@ namespace advent_of_code_2022
             {
                 // drop sand unit
                 ctr += 1;
-                bool end = DropSandUnit(ref sm, 500, 0);
+                bool end = DropSandUnit(ref smP2, 500, 0);
 
                 // if is infinity then done?
                 // I think so, there's no randomness so once
@@ -208,12 +220,14 @@ namespace advent_of_code_2022
 
                 if (end)
                 {
-                    answer2 = ctr-1;
+                    answer2 = ctr - 1;
                     break;
                 }
             } while (!done);
 
             //PrintSM(sm);
+            // Visualization of Part 2:
+            VisualizeRegolith(smP2, "AoC22-D14-part2-Regolith-Reservoir.png");
 
 
             Console.WriteLine("Day 14 Part 2");
@@ -230,6 +244,52 @@ namespace advent_of_code_2022
             Console.WriteLine("Time elapsed: {0:0.0} ms", stopwatch.ElapsedMilliseconds);
             Console.WriteLine($"End timestamp {DateTime.UtcNow.ToString("O")}");
             //Console.ReadKey();
+        }
+
+        private static void VisualizeRegolith(SparseMatrix<int> sm, string fn)
+        {
+            // Visualize with Maui.Graphics - Create bitmap and save as PNG file
+            // Ref: https://swharden.com/csdv/maui.graphics/quickstart-console/
+
+            var h = 250; // y
+            var w = 1000; // w
+            SkiaBitmapExportContext bmp = new(w, h, 2.0f, 150);
+            ICanvas canvas = bmp.Canvas;
+
+            canvas.FillColor = Microsoft.Maui.Graphics.Color.FromArgb("#FDF5E6");
+            canvas.FillRectangle(0, 0, bmp.Width, bmp.Height);
+
+            Random rand = new(0);
+            canvas.StrokeColor = Colors.White.WithAlpha(1.0f);
+            canvas.StrokeSize = 1;
+            canvas.FontSize = 18;
+
+            for (int x = 250; x < w; x++)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    if (!sm.IsCellEmpty(x, y))
+                    {
+                        if (sm[x, y] == 1)
+                        {
+                            canvas.FillColor = Microsoft.Maui.Graphics.Color.FromArgb("#B8860B");
+                            canvas.FillEllipse(x - 250, y + 10, 1, 1);
+                            //canvas.FontColor = Colors.White;
+                            //canvas.DrawString("◼︎", x, y,10,10, HorizontalAlignment.Center, VerticalAlignment.Top);
+                        }
+                        else if (sm[x, y] == 2)
+                        {
+                            canvas.FillColor = Microsoft.Maui.Graphics.Color.FromArgb("#8B8378");
+                            canvas.FillRectangle(x - 250, y + 10, 1, 1);
+                            //canvas.FontColor = Colors.Yellow;
+                            //canvas.DrawString("●",x,y,10,10, HorizontalAlignment.Center, VerticalAlignment.Top);
+                        }
+                    }
+                }
+            }
+
+            var owtPath = Path.Combine(Directory.GetCurrentDirectory(), fn);
+            bmp.WriteToFile(owtPath);
         }
 
         private static void PrintSM(SparseMatrix<int> sm)
