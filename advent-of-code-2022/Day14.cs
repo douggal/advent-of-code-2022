@@ -200,7 +200,7 @@ namespace advent_of_code_2022
             // Part Two
 
             // Add the floor, a horizontal line of rocks
-            for (int x = 0; x <= sm.Width; x++)
+            for (int x = 0; x <= smP2.Width; x++)
             {
                 smP2[x, highy + 2] = 2;
             }
