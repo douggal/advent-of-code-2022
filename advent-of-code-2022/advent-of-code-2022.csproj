@@ -12,15 +12,10 @@
     <None Remove="QuikGraph" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\net7\inputData\day07-input.txt">
+    <None Update="inputData\placeholder.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Input\placeholder.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Input\day01_testdata.txt">
+    <None Update="inputData\day01_testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="inputData\day01-test.txt">
@@ -47,6 +42,9 @@
     <None Update="inputData\day07-test.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="inputData\day07-input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="inputData\day08-test.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -69,6 +67,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="inputData\day15-test.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="inputData\day18-test.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -77,6 +77,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Graphics" Version="7.0.52" />
+    <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.52" />
     <PackageReference Include="QuikGraph" Version="2.5.0" />
   </ItemGroup>
 </Project>
