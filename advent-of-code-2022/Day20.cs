@@ -18,7 +18,7 @@ namespace advent_of_code_2022
             //var df = "day20-input.txt";
 
             // read in data
-            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
+            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
             var input = new Queue<String>();
             String? line;
             try
@@ -57,7 +57,57 @@ namespace advent_of_code_2022
 
             // Part One
 
-            var answer = 0;
+            // Considered the LinkedList<T> type but discarded in favor of List<T>
+            // and its InsertAt() method.
+
+            // original = original input
+            // cypher - working copy
+            List<int> original = new(); 
+            List<int> cypher = new();
+
+            while (input.Count > 0)
+            {
+                var aLine =  input.Dequeue().Trim();
+
+                // one number per line
+                original.Add(int.Parse(aLine));
+                cypher.Add(int.Parse(aLine));
+            }
+
+            // Find the grove coords by running the mixing process
+
+            // List is circular - items moved from head or tail appear at other end
+            var N = original.Count;
+
+            foreach (var n in original)
+            {
+                // move the n-th item in cypher n units
+                var newIndex = n % N;
+
+                // insert n-th item at newIndex
+                // the InsertAt() method pushes items out of the way
+                // to make room for the insert.
+                cypher.Insert(newIndex, n);
+
+                // clean up - have to take item back out of the list
+                // if new insert was before old item, then the old item
+                // now 1 unit ahead of where it was.
+                if (newIndex < n)
+                    cypher.RemoveAt(n);
+                else
+                    cypher.RemoveAt(n + 1);
+            }
+
+            // the grove coordinates can be found by looking at the 1000th, 2000th,
+            // and 3000th numbers after the value 0, wrapping around the list as necessary
+
+            var indexofZero = cypher.FindIndex(x => x == 0);
+            var a = 1000 % N + indexofZero;
+            var b = 2000 % N + indexofZero;
+            var c = 3000 % N + indexofZero;
+
+            var answer = a + b + c;
+
             Console.WriteLine("Day 20 Part 1");
             Console.WriteLine("Mix your encrypted file exactly once.");
             Console.WriteLine("What is the sum of the three numbers that form the grove coordinates?");
