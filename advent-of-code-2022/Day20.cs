@@ -89,7 +89,7 @@ namespace advent_of_code_2022
 
                 if (item != 0)
                 {
-                    var newIndex = (oldIndex + n) % (original.Count) + 1;
+                    var newIndex = (oldIndex + n) % original.Count;
 
                     // Drop from old position
                     cypher.RemoveAt(oldIndex);
@@ -98,27 +98,28 @@ namespace advent_of_code_2022
                     // the Insert() method pushes items out of the way
                     // to make room for the insert.
                     if (newIndex == 0)
-                        // insert at end of the list
+                        // insert before the head of the list, ie., at end of the list
                         cypher.Add(item);
                     else if (newIndex == max)
                         // insert at beginning of the list
                         cypher.Insert(0, item);
-                    else
-                        if (newIndex >= 0)
+                    else if ((newIndex > 0 && (n + oldIndex) < cypher.Count))
                         cypher.Insert(newIndex, n);
+                    else if (newIndex > 0)
+                        cypher.Insert(newIndex + 1, n);
                     else
-                        cypher.Insert(original.Count - int.Abs(newIndex), n);
+                        // negative values are count from end back
+                        cypher.Insert(cypher.Count - int.Abs(newIndex), n);
                 }
-
             }
 
             // the grove coordinates can be found by looking at the 1000th, 2000th,
             // and 3000th numbers after the value 0, wrapping around the list as necessary
 
             var indexofZero = cypher.FindIndex(x => x == 0);
-            var a = 1000 % original.Count + indexofZero;
-            var b = 2000 % original.Count + indexofZero;
-            var c = 3000 % original.Count + indexofZero;
+            var a = cypher[(1000 % original.Count + cypher.FindIndex(x => x == 0)) % cypher.Count];
+            var b = cypher[(2000 % original.Count + cypher.FindIndex(x => x == 0)) % cypher.Count];
+            var c = cypher[(3000 % original.Count + cypher.FindIndex(x => x == 0)) % cypher.Count];
 
             var answer = a + b + c;
 
