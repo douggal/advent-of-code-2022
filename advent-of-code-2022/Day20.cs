@@ -81,21 +81,22 @@ namespace advent_of_code_2022
 
             foreach (var n in original)
             {
-                // move the n-th item in cypher n units
-                var newIndex = n % N;
+                // move the n-th item in cypher n units ahead or back
+                var currIndex = cypher.FindIndex(x => x == n) + 1;
+                var newIndex = (currIndex + n) % N;
 
                 // insert n-th item at newIndex
-                // the InsertAt() method pushes items out of the way
+                // the Insert() method pushes items out of the way
                 // to make room for the insert.
                 cypher.Insert(newIndex, n);
 
                 // clean up - have to take item back out of the list
                 // if new insert was before old item, then the old item
                 // now 1 unit ahead of where it was.
-                if (newIndex < n)
-                    cypher.RemoveAt(n);
+                if (newIndex < currIndex)
+                    cypher.RemoveAt(currIndex-1);
                 else
-                    cypher.RemoveAt(n + 1);
+                    cypher.RemoveAt(currIndex);
             }
 
             // the grove coordinates can be found by looking at the 1000th, 2000th,
