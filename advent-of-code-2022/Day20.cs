@@ -14,8 +14,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 20: Grove Positioning System ---");
 
             // data file
-            var df = "day20-test.txt";
-            //var df = "day20-input.txt";
+            //var df = "day20-test.txt";
+            var df = "day20-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
