@@ -62,12 +62,12 @@ namespace advent_of_code_2022
 
             // original = original input
             // cypher - working copy
-            List<int> original = new(); 
+            List<int> original = new();
             List<int> cypher = new();
 
             while (input.Count > 0)
             {
-                var aLine =  input.Dequeue().Trim();
+                var aLine = input.Dequeue().Trim();
 
                 // one number per line
                 original.Add(int.Parse(aLine));
@@ -77,35 +77,48 @@ namespace advent_of_code_2022
             // Find the grove coords by running the mixing process
 
             // List is circular - items moved from head or tail appear at other end
-            var N = original.Count;
+            // max = highest or last index
+            var max = original.Count - 1;
 
             foreach (var n in original)
             {
                 // move the n-th item in cypher n units ahead or back
-                var currIndex = cypher.FindIndex(x => x == n) + 1;
-                var newIndex = (currIndex + n) % N;
+                var oldIndex = cypher.FindIndex(x => x == n);
 
-                // insert n-th item at newIndex
-                // the Insert() method pushes items out of the way
-                // to make room for the insert.
-                cypher.Insert(newIndex, n);
+                var item = cypher[oldIndex];
 
-                // clean up - have to take item back out of the list
-                // if new insert was before old item, then the old item
-                // now 1 unit ahead of where it was.
-                if (newIndex < currIndex)
-                    cypher.RemoveAt(currIndex-1);
-                else
-                    cypher.RemoveAt(currIndex);
+                if (item != 0)
+                {
+                    var newIndex = (oldIndex + n) % (original.Count) + 1;
+
+                    // Drop from old position
+                    cypher.RemoveAt(oldIndex);
+
+                    // insert n-th item at newIndex
+                    // the Insert() method pushes items out of the way
+                    // to make room for the insert.
+                    if (newIndex == 0)
+                        // insert at end of the list
+                        cypher.Add(item);
+                    else if (newIndex == max)
+                        // insert at beginning of the list
+                        cypher.Insert(0, item);
+                    else
+                        if (newIndex >= 0)
+                        cypher.Insert(newIndex, n);
+                    else
+                        cypher.Insert(original.Count - int.Abs(newIndex), n);
+                }
+
             }
 
             // the grove coordinates can be found by looking at the 1000th, 2000th,
             // and 3000th numbers after the value 0, wrapping around the list as necessary
 
             var indexofZero = cypher.FindIndex(x => x == 0);
-            var a = 1000 % N + indexofZero;
-            var b = 2000 % N + indexofZero;
-            var c = 3000 % N + indexofZero;
+            var a = 1000 % original.Count + indexofZero;
+            var b = 2000 % original.Count + indexofZero;
+            var c = 3000 % original.Count + indexofZero;
 
             var answer = a + b + c;
 
