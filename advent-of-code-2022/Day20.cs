@@ -85,9 +85,14 @@ namespace advent_of_code_2022
                 if (n < 0)
                     cypher.Reverse();
 
-                // move the n-th item in cypher n units ahead or back
+                // find index of n
                 var oldIndex = cypher.FindIndex(x => x == n);
+                var cnt = cypher.Count(x => x == n);
+                Console.WriteLine($"Count of {n} is {cnt}");
 
+                if (oldIndex == -1) Console.WriteLine($"ERROR, item not found {n}");
+
+                // move n, n units ahead
                 // don't do anything if item is a zero
                 if (n != 0)
                 {

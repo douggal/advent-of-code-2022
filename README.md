@@ -144,6 +144,13 @@ Maybe slicing the object on x-y, x-z, and y-z axes and counting the outside edge
 
 ### Day 20
 
+No go, but it works with test data. I did not realize there are duplicate numbers
+in the input data.
+
+I find the instructions are not clear to me.  The example has no duplicates but the input
+cypher text has duplicate numbers. Do all the numbers equal to nth item move at the same time,
+or one by one in order?  To me it's not clear what to do.
+
 At first it appeared the LinkedList<T> in C# .NET Base Class Library would be ideal.
 But on reconsideration a List<T> with its Insert() method seemed easier to use.
 The LinkedList<T> doesn't seem to allow arbitrary "pointer" to a node.  There's no index
