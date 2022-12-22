@@ -14,8 +14,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 20: Grove Positioning System ---");
 
             // data file
-            //var df = "day20-test.txt";
-            var df = "day20-input.txt";
+            var df = "day20-test.txt";
+            //var df = "day20-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -77,19 +77,23 @@ namespace advent_of_code_2022
             // Find the grove coords by running the mixing process
 
             // List is circular - items moved from head or tail appear at other end
-            // max = highest or last index
-            var max = original.Count - 1;
 
             foreach (var n in original)
             {
+                // Ugly, but I could not get the backwards count to work right
+                // any other way
+                if (n < 0)
+                    cypher.Reverse();
+
                 // move the n-th item in cypher n units ahead or back
                 var oldIndex = cypher.FindIndex(x => x == n);
 
-                var item = cypher[oldIndex];
-
-                if (item != 0)
+                // don't do anything if item is a zero
+                if (n != 0)
                 {
-                    var newIndex = (oldIndex + n) % original.Count;
+                    // calculate new index (once the old item
+                    // is removed the newIndex will have correct insertion point)
+                    var newIndex = (oldIndex + int.Abs(n)) % cypher.Count;
 
                     // Drop from old position
                     cypher.RemoveAt(oldIndex);
@@ -99,18 +103,19 @@ namespace advent_of_code_2022
                     // to make room for the insert.
                     if (newIndex == 0)
                         // insert before the head of the list, ie., at end of the list
-                        cypher.Add(item);
-                    else if (newIndex == max)
+                        cypher.Add(n);
+                    else if (newIndex == cypher.Count)
                         // insert at beginning of the list
-                        cypher.Insert(0, item);
-                    else if ((newIndex > 0 && (n + oldIndex) < cypher.Count))
-                        cypher.Insert(newIndex, n);
-                    else if (newIndex > 0)
+                        cypher.Insert(0, n);
+                    else if (oldIndex + int.Abs(n) > cypher.Count)
+                        // account for zero based List
                         cypher.Insert(newIndex + 1, n);
                     else
-                        // negative values are count from end back
-                        cypher.Insert(cypher.Count - int.Abs(newIndex), n);
+                        cypher.Insert(newIndex, n);
                 }
+
+                if (n < 0)
+                    cypher.Reverse();
             }
 
             // the grove coordinates can be found by looking at the 1000th, 2000th,
@@ -142,4 +147,6 @@ namespace advent_of_code_2022
         }
     }
 }
+// -188 no
+// 17490 too high
 
