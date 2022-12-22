@@ -152,10 +152,8 @@ cypher text has duplicate numbers. Do all the numbers equal to nth item move at 
 or one by one in order?  To me it's not clear what to do.
 
 At first it appeared the LinkedList<T> in C# .NET Base Class Library would be ideal.
-But on reconsideration a List<T> with its Insert() method seemed easier to use.
-The LinkedList<T> doesn't seem to allow arbitrary "pointer" to a node.  There's no index
-to the nodes in the list.  For this problem it means searching from the beginniing of
-the list each time to find node N units ahead or behind the current one.
+But on reconsideration a List<T> with its Insert() method seemed easier to use.  Also
+items have an index for calculations.
 
 TODO: retry with [LinkedList<T>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.linkedlist-1?view=net-7.0).
 A "pointer" can be obtained from Previous and Next properties of each node (LinkedListNode<T>), e.g.,
