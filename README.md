@@ -32,6 +32,8 @@ and for visualizations [ScottPlot and Maui.Graphics](https://swharden.com/csdv/m
 
 18. Day 18:  Boiling Boulders
 
+20. Day 20:  Grove Positioning System
+
 ## Notes
 
 ### Day 1
@@ -131,6 +133,7 @@ C# visualizations: [Scott Plot and MS Maui.Graphics example](https://swharden.co
 ### Day 15
 
 Part 1 was not too hard once I figured out how to solve it.
+
 ### Day 18
 
 Part 1 was straightforward, and I thought Day 18 would be a softball.  But no go on part 2.
@@ -138,4 +141,23 @@ Maybe slicing the object on x-y, x-z, and y-z axes and counting the outside edge
 
 [Red Blob Games](https://www.redblobgames.com/) and 
 [Amit's Thoughts on Grids](https://www.redblobgames.com/grids/parts/)
+
+### Day 20
+
+No go, but it works with test data. I did not realize there are duplicate numbers
+in the input data.
+
+I find the instructions are not clear to me.  The example has no duplicates but the input
+cypher text has duplicate numbers. Do all the numbers equal to nth item move at the same time,
+or one by one in order?  To me it's not clear what to do.
+
+At first it appeared the LinkedList<T> in C# .NET Base Class Library would be ideal.
+But on reconsideration a List<T> with its Insert() method seemed easier to use.  Also
+items have an index for calculations.
+
+TODO: retry with [LinkedList<T>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.linkedlist-1?view=net-7.0).
+A "pointer" can be obtained from Previous and Next properties of each node (LinkedListNode<T>), e.g.,
+```csharp
+LinkedListNode<string> mark2 = current.Previous;
+```
 
