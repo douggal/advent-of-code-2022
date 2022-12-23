@@ -101,13 +101,13 @@ namespace advent_of_code_2022
 
                     // fifth row test if true:  "    If true: throw to monkey 1"
                     li = input.Dequeue().Trim();
-                    var ttt = li.Substring("If true: throw to monkey ".Length - 1);
+                    var ttt = li.Substring("If true: throw to monkey ".Length - 1).Trim();
                     monkeys[n].TestIsTrueMonkey = int.Parse(ttt);
 
                     // sixth row test if false:  "    If false: throw to monkey 3"
                     li = input.Dequeue().Trim();
-                    var ttf = li.Substring("If false: throw to monkey ".Length - 1);
-                    monkeys[n].TestIsTrueMonkey = int.Parse(ttf);
+                    var ttf = li.Substring("If false: throw to monkey ".Length - 1).Trim();
+                    monkeys[n].TestIsFalseMonkey = int.Parse(ttf);
                 }
             }
 
@@ -142,7 +142,7 @@ namespace advent_of_code_2022
              * The level of monkey business in this situation can be found by multiplying these together
              */
 
-            var mostActive = monkeys.Select((v, i) => new {index = i,value = v.Items.Count}).ToList();
+            var mostActive = monkeys.Select((v, i) => new {index = i,value = v.InspectedItemsCount}).ToList();
             mostActive.Sort((x, y) => y.value.CompareTo(x.value));  // descending!
 
             var answer = monkeys[mostActive[0].index].InspectedItemsCount * monkeys[mostActive[1].index].InspectedItemsCount;
