@@ -83,12 +83,20 @@ namespace advent_of_code_2022
                     monkeys[n].Items = s;
 
                     // third row operation:  "  Operation: new = old * 19"
-                    li = input.Dequeue().Trim();
-                    Regex op = new Regex(@"^\s+Operation: new = old ([\+\*]) (\d+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                    var o = op.Matches(li).ToArray();
-                    var operation = m[0].Groups[1].Value.Trim();
-                    var val = int.Parse(m[0].Groups[2].Value);
-                    monkeys[n].Operation = Tuple.Create(operation, val);
+                    var li3 = input.Dequeue().Trim().Split(' ');
+
+                    //if (li3 is [.., "Operation:", "new","=", "old","+", "old"])
+                    //{
+                    //    wd = "/";
+                    //}
+                    //else if (li is ["$", "cd", ".."])
+
+
+                    //    Regex op = new Regex(@"^\s+Operation: new = old ([\+\*]) (\d+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                    //var o = op.Matches(li).ToArray();
+                    //var operation = m[0].Groups[1].Value.Trim();
+                    //var val = int.Parse(m[0].Groups[2].Value);
+                    //monkeys[n].Operation = Tuple.Create(operation, val);
 
                     // fourth row test:  "  Test: divisible by 23"
                     li = input.Dequeue().Trim();
@@ -118,11 +126,11 @@ namespace advent_of_code_2022
             // Play 20 rounds of Keep Away
             foreach (var rnd in Enumerable.Range(0,20))
             {
-                foreach (var mmonkey in monkeys)
+                foreach (var monkey in monkeys)
                 {
-                    foreach (var item in mmonkey.Items)
+                    foreach (var item in monkey.Items)
                     {
-                       // var newWorryLevel = item * mmonkey.Operation;
+                       var newWorryLevel = monkey.Operation(item);
                     }
                 }
 
@@ -162,7 +170,24 @@ namespace advent_of_code_2022
                 // todo
                 Name = string.Format("Monkey {0}",m);
                 Items = new List<int>();
-        }
+            }
+
+            public int DoOperation(int worryLevel)
+            {
+                var ret = 0;
+                switch (Operation.Item1)
+                {
+                    case "+":
+                        ret = worryLevel + Operation.Item2;
+                        break;
+                    case "*":
+                        ret = worryLevel * Operation.Item2;
+                        break;
+                    default:
+                        break;
+                }
+                return ret;
+            }
 
             public int Test()
             {
