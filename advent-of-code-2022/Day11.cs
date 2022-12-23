@@ -16,8 +16,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 11: Monkey in the Middle ---");
 
             // data file
-            //var df = "day11-test.txt";
-            var df = "day11-input.txt";
+            var df = "day11-test.txt";
+            //var df = "day11-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -78,10 +78,12 @@ namespace advent_of_code_2022
 
                     // second row starting items:  "  Starting items: 79, 98"
                     li = input.Dequeue().Trim();
-                    var si = li.Substring("Starting items: ".Length-1);
+                    var si = li.Substring("Starting items: ".Length - 1);
                     var s1 = si.Split(',');
                     var s2 = s1.Select(x => int.Parse(x.Trim())).ToArray();
-                    monkeys[n].Items = new Queue<int>(s2);
+                    monkeys[n].Items = new Queue<long>();
+                    foreach (var s in s2)
+                        monkeys[n].Items.Enqueue((long)s);
 
                     // third row operation:  "  Operation: new = old * 19"
                     var li3 = input.Dequeue().Trim().Split(' ');
@@ -96,7 +98,7 @@ namespace advent_of_code_2022
 
                     // fourth row test:  "  Test: divisible by 23"
                     li = input.Dequeue().Trim();
-                    var tstr = li.Substring("Test: divisible by ".Length-1);
+                    var tstr = li.Substring("Test: divisible by ".Length - 1);
                     monkeys[n].TestValue = int.Parse(tstr);
 
                     // fifth row test if true:  "    If true: throw to monkey 1"
@@ -111,30 +113,14 @@ namespace advent_of_code_2022
                 }
             }
 
-            // Play 20 rounds of Keep Away
-            foreach (var rnd in Enumerable.Range(0, 20))
-            {
-                foreach (var monkey in monkeys)
-                {
-                    while (monkey.Items.Count > 0)
-                    {
-                        var item = monkey.Items.Dequeue();
+            // Play 20 rounds of Keep Away with worry level divisor of 3
+            //PlayKeepAway(monkeys, 20, 3);
 
-                        // monkey inspects
-                        var newWorryLevel = monkey.DoOperation(item);
-                        monkey.InspectedItemsCount += 1;
+            // Play 10000 rounds of Keep Away with worry level divisor of 1
+            PlayKeepAway(monkeys, 10000, 1);
 
-                        // monkey gets bored
-                        var nextwWorryLevel = (int)double.Floor(newWorryLevel / 3.0d);
 
-                        // monkey throws away
-                        var next = monkey.Test(nextwWorryLevel);
-                        monkeys[next].Items.Enqueue(nextwWorryLevel);
-                    }
-                }
-
-            }
-            /*
+            /* answer
              * focus on the two most active monkeys if you want any hope of getting 
              * your stuff back. Count the total number of times each monkey inspects 
              * items over 20 rounds.
@@ -142,7 +128,7 @@ namespace advent_of_code_2022
              * The level of monkey business in this situation can be found by multiplying these together
              */
 
-            var mostActive = monkeys.Select((v, i) => new {index = i,value = v.InspectedItemsCount}).ToList();
+            var mostActive = monkeys.Select((v, i) => new { index = i, value = v.InspectedItemsCount }).ToList();
             mostActive.Sort((x, y) => y.value.CompareTo(x.value));  // descending!
 
             var answer = monkeys[mostActive[0].index].InspectedItemsCount * monkeys[mostActive[1].index].InspectedItemsCount;
@@ -155,8 +141,14 @@ namespace advent_of_code_2022
             // ---------------------------
             // Part Two
             // ---------------------------
-            // TODO
-            Console.WriteLine("Day 11 Part 2  [TBD]");
+            var answer2 = 0;
+            Console.WriteLine("Day 11 Part 2");
+            Console.WriteLine("Worry levels are no longer divided by three after each item is");
+            Console.WriteLine("inspected; you'll need to find another way to keep your worry levels");
+            Console.WriteLine("manageable. Starting again from the initial state in your puzzle input,");
+            Console.WriteLine("what is the level of monkey business after 10000 rounds?");
+            Console.WriteLine($"{answer2}\n\n");
+
 
             // Display run time and exit
             stopwatch.Stop();
@@ -166,27 +158,55 @@ namespace advent_of_code_2022
             //Console.ReadKey();
         }
 
+        private static void PlayKeepAway(List<Monkey> monkeys, int rounds, long wld)
+        {
+            // rounds = rounds to play
+            // wld = worry level divisor
+
+            foreach (var rnd in Enumerable.Range(0, rounds))
+            {
+                foreach (var monkey in monkeys)
+                {
+                    while (monkey.Items.Count > 0)
+                    {
+                        var item = monkey.Items.Dequeue();
+
+                        // monkey inspects
+                        var newWorryLevel = monkey.DoOperation(item);
+                        monkey.InspectedItemsCount += 1;
+
+                        // monkey gets bored
+                        var nextwWorryLevel = (int)double.Floor(newWorryLevel / (double)wld);
+
+                        // monkey throws away
+                        var next = monkey.Test(nextwWorryLevel);
+                        monkeys[next].Items.Enqueue(nextwWorryLevel);
+                    }
+                }
+
+            }
+        }
+
         private class Monkey
         {
             public string Name { get; set; }
-            public Queue<int> Items { get; set; }
+            public Queue<long> Items { get; set; }
             public int TestValue { get; set; }
             public Tuple<string, int> Operation { get; set; }
             public int TestIsTrueMonkey { get; set; }
             public int TestIsFalseMonkey { get; set; }
-            public int InspectedItemsCount { get; set; }
+            public long InspectedItemsCount { get; set; }
 
             public Monkey(int m)
             {
-                // todo
                 Name = string.Format("Monkey {0}", m);
-                Items = new Queue<int>();
+                Items = new Queue<long>();
                 InspectedItemsCount = 0;
             }
 
-            public int DoOperation(int worryLevel)
+            public long DoOperation(long worryLevel)
             {
-                var ret = 0;
+                var ret = (long)0;
                 switch (Operation.Item1)
                 {
                     case "+":
@@ -204,7 +224,7 @@ namespace advent_of_code_2022
                 return ret;
             }
 
-            public int Test(int worryLevel)
+            public int Test(long worryLevel)
             {
 
                 //Test: divisible by 17
@@ -224,4 +244,5 @@ namespace advent_of_code_2022
 
 
 // 56120 go!
-
+// 2 500 000 000
+// 2 713 310 158
