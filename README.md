@@ -112,7 +112,12 @@ TODO
 
 ### Day 11
 
+BigInt != BigInteger
+long is not a real number.  It's a int64.
 [C# numeric types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types)
+
+Have to tell compiler to check for integer overflow!
+[Ref:](https://stackoverflow.com/questions/1556894/long-large-numbers-and-modulus-in-net)
 
 ### Day 12
 

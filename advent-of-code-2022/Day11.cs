@@ -172,7 +172,7 @@ namespace advent_of_code_2022
 
                         // monkey inspects
                         long newWorryLevel = monkey.DoOperation(item);
-                        monkey.InspectedItemsCount += 1;
+                        monkey.InspectedItemsCount += 1L;
 
                         // Part 1:  monkey gets bored
                         //var nextwWorryLevel = (long)double.Floor(newWorryLevel / (double)wld);
