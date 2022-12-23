@@ -16,8 +16,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 11: Monkey in the Middle ---");
 
             // data file
-            var df = "day11-test.txt";
-            //var df = "day11-input.txt";
+            //var df = "day11-test.txt";
+            var df = "day11-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -220,7 +220,8 @@ namespace advent_of_code_2022
         }
     }
 
-
-
 }
+
+
+// 56120 go!
 
