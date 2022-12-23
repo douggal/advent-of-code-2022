@@ -9,7 +9,7 @@ namespace advent_of_code_2022
         public static void RunDayXX()
         {
             // created TODO: add date
-            // https://adventofcode.com/2022/day/1
+            // https://adventofcode.com/2022/day/XX
 
             Console.WriteLine("--- Day XX: ... ---");
 
@@ -19,8 +19,8 @@ namespace advent_of_code_2022
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
-            var input = new Queue<String>();
-            String? line;
+            var input = new Queue<string>();
+            string? line;
             try
             {
                 // Open the text file using a stream reader.
@@ -53,14 +53,18 @@ namespace advent_of_code_2022
             DateTime utcDateStart = DateTime.UtcNow;
             Stopwatch stopwatch = Stopwatch.StartNew();  // start stopwatch
             Console.WriteLine($"Start timestamp {utcDateStart.ToString("O")}");
-        
 
+
+            // ---------------------------
             // Part One
+            // ---------------------------
             // TODO
             Console.WriteLine("Day XX Part 1 TBD");
 
 
+            // ---------------------------
             // Part Two
+            // ---------------------------
             // TODO
             Console.WriteLine("Day XX Part 2  [TBD]");
 
