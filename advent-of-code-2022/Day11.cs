@@ -78,10 +78,10 @@ namespace advent_of_code_2022
 
                     // second row starting items:  "  Starting items: 79, 98"
                     li = input.Dequeue().Trim();
-                    var si = li.Skip(16).ToString();
+                    var si = li.Substring("Starting items: ".Length-1);
                     var s1 = si.Split(',');
-                    var s2 = s1.Select(x => int.Parse(x.Trim())).ToList();
-                    monkeys[n].Items = s2;
+                    var s2 = s1.Select(x => int.Parse(x.Trim())).ToArray();
+                    monkeys[n].Items = new Queue<int>(s2);
 
                     // third row operation:  "  Operation: new = old * 19"
                     var li3 = input.Dequeue().Trim().Split(' ');
@@ -96,54 +96,60 @@ namespace advent_of_code_2022
 
                     // fourth row test:  "  Test: divisible by 23"
                     li = input.Dequeue().Trim();
-                    var tstr = li.Skip(19).ToString();
+                    var tstr = li.Substring("Test: divisible by ".Length-1);
                     monkeys[n].TestValue = int.Parse(tstr);
 
                     // fifth row test if true:  "    If true: throw to monkey 1"
                     li = input.Dequeue().Trim();
-                    var ttt = li.Skip(25).ToString();
+                    var ttt = li.Substring("If true: throw to monkey ".Length - 1);
                     monkeys[n].TestIsTrueMonkey = int.Parse(ttt);
 
                     // sixth row test if false:  "    If false: throw to monkey 3"
                     li = input.Dequeue().Trim();
-                    var ttf = li.Skip(26).ToString();
+                    var ttf = li.Substring("If false: throw to monkey ".Length - 1);
                     monkeys[n].TestIsTrueMonkey = int.Parse(ttf);
                 }
             }
-
-            /*
-             * Monkey inspects an item with a worry level of 79.
-                Worry level is multiplied by 19 to 1501.
-                Monkey gets bored with item. Worry level is divided by 3 to 500.
-                Current worry level is not divisible by 23.
-                Item with worry level 500 is thrown to monkey 3.
-            */
 
             // Play 20 rounds of Keep Away
             foreach (var rnd in Enumerable.Range(0, 20))
             {
                 foreach (var monkey in monkeys)
                 {
-                    foreach (var item in monkey.Items)
+                    while (monkey.Items.Count > 0)
                     {
+                        var item = monkey.Items.Dequeue();
+
                         // monkey inspects
                         var newWorryLevel = monkey.DoOperation(item);
+                        monkey.InspectedItemsCount += 1;
 
                         // monkey gets bored
                         var nextwWorryLevel = (int)double.Floor(newWorryLevel / 3.0d);
 
                         // monkey throws away
                         var next = monkey.Test(nextwWorryLevel);
-                        monkeys[next].Items.Add(nextwWorryLevel);
+                        monkeys[next].Items.Enqueue(nextwWorryLevel);
                     }
                 }
 
             }
+            /*
+             * focus on the two most active monkeys if you want any hope of getting 
+             * your stuff back. Count the total number of times each monkey inspects 
+             * items over 20 rounds.
+             * the two most active monkeys inspected items 101 and 105 times. 
+             * The level of monkey business in this situation can be found by multiplying these together
+             */
 
-            var answer = 0;
+            var mostActive = monkeys.Select((v, i) => new {index = i,value = v.Items.Count}).ToList();
+            mostActive.Sort((x, y) => y.value.CompareTo(x.value));  // descending!
+
+            var answer = monkeys[mostActive[0].index].InspectedItemsCount * monkeys[mostActive[1].index].InspectedItemsCount;
+
             Console.WriteLine("Day 11 Part 1");
             Console.WriteLine("What is the level of monkey business after 20 rounds of stuff-slinging simian shenanigans?");
-            Console.WriteLine($"{answer}");
+            Console.WriteLine($"{answer}\n\n");
 
 
             // ---------------------------
@@ -163,17 +169,19 @@ namespace advent_of_code_2022
         private class Monkey
         {
             public string Name { get; set; }
-            public List<int> Items { get; set; }
+            public Queue<int> Items { get; set; }
             public int TestValue { get; set; }
             public Tuple<string, int> Operation { get; set; }
             public int TestIsTrueMonkey { get; set; }
             public int TestIsFalseMonkey { get; set; }
+            public int InspectedItemsCount { get; set; }
 
             public Monkey(int m)
             {
                 // todo
                 Name = string.Format("Monkey {0}", m);
-                Items = new List<int>();
+                Items = new Queue<int>();
+                InspectedItemsCount = 0;
             }
 
             public int DoOperation(int worryLevel)
