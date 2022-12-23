@@ -20,7 +20,7 @@ namespace advent_of_code_2022
             //var df = "day11-input.txt";
 
             // read in data
-            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData" ,df);
+            var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
             var input = new Queue<string>();
             string? line;
             try
@@ -78,39 +78,35 @@ namespace advent_of_code_2022
 
                     // second row starting items:  "  Starting items: 79, 98"
                     li = input.Dequeue().Trim();
-                    var si = li.Skip(18).ToString();
-                    var s = si.Split(',').Select(x => int.Parse(x.Trim())).ToList();
-                    monkeys[n].Items = s;
+                    var si = li.Skip(16).ToString();
+                    var s1 = si.Split(',');
+                    var s2 = s1.Select(x => int.Parse(x.Trim())).ToList();
+                    monkeys[n].Items = s2;
 
                     // third row operation:  "  Operation: new = old * 19"
                     var li3 = input.Dequeue().Trim().Split(' ');
-
-                    //if (li3 is [.., "Operation:", "new","=", "old","+", "old"])
-                    //{
-                    //    wd = "/";
-                    //}
-                    //else if (li is ["$", "cd", ".."])
-
-
-                    //    Regex op = new Regex(@"^\s+Operation: new = old ([\+\*]) (\d+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                    //var o = op.Matches(li).ToArray();
-                    //var operation = m[0].Groups[1].Value.Trim();
-                    //var val = int.Parse(m[0].Groups[2].Value);
-                    //monkeys[n].Operation = Tuple.Create(operation, val);
+                    if (li3 is [.., "Operation:", "new", "=", "old", "*", "old"])
+                    {
+                        monkeys[n].Operation = Tuple.Create("~", 0);
+                    }
+                    else if (li3 is [.., "Operation:", "new", "=", "old", var o, var v])
+                    {
+                        monkeys[n].Operation = Tuple.Create(o, int.Parse(v));
+                    }
 
                     // fourth row test:  "  Test: divisible by 23"
                     li = input.Dequeue().Trim();
-                    var tstr = li.Skip(21).ToString();
+                    var tstr = li.Skip(19).ToString();
                     monkeys[n].TestValue = int.Parse(tstr);
 
                     // fifth row test if true:  "    If true: throw to monkey 1"
                     li = input.Dequeue().Trim();
-                    var ttt = li.Skip(29).ToString();
+                    var ttt = li.Skip(25).ToString();
                     monkeys[n].TestIsTrueMonkey = int.Parse(ttt);
 
                     // sixth row test if false:  "    If false: throw to monkey 3"
                     li = input.Dequeue().Trim();
-                    var ttf = li.Skip(30).ToString();
+                    var ttf = li.Skip(26).ToString();
                     monkeys[n].TestIsTrueMonkey = int.Parse(ttf);
                 }
             }
@@ -124,13 +120,21 @@ namespace advent_of_code_2022
             */
 
             // Play 20 rounds of Keep Away
-            foreach (var rnd in Enumerable.Range(0,20))
+            foreach (var rnd in Enumerable.Range(0, 20))
             {
                 foreach (var monkey in monkeys)
                 {
                     foreach (var item in monkey.Items)
                     {
-                       var newWorryLevel = monkey.Operation(item);
+                        // monkey inspects
+                        var newWorryLevel = monkey.DoOperation(item);
+
+                        // monkey gets bored
+                        var nextwWorryLevel = (int)double.Floor(newWorryLevel / 3.0d);
+
+                        // monkey throws away
+                        var next = monkey.Test(nextwWorryLevel);
+                        monkeys[next].Items.Add(nextwWorryLevel);
                     }
                 }
 
@@ -168,7 +172,7 @@ namespace advent_of_code_2022
             public Monkey(int m)
             {
                 // todo
-                Name = string.Format("Monkey {0}",m);
+                Name = string.Format("Monkey {0}", m);
                 Items = new List<int>();
             }
 
@@ -183,19 +187,26 @@ namespace advent_of_code_2022
                     case "*":
                         ret = worryLevel * Operation.Item2;
                         break;
+                    case "~":
+                        ret = worryLevel * worryLevel;
+                        break;
                     default:
                         break;
                 }
                 return ret;
             }
 
-            public int Test()
+            public int Test(int worryLevel)
             {
 
                 //Test: divisible by 17
                 //If true: throw to monkey 0
                 //If false: throw to monkey 1
-                return 0;
+
+                if (worryLevel % TestValue == 0)
+                    return TestIsTrueMonkey;
+                else
+                    return TestIsFalseMonkey;
             }
 
         }
