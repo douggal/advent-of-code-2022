@@ -24,7 +24,7 @@ and for visualizations [ScottPlot and Maui.Graphics](https://swharden.com/csdv/m
 8. Day  8:  Treetop Tree House
 9. Day  9:  Rope Bridge - TODO
 10. Day 10:  Todo
-11. Day 11:  Todo
+11. Day 11:  Monkey in the Middle
 12. Day 12:  Hill Climbing Algorithm
 13. Day 13:  Todo
 14. Day 14:  Regolith Reservoir
