@@ -99,7 +99,7 @@ namespace advent_of_code_2022
                     // fourth row test:  "  Test: divisible by 23"
                     li = input.Dequeue().Trim();
                     var tstr = li.Substring("Test: divisible by ".Length - 1);
-                    monkeys[n].TestValue = int.Parse(tstr);
+                    monkeys[n].TestValue = (long) int.Parse(tstr);
 
                     // fifth row test if true:  "    If true: throw to monkey 1"
                     li = input.Dequeue().Trim();
@@ -117,7 +117,7 @@ namespace advent_of_code_2022
             //PlayKeepAway(monkeys, 20, 3);
 
             // Play 10000 rounds of Keep Away with worry level divisor of 1
-            PlayKeepAway(monkeys, 10000, 1);
+            PlayKeepAway(monkeys, 1000, 1);
 
 
             /* answer
@@ -135,19 +135,18 @@ namespace advent_of_code_2022
 
             Console.WriteLine("Day 11 Part 1");
             Console.WriteLine("What is the level of monkey business after 20 rounds of stuff-slinging simian shenanigans?");
-            Console.WriteLine($"{answer}\n\n");
+            //Console.WriteLine($"{answer}\n\n");
 
 
             // ---------------------------
             // Part Two
             // ---------------------------
-            var answer2 = 0;
             Console.WriteLine("Day 11 Part 2");
             Console.WriteLine("Worry levels are no longer divided by three after each item is");
             Console.WriteLine("inspected; you'll need to find another way to keep your worry levels");
             Console.WriteLine("manageable. Starting again from the initial state in your puzzle input,");
             Console.WriteLine("what is the level of monkey business after 10000 rounds?");
-            Console.WriteLine($"{answer2}\n\n");
+            Console.WriteLine($"{answer}\n\n");
 
 
             // Display run time and exit
@@ -172,11 +171,17 @@ namespace advent_of_code_2022
                         var item = monkey.Items.Dequeue();
 
                         // monkey inspects
-                        var newWorryLevel = monkey.DoOperation(item);
+                        long newWorryLevel = monkey.DoOperation(item);
                         monkey.InspectedItemsCount += 1;
 
-                        // monkey gets bored
-                        var nextwWorryLevel = (int)double.Floor(newWorryLevel / (double)wld);
+                        // Part 1:  monkey gets bored
+                        //var nextwWorryLevel = (long)double.Floor(newWorryLevel / (double)wld);
+
+                        // Part 2:  monkey does not get bored
+                        // Note: had to comment out the division done for Part 1
+                        // Using a divisor of 1 did not help.
+                        // Division did not work as expected with really big numbers
+                        var nextwWorryLevel = newWorryLevel;
 
                         // monkey throws away
                         var next = monkey.Test(nextwWorryLevel);
@@ -191,7 +196,7 @@ namespace advent_of_code_2022
         {
             public string Name { get; set; }
             public Queue<long> Items { get; set; }
-            public int TestValue { get; set; }
+            public long TestValue { get; set; }
             public Tuple<string, int> Operation { get; set; }
             public int TestIsTrueMonkey { get; set; }
             public int TestIsFalseMonkey { get; set; }
@@ -201,19 +206,19 @@ namespace advent_of_code_2022
             {
                 Name = string.Format("Monkey {0}", m);
                 Items = new Queue<long>();
-                InspectedItemsCount = 0;
+                InspectedItemsCount = 0L;
             }
 
             public long DoOperation(long worryLevel)
             {
-                var ret = (long)0;
+                long ret = 0L;
                 switch (Operation.Item1)
                 {
                     case "+":
-                        ret = worryLevel + Operation.Item2;
+                        ret = worryLevel + (long)Operation.Item2;
                         break;
                     case "*":
-                        ret = worryLevel * Operation.Item2;
+                        ret = worryLevel * (long)Operation.Item2;
                         break;
                     case "~":
                         ret = worryLevel * worryLevel;
@@ -244,5 +249,6 @@ namespace advent_of_code_2022
 
 
 // 56120 go!
-// 2 500 000 000
-// 2 713 310 158
+// 2 713 310 158 test data
+// 2 670 460 610 no
+

@@ -110,6 +110,10 @@ Both worked together well for this problem.
 
 TODO
 
+### Day 11
+
+[C# numeric types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types)
+
 ### Day 12
 
 Model the data as a digraph in a Dictionary<int, int[]> and use QuikGraph
