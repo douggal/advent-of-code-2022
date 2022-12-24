@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
+// works for Part 1, see Day11part2.cs for a try at part 2
+
 namespace advent_of_code_2022
 {
     public static class Day11
@@ -114,10 +116,10 @@ namespace advent_of_code_2022
             }
 
             // Play 20 rounds of Keep Away with worry level divisor of 3
-            //PlayKeepAway(monkeys, 20, 3);
+            PlayKeepAway(monkeys, 20, 3);
 
             // Play 10000 rounds of Keep Away with worry level divisor of 1
-            PlayKeepAway(monkeys, 1000, 1);
+            //PlayKeepAway(monkeys, 1000, 1);
 
 
             /* answer
@@ -175,13 +177,13 @@ namespace advent_of_code_2022
                         monkey.InspectedItemsCount += 1L;
 
                         // Part 1:  monkey gets bored
-                        //var nextwWorryLevel = (long)double.Floor(newWorryLevel / (double)wld);
+                        var nextwWorryLevel = (long)double.Floor(newWorryLevel / (double)wld);
 
                         // Part 2:  monkey does not get bored
                         // Note: had to comment out the division done for Part 1
                         // Using a divisor of 1 did not help.
                         // Division did not work as expected with really big numbers
-                        var nextwWorryLevel = newWorryLevel;
+                        //var nextwWorryLevel = newWorryLevel;
 
                         // monkey throws away
                         var next = monkey.Test(nextwWorryLevel);
