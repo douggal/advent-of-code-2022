@@ -2,17 +2,20 @@
 using System.Text;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Numerics;
 
-// works for Part 1, see Day11part2.cs for a try at part 2
+
+// Day 11 Part 2 - try re-scaling the numbers
+
+// as of 23 Dec - no go
 
 namespace advent_of_code_2022
 {
-    public static class Day11
+    public static class Day11part2
     {
-        public static void RunDay11()
+        public static void RunDay11part2()
         {
-            // created 22 December
+            // created 23 December
             // https://adventofcode.com/2022/day/11
 
             Console.WriteLine("--- Day 11: Monkey in the Middle ---");
@@ -83,7 +86,7 @@ namespace advent_of_code_2022
                     var si = li.Substring("Starting items: ".Length - 1);
                     var s1 = si.Split(',');
                     var s2 = s1.Select(x => int.Parse(x.Trim())).ToArray();
-                    monkeys[n].Items = new Queue<long>();
+                    monkeys[n].Items = new Queue<BigInteger>();
                     foreach (var s in s2)
                         monkeys[n].Items.Enqueue((long)s);
 
@@ -101,7 +104,7 @@ namespace advent_of_code_2022
                     // fourth row test:  "  Test: divisible by 23"
                     li = input.Dequeue().Trim();
                     var tstr = li.Substring("Test: divisible by ".Length - 1);
-                    monkeys[n].TestValue = (long) int.Parse(tstr);
+                    monkeys[n].TestValue = (long)int.Parse(tstr);
 
                     // fifth row test if true:  "    If true: throw to monkey 1"
                     li = input.Dequeue().Trim();
@@ -116,10 +119,10 @@ namespace advent_of_code_2022
             }
 
             // Play 20 rounds of Keep Away with worry level divisor of 3
-            PlayKeepAway(monkeys, 20, 3);
+            //PlayKeepAway(monkeys, 20, 3);
 
             // Play 10000 rounds of Keep Away with worry level divisor of 1
-            //PlayKeepAway(monkeys, 1000, 1);
+            PlayKeepAway(monkeys, 1000, 1);
 
 
             /* answer
@@ -159,18 +162,15 @@ namespace advent_of_code_2022
             //Console.ReadKey();
         }
 
-        internal static void RunDay11part2()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void PlayKeepAway(List<Monkey> monkeys, int rounds, long wld)
+        private static void PlayKeepAway(List<Monkey> monkeys, int rounds, long worryLevelDivisor)
         {
             // rounds = rounds to play
             // wld = worry level divisor
+            BigInteger wld2 = worryLevelDivisor;
 
             foreach (var rnd in Enumerable.Range(0, rounds))
             {
+                Console.WriteLine($"Round {rnd}");
                 foreach (var monkey in monkeys)
                 {
                     while (monkey.Items.Count > 0)
@@ -178,11 +178,14 @@ namespace advent_of_code_2022
                         var item = monkey.Items.Dequeue();
 
                         // monkey inspects
-                        long newWorryLevel = monkey.DoOperation(item);
+                        BigInteger newWorryLevel = monkey.DoOperation(item);
                         monkey.InspectedItemsCount += 1L;
 
                         // Part 1:  monkey gets bored
-                        var nextwWorryLevel = (long)double.Floor(newWorryLevel / (double)wld);
+                        // floored integer division
+                        // Ref: https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.divrem?view=net-7.0
+                        BigInteger remainder;
+                        var nextwWorryLevel = BigInteger.DivRem(newWorryLevel, wld2, out remainder);
 
                         // Part 2:  monkey does not get bored
                         // Note: had to comment out the division done for Part 1
@@ -196,39 +199,46 @@ namespace advent_of_code_2022
                     }
                 }
 
+                // rescale worry level numbers for each monkey
+                Console.WriteLine($"Rescaling worry levels {rnd}");
+                foreach (var monkey in monkeys)
+                {
+                    if (monkey.Items.Count > 0)
+                        monkey.rescale(57,98);
+                }
             }
         }
 
         private class Monkey
         {
             public string Name { get; set; }
-            public Queue<long> Items { get; set; }
+            public Queue<BigInteger> Items { get; set; }
             public long TestValue { get; set; }
             public Tuple<string, int> Operation { get; set; }
             public int TestIsTrueMonkey { get; set; }
             public int TestIsFalseMonkey { get; set; }
-            public long InspectedItemsCount { get; set; }
+            public BigInteger InspectedItemsCount { get; set; }
 
             public Monkey(int m)
             {
                 Name = string.Format("Monkey {0}", m);
-                Items = new Queue<long>();
+                Items = new Queue<BigInteger>();
                 InspectedItemsCount = 0L;
             }
 
-            public long DoOperation(long worryLevel)
+            public BigInteger DoOperation(BigInteger worryLevel)
             {
-                long ret = 0L;
+                BigInteger ret = 0;
                 switch (Operation.Item1)
                 {
                     case "+":
-                        ret = worryLevel + (long)Operation.Item2;
+                        ret = BigInteger.Add(worryLevel, Operation.Item2);
                         break;
                     case "*":
-                        ret = worryLevel * (long)Operation.Item2;
+                        ret = BigInteger.Multiply(worryLevel, Operation.Item2);
                         break;
                     case "~":
-                        ret = worryLevel * worryLevel;
+                        ret = BigInteger.Multiply(worryLevel, worryLevel);
                         break;
                     default:
                         break;
@@ -236,26 +246,54 @@ namespace advent_of_code_2022
                 return ret;
             }
 
-            public int Test(long worryLevel)
+            public int Test(BigInteger worryLevel)
             {
 
                 //Test: divisible by 17
                 //If true: throw to monkey 0
                 //If false: throw to monkey 1
 
-                if (worryLevel % TestValue == 0)
+                BigInteger remainder;
+                var nextwWorryLevel = BigInteger.DivRem(worryLevel, TestValue, out remainder);
+                if (remainder == 0)
                     return TestIsTrueMonkey;
                 else
                     return TestIsFalseMonkey;
             }
 
+            internal void rescale(int newmin, int newmax)
+            {
+                // Rescale:
+                // https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
+                // https://stackoverflow.com/questions/5294955/how-to-scale-down-a-range-of-numbers-with-a-known-min-and-max-value
+
+                var tmp = Items.Select(x => x).ToList();
+                var oldmin = tmp.Min();
+                var oldmax = tmp.Max();
+                Items.Clear();
+
+                BigInteger newvalue = 0;
+                var oldrange = (oldmax - oldmin);
+                var newrange = newmax - newmin;
+                foreach (var oldvalue in tmp)
+                {
+                    if (oldrange == 0)
+                    {
+                        newvalue = newmin;
+                    }
+                    else
+                    {
+                        newvalue = (((oldvalue - oldmin) * newrange) / oldrange) + newmin;
+                    }
+                    Items.Enqueue(newvalue);
+
+                }
+            }
         }
     }
-
 }
 
 
 // 56120 go!
 // 2 713 310 158 test data
 // 2 670 460 610 no
-

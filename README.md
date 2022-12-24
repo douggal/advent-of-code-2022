@@ -112,12 +112,21 @@ TODO
 
 ### Day 11
 
+Part 1 go, but no go on Part 2.  Numbers get too big.   I tried the nieve soltuion using BigInteger
+but unlimited digits is too slow and stil isn't big enough to hold the numbers.  I think the anwwer
+is, since the numbers are worry levels not item IDs, is to re-scale the items each
+monkey holds after a round.  But I could not get this to give right answer.
+
 BigInt != BigInteger
-long is not a real number.  It's a int64.
+
+long is not a real number.  It's an integer, int64.
 [C# numeric types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types)
 
 Have to tell compiler to check for integer overflow!
 [Ref:](https://stackoverflow.com/questions/1556894/long-large-numbers-and-modulus-in-net)
+[Floor](https://stackoverflow.com/questions/28059655/floored-integer-division)
+[BigInteger DivRem](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.divrem?view=net-7.0)
+[Rescale](https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
 
 ### Day 12
 
