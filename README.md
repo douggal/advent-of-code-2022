@@ -24,7 +24,7 @@ and for visualizations [ScottPlot and Maui.Graphics](https://swharden.com/csdv/m
 8. Day  8:  Treetop Tree House
 9. Day  9:  Rope Bridge - TODO
 10. Day 10:  Todo
-11. Day 11:  Todo
+11. Day 11:  Monkey in the Middle
 12. Day 12:  Hill Climbing Algorithm
 13. Day 13:  Todo
 14. Day 14:  Regolith Reservoir
@@ -109,6 +109,24 @@ Both worked together well for this problem.
 ### Day 9
 
 TODO
+
+### Day 11
+
+Part 1 go, but no go on Part 2.  Numbers get too big.   I tried the nieve soltuion using BigInteger
+but unlimited digits is too slow and stil isn't big enough to hold the numbers.  I think the anwwer
+is, since the numbers are worry levels not item IDs, is to re-scale the items each
+monkey holds after a round.  But I could not get this to give right answer.
+
+BigInt != BigInteger
+
+long is not a real number.  It's an integer, int64.
+[C# numeric types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types)
+
+Have to tell compiler to check for integer overflow!
+[Ref:](https://stackoverflow.com/questions/1556894/long-large-numbers-and-modulus-in-net)
+[Floor](https://stackoverflow.com/questions/28059655/floored-integer-division)
+[BigInteger DivRem](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.divrem?view=net-7.0)
+[Rescale](https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
 
 ### Day 12
 
