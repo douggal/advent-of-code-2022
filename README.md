@@ -34,6 +34,8 @@ and for visualizations [ScottPlot and Maui.Graphics](https://swharden.com/csdv/m
 
 20. Day 20:  Grove Positioning System
 
+25. Day 25:  Full of Hot Air
+
 ## Notes
 
 ### Day 1
@@ -178,4 +180,7 @@ A "pointer" can be obtained from Previous and Next properties of each node (Link
 ```csharp
 LinkedListNode<string> mark2 = current.Previous;
 ```
+
+### Day 25
+
 
