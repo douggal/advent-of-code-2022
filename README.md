@@ -183,4 +183,5 @@ LinkedListNode<string> mark2 = current.Previous;
 
 ### Day 25
 
+[Raise to power](https://learn.microsoft.com/en-us/dotnet/api/system.math.pow?redirectedfrom=MSDN&view=net-7.0#System_Math_Pow_System_Double_System_Double_)
 
