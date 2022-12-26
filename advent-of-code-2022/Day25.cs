@@ -137,11 +137,49 @@ namespace advent_of_code_2022
             var answer = new Stack<string>();
             var q = 2022;
             var r = 0;
+            var pow = 0;
+            var carry = 0;
             do
             {
                 // digits[c.v] * (int)Math.Pow(5d, (double)c.i)
+
                 (q, r) = int.DivRem(q, 5);
-                answer.Push(sdigits[r]);
+
+                var d = String.Empty;
+                switch (r)
+                {
+                    case 0:
+                        if (carry == 0)
+                            d = "0";
+                        else
+                        {
+                            var dtmp = sdigits[carry + 0];
+                            d = dtmp.Substring(1, 1);
+                            carry = int.Parse(dtmp.Substring(0,1));
+                        }
+                        break;
+                    case 1:
+                        d = "1";
+                        break;
+                    case 2:
+                        d = "2";
+                        break;
+                    case 3:
+                        //d = ((pow+1) % 5).ToString() + "=";
+                        d = "=";
+                        carry = 1;
+                        break;
+                    case 4:
+                        //d = ((pow +1) % 5).ToString() + "-";
+                        d = "-";
+                        carry = 1;
+                        break;
+                    default:
+                        break;
+                }
+                pow += 1;
+
+                answer.Push(d);
             } while (q != 0);
 
             var answerString = string.Empty;
