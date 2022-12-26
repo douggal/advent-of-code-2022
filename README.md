@@ -34,6 +34,12 @@ and for visualizations [ScottPlot and Maui.Graphics](https://swharden.com/csdv/m
 
 20. Day 20:  Grove Positioning System
 
+25. Day 25:  Full of Hot Air
+
+## Wrap up
+
+I had 24 stars out of 50 by midnight 25 December.
+
 ## Notes
 
 ### Day 1
@@ -178,4 +184,15 @@ A "pointer" can be obtained from Previous and Next properties of each node (Link
 ```csharp
 LinkedListNode<string> mark2 = current.Previous;
 ```
+
+### Day 25
+
+Took a while but I finally got it just before midnight and the official contest closeout.
+
+Was bitten by the stealth integer overflow error again.  In Visual Studio for Mac 2022 right-click
+the project in the Solution Explorer > Properties > Build > Compiler options > check box
+"Generate overflow checks."  Seems like this option should be enabled by default?
+
+[How to convert number to another base](https://www.mathsisfun.com/base-conversion-method.html)
+[Raise to power](https://learn.microsoft.com/en-us/dotnet/api/system.math.pow?redirectedfrom=MSDN&view=net-7.0#System_Math_Pow_System_Double_System_Double_)
 

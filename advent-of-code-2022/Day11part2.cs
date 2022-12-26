@@ -122,7 +122,7 @@ namespace advent_of_code_2022
             //PlayKeepAway(monkeys, 20, 3);
 
             // Play 10000 rounds of Keep Away with worry level divisor of 1
-            PlayKeepAway(monkeys, 1000, 1);
+            PlayKeepAway(monkeys, 10000, 1);
 
 
             /* answer
@@ -138,8 +138,8 @@ namespace advent_of_code_2022
 
             var answer = monkeys[mostActive[0].index].InspectedItemsCount * monkeys[mostActive[1].index].InspectedItemsCount;
 
-            Console.WriteLine("Day 11 Part 1");
-            Console.WriteLine("What is the level of monkey business after 20 rounds of stuff-slinging simian shenanigans?");
+            //Console.WriteLine("Day 11 Part 1");
+            //Console.WriteLine("What is the level of monkey business after 20 rounds of stuff-slinging simian shenanigans?");
             //Console.WriteLine($"{answer}\n\n");
 
 
@@ -283,7 +283,7 @@ namespace advent_of_code_2022
                     }
                     else
                     {
-                        newvalue = (((oldvalue - oldmin) * newrange) / oldrange) + newmin;
+                        newvalue = BigInteger.Divide(((oldvalue - oldmin) * newrange), oldrange) + newmin;
                     }
                     Items.Enqueue(newvalue);
 
