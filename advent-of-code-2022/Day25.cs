@@ -74,12 +74,12 @@ namespace advent_of_code_2022
             // Plan: split each input string on chars and do the math?
 
             var digits = new Dictionary<char, int>() {
-            { '0', 0},
-            { '1', 1},
-            { '2', 2},
-            { '-', -1},
-            { '=', -2}
-            };
+                        { '0', 0},
+                        { '1', 1},
+                        { '2', 2},
+                        { '-', -1},
+                        { '=', -2}
+                    };
 
             var snafuAnswer = 0;
             while (input.Count > 0)
@@ -115,8 +115,9 @@ namespace advent_of_code_2022
                 {        0,              "0"},
                 {        1,              "1"},
                 {        2,              "2"},
-                {        3,             "=1"},
-                {        4,             "-1"},
+                {        3,             "1="},
+                {        4,             "1-"}
+                /*,
                 {        5,             "01"},
                 {        6,             "11"},
                 {        7,             "21"},
@@ -127,25 +128,26 @@ namespace advent_of_code_2022
                 {       20,            "0-1"},
                 {     2022,          "2-11=1"},
                 {    12345,        "0---0-1" },
-                { 314159265,  "0=1-0111-1211"},
+                { 314159265,  "0=1-0111-1211"},*/
             };
 
             // Reverse string in C#
             // https://stackoverflow.com/questions/228038/best-way-to-reverse-a-string
 
-            var answer = String.Empty;
-            var q = snafuAnswer;
+            var answer = new Stack<string>();
+            var q = 2022;
             var r = 0;
             do
             {
+                // digits[c.v] * (int)Math.Pow(5d, (double)c.i)
                 (q, r) = int.DivRem(q, 5);
-                answer += sdigits[r];
+                answer.Push(sdigits[r]);
             } while (q != 0);
 
             var answerString = string.Empty;
-            foreach (var c in answer)
+            while (answer.Count > 0)
             {
-                answerString += c.ToString();
+                answerString += answer.Pop();
             }
 
 
