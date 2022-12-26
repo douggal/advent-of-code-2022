@@ -116,26 +116,15 @@ namespace advent_of_code_2022
                 {        1,              "1"},
                 {        2,              "2"},
                 {        3,             "1="},
-                {        4,             "1-"}
-                /*,
-                {        5,             "01"},
-                {        6,             "11"},
-                {        7,             "21"},
-                {        8,             "=2"},
-                {        9,             "-2"},
-                {       10,             "02"},
-                {       15,            "0=1"},
-                {       20,            "0-1"},
-                {     2022,          "2-11=1"},
-                {    12345,        "0---0-1" },
-                { 314159265,  "0=1-0111-1211"},*/
+                {        4,             "1-"},
+                {        5,             "10"}
             };
 
             // Reverse string in C#
             // https://stackoverflow.com/questions/228038/best-way-to-reverse-a-string
 
             var answer = new Stack<string>();
-            var q = 2022;
+            var q = snafuAnswer;
             var r = 0;
             var pow = 0;
             var carry = 0;
@@ -146,41 +135,36 @@ namespace advent_of_code_2022
                 (q, r) = int.DivRem(q, 5);
 
                 var d = String.Empty;
-                switch (r)
+
+                var newdig = string.Empty;
+                if (carry == 0)
                 {
-                    case 0:
-                        if (carry == 0)
-                            d = "0";
-                        else
-                        {
-                            var dtmp = sdigits[carry + 0];
-                            d = dtmp.Substring(1, 1);
-                            carry = int.Parse(dtmp.Substring(0,1));
-                        }
-                        break;
-                    case 1:
-                        d = "1";
-                        break;
-                    case 2:
-                        d = "2";
-                        break;
-                    case 3:
-                        //d = ((pow+1) % 5).ToString() + "=";
-                        d = "=";
-                        carry = 1;
-                        break;
-                    case 4:
-                        //d = ((pow +1) % 5).ToString() + "-";
-                        d = "-";
-                        carry = 1;
-                        break;
-                    default:
-                        break;
+                    newdig = sdigits[r];
                 }
+                else
+                {
+                        newdig = sdigits[r + carry];
+                }
+
+                if (newdig.Length == 2)
+                {
+                    d = newdig.Substring(1, 1);
+                    carry = 1;
+                }
+                else
+                {
+                    d = newdig;
+                    carry = 0;
+                }
+
                 pow += 1;
 
                 answer.Push(d);
             } while (q != 0);
+
+            if (carry != 0)
+                answer.Push(carry.ToString());
+
 
             var answerString = string.Empty;
             while (answer.Count > 0)
@@ -192,7 +176,7 @@ namespace advent_of_code_2022
             Console.WriteLine("Day 25 Part 1");
             Console.WriteLine("The Elves are starting to get cold. What SNAFU number");
             Console.WriteLine("do you supply to Bob's console?");
-            Console.WriteLine($"{answerString}");
+            Console.WriteLine($"{answerString}\n\n");
 
 
 
