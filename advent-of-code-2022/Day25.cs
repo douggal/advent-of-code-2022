@@ -14,8 +14,8 @@ namespace advent_of_code_2022
             Console.WriteLine("--- Day 25: Full of Hot Air ---");
 
             // data file
-            var df = "day25-test.txt";
-            //var df = "day25-input.txt";
+            //var df = "day25-test.txt";
+            var df = "day25-input.txt";
 
             // read in data
             var fn = Path.Combine(Directory.GetCurrentDirectory(), "inputData", df);
@@ -81,17 +81,17 @@ namespace advent_of_code_2022
                         { '=', -2}
                     };
 
-            var snafuAnswer = 0;
+            var snafuAnswer = 0L;
             while (input.Count > 0)
             {
                 var li = input.Dequeue().Trim().ToCharArray();
 
                 var lir = li.Reverse().ToList();
 
-                var sum = 0;
+                var sum = 0L;
                 foreach (var c in lir.Select((v, i) => new { i, v }))
                 {
-                    sum += digits[c.v] * (int)Math.Pow(5d, (double)c.i);
+                    sum += digits[c.v] * (long)Math.Pow(5d, (double)c.i);
                     //Console.Write(sum + ", ");
                 }
                 //Console.WriteLine( " = sum is ", sum);
@@ -111,7 +111,7 @@ namespace advent_of_code_2022
             // Reverse a string in C# takes some work, so using reverse in lookup table
             // https://stackoverflow.com/questions/228038/best-way-to-reverse-a-string
 
-            var sdigits = new Dictionary<int, string>() {
+            var sdigits = new Dictionary<long, string>() {
                 {        0,              "0"},
                 {        1,              "1"},
                 {        2,              "2"},
@@ -120,19 +120,16 @@ namespace advent_of_code_2022
                 {        5,             "10"}
             };
 
-            // Reverse string in C#
-            // https://stackoverflow.com/questions/228038/best-way-to-reverse-a-string
-
             var answer = new Stack<string>();
             var q = snafuAnswer;
-            var r = 0;
+            var r = 0L;
             var pow = 0;
-            var carry = 0;
+            var carry = 0L;
             do
             {
                 // digits[c.v] * (int)Math.Pow(5d, (double)c.i)
 
-                (q, r) = int.DivRem(q, 5);
+                (q, r) = long.DivRem(q, 5);
 
                 var d = String.Empty;
 
@@ -198,3 +195,4 @@ namespace advent_of_code_2022
     }
 }
 
+// 2-1=10=1=1==2-1=-221 p1

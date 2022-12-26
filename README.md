@@ -183,5 +183,12 @@ LinkedListNode<string> mark2 = current.Previous;
 
 ### Day 25
 
+Took a while but I finally got it just before midnight and contest closeout.
+
+Was bitten by the stealth integer overflow error again.  in Visual Studio for Mac 2022 right-click
+the project in the Solution Explorer > Properties > Build > Compiler options > check box
+"Generate overflow checks."  Seems like this option should be enabled by default?
+
+[How to convert number to another base](https://www.mathsisfun.com/base-conversion-method.html)
 [Raise to power](https://learn.microsoft.com/en-us/dotnet/api/system.math.pow?redirectedfrom=MSDN&view=net-7.0#System_Math_Pow_System_Double_System_Double_)
 
